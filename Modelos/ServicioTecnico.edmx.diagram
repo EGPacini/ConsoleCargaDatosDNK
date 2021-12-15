@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="239a5eb6ce454fa3899c8101a105cb82" Name="Diagram1">
+        <EntityTypeShape EntityType="TechnicalServiceModel.Accessories" Width="1.5" PointX="12.75" PointY="14.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="TechnicalServiceModel.AppSettings" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="TechnicalServiceModel.Audit" Width="1.5" PointX="5.25" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TechnicalServiceModel.Budgets" Width="1.5" PointX="10.5" PointY="11.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="TechnicalServiceModel.Client" Width="1.5" PointX="6" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TechnicalServiceModel.Credentials" Width="1.5" PointX="5.25" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TechnicalServiceModel.Device" Width="1.5" PointX="8.25" PointY="15" IsExpanded="true" />
+        <EntityTypeShape EntityType="TechnicalServiceModel.HistoricalState" Width="1.5" PointX="10.5" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="TechnicalServiceModel.Notifications" Width="1.5" PointX="5.25" PointY="14.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TechnicalServiceModel.Profile" Width="1.5" PointX="3" PointY="10.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TechnicalServiceModel.ProfileType" Width="1.5" PointX="0.75" PointY="11.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TechnicalServiceModel.RepairGuide" Width="1.5" PointX="8.25" PointY="10.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TechnicalServiceModel.RepairGuideDevice" Width="1.5" PointX="10.5" PointY="14" IsExpanded="true" />
+        <EntityTypeShape EntityType="TechnicalServiceModel.Squad" Width="1.5" PointX="10.5" PointY="18" IsExpanded="true" />
+        <EntityTypeShape EntityType="TechnicalServiceModel.State" Width="1.5" PointX="8.25" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="TechnicalServiceModel.SupplieMobile" Width="1.5" PointX="12.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TechnicalServiceModel.Supplies" Width="1.5" PointX="10.5" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="TechnicalServiceModel.sysdiagrams" Width="1.5" PointX="2.75" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="TechnicalServiceModel.UsedSupplies" Width="1.5" PointX="12.75" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="TechnicalServiceModel.WorkDone" Width="1.5" PointX="12.75" PointY="11" IsExpanded="true" />
+        <EntityTypeShape EntityType="TechnicalServiceModel.WorkValuation" Width="1.5" PointX="10.5" PointY="5" IsExpanded="true" />
+        <AssociationConnector Association="TechnicalServiceModel.FK__Accessori__IdRep__68BD7F23" ManuallyRouted="false" />
+        <AssociationConnector Association="TechnicalServiceModel.FK__Audit__IdProfile__770B9E7A" ManuallyRouted="false" />
+        <AssociationConnector Association="TechnicalServiceModel.FK__Budgets__IdRepai__60283922" ManuallyRouted="false" />
+        <AssociationConnector Association="TechnicalServiceModel.FK__RepairGui__IdCli__55AAAAAF" ManuallyRouted="false" />
+        <AssociationConnector Association="TechnicalServiceModel.FK__Credentia__IdPro__4E0988E7" ManuallyRouted="false" />
+        <AssociationConnector Association="TechnicalServiceModel.FK__RepairGui__IdDev__65E11278" ManuallyRouted="false" />
+        <AssociationConnector Association="TechnicalServiceModel.FK__Historica__IdRep__5C57A83E" ManuallyRouted="false" />
+        <AssociationConnector Association="TechnicalServiceModel.FK__Historica__IdSta__5D4BCC77" ManuallyRouted="false" />
+        <AssociationConnector Association="TechnicalServiceModel.FK__Notificat__IdPro__50E5F592" ManuallyRouted="false" />
+        <AssociationConnector Association="TechnicalServiceModel.FK__Profile__IdProfi__4B2D1C3C" ManuallyRouted="false" />
+        <AssociationConnector Association="TechnicalServiceModel.FK__RepairGui__IdRec__569ECEE8" ManuallyRouted="false" />
+        <AssociationConnector Association="TechnicalServiceModel.FK__RepairGui__IdTec__5792F321" ManuallyRouted="false" />
+        <AssociationConnector Association="TechnicalServiceModel.FK__RepairGui__IdRep__64ECEE3F" ManuallyRouted="false" />
+        <AssociationConnector Association="TechnicalServiceModel.FK__WorkDone__IdRepa__6E765879" ManuallyRouted="false" />
+        <AssociationConnector Association="TechnicalServiceModel.FK__SupplieMo__IdSqu__7EACC042" ManuallyRouted="false" />
+        <AssociationConnector Association="TechnicalServiceModel.FK__SupplieMo__IdSup__7DB89C09" ManuallyRouted="false" />
+        <AssociationConnector Association="TechnicalServiceModel.FK__UsedSuppl__IdSup__742F31CF" ManuallyRouted="false" />
+        <AssociationConnector Association="TechnicalServiceModel.FK__UsedSuppl__IdWor__733B0D96" ManuallyRouted="false" />
+        <AssociationConnector Association="TechnicalServiceModel.FK__WorkDone__IdWork__6D823440" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="d80b3d3452d944e0ba534d0d2aa3badd" Name="Diagram1">
+        <EntityTypeShape EntityType="hwmdbModel.C__MigrationLog" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.AbortCodeLookup" Width="1.5" PointX="14.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.AccessTechnologyTypes" Width="1.5" PointX="15.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.AccountLeakOptions" Width="1.5" PointX="10.25" PointY="8.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.accounts" Width="1.5" PointX="3" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.AccountTypeLookup" Width="1.5" PointX="14.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.ActuationsPegasus" Width="1.5" PointX="16.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.alarmconditions" Width="1.5" PointX="16.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.alarmforwarding" Width="1.5" PointX="8.25" PointY="53.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.alarms" Width="1.5" PointX="17.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.alarmTypes" Width="1.5" PointX="17.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.APIQuotas" Width="1.5" PointX="18.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.ApplicationConfigLog" Width="1.5" PointX="12.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.ApplicationSettings" Width="1.5" PointX="18.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.associations" Width="1.5" PointX="18.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.ATSInfoTable" Width="1.5" PointX="19.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.BandPassFilter" Width="1.5" PointX="19.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.CategoryofPermitCodeLookup" Width="1.5" PointX="19.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.celltable" Width="1.5" PointX="14.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.ChamberTypes" Width="1.5" PointX="7.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.channels" Width="1.5" PointX="12.75" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.ChannelTypeChartOptions" Width="1.5" PointX="20.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.ChannelTypes" Width="1.5" PointX="20.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.correlationAccountMeta" Width="1.5" PointX="8" PointY="10.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.correlationPath" Width="1.5" PointX="5.25" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.CorrelationResults" Width="1.5" PointX="8" PointY="6.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.correlationTestPaths" Width="1.5" PointX="20.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.CountyCodes" Width="1.5" PointX="16.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.dataexport" Width="1.5" PointX="18.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.datapoints" Width="1.5" PointX="5.25" PointY="51.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.DatFileLocations" Width="1.5" PointX="20.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.DatFiles" Width="1.5" PointX="3" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.DeviceSummary" Width="1.5" PointX="21.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.exportindex" Width="1.5" PointX="21.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.FavouriteSignalList" Width="1.5" PointX="22.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.FavouriteSignalListData" Width="1.5" PointX="22.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.firmwareupdates" Width="1.5" PointX="3" PointY="23.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.fleetreportoptions" Width="1.5" PointX="5.25" PointY="15.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.flowpegasus" Width="1.5" PointX="12.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.gascalorificvalues" Width="1.5" PointX="22.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.gaszone" Width="1.5" PointX="22.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.GDImportDataFileLog" Width="1.5" PointX="17" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.GDImportDataFiles" Width="1.5" PointX="14.75" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.GNetalerts" Width="1.5" PointX="20.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.GNetalertTypes" Width="1.5" PointX="22.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.GNetaudit" Width="1.5" PointX="23.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.GNetchannelTypes" Width="1.5" PointX="23.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.GNetcustomers" Width="1.5" PointX="7.75" PointY="23.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.GNethubs" Width="1.5" PointX="24.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.GNetlocations" Width="1.5" PointX="24.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.GNetmessages" Width="1.5" PointX="24.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.GNetmonthlyReport" Width="1.5" PointX="14.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.GNetsites" Width="1.5" PointX="24.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.GNettransmitterChannels" Width="1.5" PointX="16.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.GNettransmitterData" Width="1.5" PointX="24.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.GNettransmitterFlushEvents" Width="1.5" PointX="24.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.GNettransmitterFlushSettings" Width="1.5" PointX="25.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.GNettransmitterLocations" Width="1.5" PointX="26.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.GNettransmitters" Width="1.5" PointX="26.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.GNettransmitterTemperatureSettings" Width="1.5" PointX="26.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.GNettransmitterTypes" Width="1.5" PointX="26.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.GNetuserRoles" Width="1.5" PointX="26.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.GNetusers" Width="1.5" PointX="22.75" PointY="26.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.GNetuserSites" Width="1.5" PointX="26.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.histograms" Width="1.5" PointX="27.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.hubs" Width="1.5" PointX="7.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.InstallationReport" Width="1.5" PointX="5.25" PointY="78.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.installsite" Width="1.5" PointX="12.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.InvestigationAuth" Width="1.5" PointX="27.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.leakconfirmation" Width="1.5" PointX="11.25" PointY="49.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.leakconfirmationassociation" Width="1.5" PointX="5.25" PointY="42.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.LeakDetectionOptions" Width="1.5" PointX="5.25" PointY="54.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.leakstatuslookup" Width="1.5" PointX="18.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.lnstable" Width="1.5" PointX="24.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.LoggerAccessTechnology" Width="1.5" PointX="8.25" PointY="42" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.LoggerCommandHistory" Width="1.5" PointX="3" PointY="33" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.loggerconfigurationdata" Width="1.5" PointX="26.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.LoggerFilterConfiguration" Width="1.5" PointX="3" PointY="36.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.LoggerLevelAndSpread" Width="1.5" PointX="5.25" PointY="45.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.loggermeterreadings" Width="1.5" PointX="5.25" PointY="68.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.loggerRecordingAudit" Width="1.5" PointX="2.75" PointY="28.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.loggerrecordings" Width="1.5" PointX="5.75" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.loggers" Width="1.5" PointX="0.75" PointY="26.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.loggersecuretypes" Width="1.5" PointX="4.75" PointY="28.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.LoggerTypeIdentification" Width="1.5" PointX="28.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.lookuptables" Width="1.5" PointX="15" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.Maintenance" Width="1.5" PointX="5.25" PointY="96.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.MaintenanceInstallation" Width="1.5" PointX="28.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.MaintenanceJob" Width="1.5" PointX="14.75" PointY="28.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.MaintenanceJobSitePhoto" Width="1.5" PointX="28.75" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.MaintenanceJobStatus" Width="1.5" PointX="29.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.MaintenanceJobType" Width="1.5" PointX="29.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.MaintenanceReports" Width="1.5" PointX="30.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.MaintenanceReportsServerStatus" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.messageindex" Width="1.5" PointX="30.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.messages" Width="1.5" PointX="16.75" PointY="30.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.networklookup" Width="1.5" PointX="30.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.NGFileExportLog" Width="1.5" PointX="18.75" PointY="30.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.NGFileExportSchedule" Width="1.5" PointX="30.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.NGFileRejectResponse" Width="1.5" PointX="30.75" PointY="23.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.NGJobOutcome" Width="1.5" PointX="30.75" PointY="26.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.NGJobType" Width="1.5" PointX="30.75" PointY="29.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.NGOutcomeReason" Width="1.5" PointX="31.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.NGRequest" Width="1.5" PointX="24.75" PointY="31.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.NGSitePhoto" Width="1.5" PointX="31.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.NGSiteVisit" Width="1.5" PointX="10.75" PointY="17" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.NGSiteVisitComment" Width="1.5" PointX="26.75" PointY="31.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.NGSiteVisitStockItems" Width="1.5" PointX="13" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.NGStatus" Width="1.5" PointX="32.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.NGStockItems" Width="1.5" PointX="10.75" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.NGTransactionStatus" Width="1.5" PointX="32.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.openchannelconversion" Width="1.5" PointX="32.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.openchannelheader" Width="1.5" PointX="32.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.PipeDiameterRanges" Width="1.5" PointX="32.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.PipeMappingFromGIS" Width="1.5" PointX="20.75" PointY="32.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.PipeMaterialTypes" Width="1.5" PointX="32.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.PipeNetwork" Width="1.5" PointX="32.75" PointY="25.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.PipeSize" Width="1.5" PointX="9" PointY="56.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.pmzbigtimedata" Width="1.5" PointX="32.75" PointY="28.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.pmzmessagelog" Width="1.5" PointX="28.75" PointY="32.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.pmzoffstimedata" Width="1.5" PointX="30.75" PointY="32.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.pmzpressflowdata" Width="1.5" PointX="32.75" PointY="31.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.pmzpresstimedata" Width="1.5" PointX="33.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.pmzsettings" Width="1.5" PointX="34.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.RaisedAsLookup" Width="1.5" PointX="16.75" PointY="34.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.recentsites" Width="1.5" PointX="8.25" PointY="49.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.recordingspoints" Width="1.5" PointX="34.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.RepairedAsLookup" Width="1.5" PointX="34.75" PointY="23.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.roles" Width="1.5" PointX="34.75" PointY="26.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.RTLTransmitters" Width="1.5" PointX="34.75" PointY="29.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.ScheduledReportLookup" Width="1.5" PointX="34.75" PointY="32.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.ShapeFileIconConfiguration" Width="1.5" PointX="5.25" PointY="24.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.ShapeFiles" Width="1.5" PointX="7.5" PointY="15" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.SiteCoordinates" Width="1.5" PointX="5.25" PointY="74.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.SiteLeakStatusHistory" Width="1.5" PointX="35.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.SiteLeakThresholdHistory" Width="1.5" PointX="18.75" PointY="35.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.SiteLoggerUserActions" Width="1.5" PointX="5.25" PointY="37.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.sitephotos" Width="1.5" PointX="20.75" PointY="35.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.sites" Width="1.5" PointX="3" PointY="49" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.SMSFailures" Width="1.5" PointX="5.25" PointY="65.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.smsjobtable" Width="1.5" PointX="26.75" PointY="35.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.smsrequesttable" Width="1.5" PointX="28.75" PointY="35.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.softwarelookup" Width="1.5" PointX="30.75" PointY="35.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.SoundVelocityLookup" Width="1.5" PointX="32.75" PointY="35.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.statuspegasus" Width="1.5" PointX="34.75" PointY="35.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.steptestcredits" Width="1.5" PointX="36.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.steptesthistory" Width="1.5" PointX="36.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.SystemNotification" Width="1.5" PointX="6" PointY="32.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.timepegasus" Width="1.5" PointX="36.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.TMAOptions" Width="1.5" PointX="36.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.torancounts" Width="1.5" PointX="36.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.unitslookup" Width="1.5" PointX="8" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.user_device" Width="1.5" PointX="5.25" PointY="59.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.UserChannelChartTypes" Width="1.5" PointX="5.25" PointY="71.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.UserNotificationAcknowledgement" Width="1.5" PointX="8.25" PointY="67.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.userpasswords" Width="1.5" PointX="5.25" PointY="107.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.users" Width="1.5" PointX="3" PointY="61.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.UserUnitLookup" Width="1.5" PointX="10.25" PointY="38.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.witsendpoints" Width="1.5" PointX="36.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.witssitedetails" Width="1.5" PointX="36.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.WorkOrderLeakConfAssociation" Width="1.5" PointX="36.75" PointY="28.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.WWAlarmSettingsTable" Width="1.5" PointX="36.75" PointY="31.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.Measurements" Width="1.5" PointX="36.75" PointY="34.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.Survey" Width="1.5" PointX="38.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.ApplicationLookup" Width="1.5" PointX="38.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.MaintenanceInstallationReportStatus" Width="1.5" PointX="38.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.MaintenanceInstallationType" Width="1.5" PointX="38.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.MaintenanceJobStatusComment" Width="1.5" PointX="38.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.NGFileSequence" Width="1.5" PointX="38.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.Predictive" Width="1.5" PointX="16.75" PointY="38.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.Predictive_AlarmCount" Width="1.5" PointX="38.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.Predictive_Audit" Width="1.5" PointX="22.75" PointY="38.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.PredictiveAlarmSetting" Width="1.5" PointX="38.75" PointY="23.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.tempchannels" Width="1.5" PointX="24.75" PointY="38.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.tempsiteList" Width="1.5" PointX="26.75" PointY="38.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="hwmdbModel.C__MigrationLogCurrent" Width="1.5" PointX="38.75" PointY="27.75" IsExpanded="true" />
+        <AssociationConnector Association="hwmdbModel.FK__AccountLe__Accou__503BEA1C" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK__AccountLe__Radiu__51300E55" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK_AccountLeakOptions_Accounts" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK__ShapeFile__Accou__57DD0BE4" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK_AlarmForwarding_Accounts" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK_CorrelationAccountMeta_Accounts" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK_CorrelationPath_Accounts" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK_FleetReportOptions_Accounts" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK_ShapeFiles_Accounts" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK_SiteLoggerUserActions_Accounts" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK_SiteLoggerUserActions_UserAccount" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK_AlarmForwarding_Sites" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK_LookupTables_Channels" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK_CorrelationAccountMeta_LoggerRecordings" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK__Correlati__RecID__540C7B00" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK__Correlati__RecID__55009F39" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK_DataPoints_Sites" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK_DatFiles_loggers" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK_FirmwareUpdates_Loggers" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK_GDIDFL_ImportFile" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK_InstallationReport_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK_leakconfirmation_PipeSize" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK_LeakConfirmation_Sites" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.fk_user" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK_LeakConfirmationAssociation_Loggers" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK_LeakConfirmationAssociation_Sites" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK_LeakDetectionOptions_Sites" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK_LoggerAccessTechnology_Loggers" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK_LoggerAccessTechnology_Sites" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK_LoggerCommandHistory_loggers" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK_LoggerFilterConfiguration_Logger" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK_LoggerLevelAndSpread_loggers" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK_LoggerLevelAndSpread_sites" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK_LoggerMeterReadings_Sites" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK_SiteLoggerUserActions_Loggers" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK_sites_loggers" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK_Maintenance_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK_MaintenanceReportsServerStatus_MaintenanceReportsServerStatus" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK_NGSiteVisitStockItems_NGMReference" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK_NGSiteVisitStockItems_StockCode" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK_RecentSites_Sites" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK_RecentSites_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK__ShapeFile__Shape__5BAD9CC8" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK_SiteCoordinates_Site" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK_SiteLoggerUserActions_Sites" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK_SiteLoggerUserActions_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK_SMSFailures_users" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK__UserNotif__Syste__4C6B5938" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK__UserUnitL__UnitL__6442E2C9" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK_user_device_users" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK_UserChannelChartTypes_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK__UserNotif__UserI__4D5F7D71" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK_UserPasswords_users" ManuallyRouted="false" />
+        <AssociationConnector Association="hwmdbModel.FK__UserUnitL__UserI__634EBE90" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
