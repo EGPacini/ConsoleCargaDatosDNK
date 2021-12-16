@@ -48,6 +48,8 @@ namespace ConsoleCargaDatosDNK
                         break;
                 }
             }
+
+            TicketReader();
         }
 
         public static void CommsHistory()
@@ -492,7 +494,7 @@ namespace ConsoleCargaDatosDNK
         {
             IWebDriver wd = new FirefoxDriver(@"C:\Users\DNK Water\Desktop\operadriver_win64");
             wd.Navigate().GoToUrl("https://www.dnk.support/scp/login.php");
-
+            Console.WriteLine("The page is being scraped...");
             var username = wd.FindElement(By.Name("userid"));
             Assert.That(username.Displayed, Is.True);
             username.SendKeys("jbarrios");
@@ -511,7 +513,7 @@ namespace ConsoleCargaDatosDNK
 
             AutoItX.Send("{DOWN}");
             AutoItX.Send("{ENTER}");
-
+            Console.WriteLine("Tickets successfully downloaded.");
             wd.Close();
         }
         public static void TicketReader()
@@ -524,17 +526,20 @@ namespace ConsoleCargaDatosDNK
             LocalHWMEntities localdb2 = new LocalHWMEntities();
             TechnicalServiceEntities dbst = new TechnicalServiceEntities();
 
-            
             var file = "C:\\Users\\DNK Water\\Downloads\\Abiertos Tickets - " + DownloadDate + ".csv";
-            var config = new CsvConfiguration(CultureInfo.GetCultureInfo("es_CL")) {  Delimiter = ";"  };
+            var config = new CsvConfiguration(CultureInfo.GetCultureInfo("es_CL")) { Delimiter = ";" };
+            Console.WriteLine("Thread sleeping to ensure file is ready...");
             Thread.Sleep(5000);
-
+            
             using (var reader = new StreamReader(file))
             {
                 using (var csvReader = new CsvReader(reader, config))
                 {
                     csvReader.Context.RegisterClassMap<TicketClassMap>();
                     var records = csvReader.GetRecords<Tickets>().ToList();
+                    int added = 0;
+                    int reviewed = 0;
+                    int history = 0;
 
                     foreach (var i in records)
                     {
@@ -550,7 +555,7 @@ namespace ConsoleCargaDatosDNK
                         var tipoEvento = i.tipoEvento;
 
                         Console.WriteLine("Reading Existing Ticket: {0}, Creation Date: {1}, Last Updated: {2}, Current Status: {3}", ticketNumber, createDate, lastUpdated, currentStatus);
-
+                        reviewed++;
                         var query = (from sm in db.Tickets where sm.ticketNumber.ToString() == ticketNumber.ToString() select sm).FirstOrDefault();
                       
                         if (query == null)
@@ -570,6 +575,7 @@ namespace ConsoleCargaDatosDNK
                             db.Tickets.Add(t);
                             Console.WriteLine("New Ticket Added: Number: {0}, Creation Date: {1}, Last Updated: {2}, Current Status: {3}",
                                                             t.ticketNumber, t.createDate, t.lastUpdated, t.currentStatus);
+                            added++;
                         }
                         else
                         {
@@ -591,11 +597,18 @@ namespace ConsoleCargaDatosDNK
                                 db.SaveChanges();
                                 Console.WriteLine("New Ticket History Added: Number: {0}, Creation Date: {1}, Last Updated: {2}, Current Status: {3}",
                                                                         nt.ticketNumber, nt.createDate, nt.lastUpdated, nt.currentStatus);
+                                history++;
                             }
                         }                      
                     }
+
                     db.SaveChanges();
-                    Console.ReadLine();
+
+                    Console.WriteLine("----------------------------");
+                    Console.WriteLine("Tickets reviewed:     {0}  |", reviewed);
+                    Console.WriteLine("Tickets added:        {0}    |", added);
+                    Console.WriteLine("Ticket history added: {0}    |", history);
+                    Console.WriteLine("----------------------------");
                 }
             }
         }
