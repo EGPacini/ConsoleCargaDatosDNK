@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.OleDb;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -9,10 +12,13 @@ using System.Threading.Tasks;
 using AutoIt;
 using ConsoleCargaDatosDNK.Classes;
 using ConsoleCargaDatosDNK.Modelos;
+using CsvHelper;
+using CsvHelper.Configuration;
 using Microsoft.VisualBasic.FileIO;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace ConsoleCargaDatosDNK
 {
@@ -22,7 +28,7 @@ namespace ConsoleCargaDatosDNK
         {
             var arg = args.FirstOrDefault();
 
-            TicketReader();
+            Ticketreader2();
 
             //switch (arg)
             //{
@@ -246,7 +252,7 @@ namespace ConsoleCargaDatosDNK
             LocalHWMEntities localdb2 = new LocalHWMEntities();
             TechnicalServiceEntities dbst = new TechnicalServiceEntities();
 
-            DateTime oldate3 = DateTime.Now.AddDays(-2); 
+            DateTime oldate3 = DateTime.Now.AddDays(-2);
 
             var query = (from s in localdb2.sites
                          join l in localdb2.loggers
@@ -396,8 +402,10 @@ namespace ConsoleCargaDatosDNK
             LocalHWMEntities localdb2 = new LocalHWMEntities();
             TechnicalServiceEntities dbst = new TechnicalServiceEntities();
 
-            var query = (from s in localdb2.sites join l in localdb2.loggers on s.LoggerID equals l.ID
-                         join a in localdb2.accounts on s.OwnerAccount equals a.ID where a.ID == 5 || a.ID == 6 || a.ID == 10
+            var query = (from s in localdb2.sites
+                         join l in localdb2.loggers on s.LoggerID equals l.ID
+                         join a in localdb2.accounts on s.OwnerAccount equals a.ID
+                         where a.ID == 5 || a.ID == 6 || a.ID == 10
                          select new { l.LoggerSMSNumber, s.SiteID }).ToList();
 
             Parallel.For(0, query.Count, new ParallelOptions { MaxDegreeOfParallelism = 20 }, i =>
@@ -457,7 +465,6 @@ namespace ConsoleCargaDatosDNK
             Thread.Sleep(9000);
 
             AutoItX.Send("{DOWN}");
-            Thread.Sleep(2000);
             AutoItX.Send("{ENTER}");
 
             wd.Close();
@@ -466,36 +473,103 @@ namespace ConsoleCargaDatosDNK
         public static void TicketReader()
         {
             TicketDownloader();
-            List<String[]> fileContent = new List<string[]>();
+
+            ContratoMantenimientoEntities db = new ContratoMantenimientoEntities();
+            LocalHWMEntities localdb2 = new LocalHWMEntities();
+            TechnicalServiceEntities dbst = new TechnicalServiceEntities();
 
             DateTime Hoy = DateTime.Today;
             String fechahoy = Hoy.ToString("yyyy-MM-dd").Replace("-", string.Empty);
             var file = "C:\\Users\\DNK Water\\Downloads\\Abiertos Tickets - " + fechahoy + ".csv";
-            //file = Path.ChangeExtension(file, ".xlsx");
+            var Opt = Type.Missing;
 
-            using (FileStream reader = File.OpenRead(file))
-            using(TextFieldParser parser = new TextFieldParser(reader))
+            var config = new CsvConfiguration(CultureInfo.GetCultureInfo("es_MX"))
             {
-                parser.Delimiters = new[] { ";" };
-                parser.HasFieldsEnclosedInQuotes = false;
-                while (!parser.EndOfData)
+                Delimiter = ";"
+            };
+
+            using (var reader = new StreamReader(file))
+            {
+                using (var csvReader = new CsvReader(reader, config))
                 {
-                    string[] line = parser.ReadFields();
-                    for(int i = 0; i < 10; i++)
-                    {
 
-                    }
+                    csvReader.Context.RegisterClassMap<TicketClassMap>();
                     
-                    fileContent.Add(line);
+                    var records = csvReader.GetRecords<Tickets>().ToList();
 
-                    foreach(var i in line)
+                    foreach (var i in records)
                     {
-                        Console.WriteLine(i);
+                        var ticketNumber = i.ticketNumber;
+                        var createDate = i.createDate;
+                        var siteIDDatagate = i.siteIDDatagate;
+                        var currentStatus = i.currentStatus;
+                        var teamAssigned = i.teamAssigned;
+                        var closedDateDG = i.closedDateDG;
+                        var lastUpdated = i.lastUpdated;
+                        var SLAPlan = i.SLAPlan;
+                        var Overdue = i.Overdue;
+                        var tipoEvento = i.tipoEvento;
+
+                        Console.WriteLine("Reading Ticket: {0}, Creation Date: {1}, Last Updated: {2}, Current Status: {3}", ticketNumber, createDate, lastUpdated, currentStatus);
+
+                        var query = (from sm in db.Tickets
+                                     where sm.ticketNumber.ToString() == ticketNumber.ToString()
+                                     select sm).FirstOrDefault();
+                      
+                        if (query == null)
+                        {
+                            Tickets t = new Tickets();
+
+                            t.ticketNumber = Convert.ToInt32(ticketNumber);
+                            t.createDate = Convert.ToDateTime(createDate);
+                            t.siteIDDatagate = siteIDDatagate.ToString();
+                            t.currentStatus = currentStatus.ToString();
+                            t.teamAssigned = teamAssigned.ToString();
+                            if (t.closedDateDG is DBNull)
+                            {
+                                Convert.IsDBNull(t.closedDateDG = Convert.ToDateTime(closedDateDG));
+                            }
+                            t.lastUpdated = Convert.ToDateTime(lastUpdated);
+                            t.SLAPlan = SLAPlan.ToString();
+                            t.Overdue = Overdue.ToString();
+                            t.tipoEvento = tipoEvento.ToString();
+
+                            db.Tickets.Add(t);
+                            Console.WriteLine("New Ticket: {0}, Creation Date: {1}, Last Updated: {2}, Current Status: {3}", t.ticketNumber, t.createDate, t.lastUpdated, t.currentStatus);
+                        }
+                        else
+                        {
+                            var itemDate = Convert.ToDateTime(query.lastUpdated);
+                            itemDate = itemDate.AddSeconds(-itemDate.Second);
+
+                            if (itemDate.ToString() != lastUpdated.ToString() || currentStatus.ToString() != query.currentStatus.ToString())
+                            {
+                                Tickets nt = new Tickets();
+                                nt.ticketNumber = query.ticketNumber;
+                                nt.createDate = query.createDate;
+                                nt.siteIDDatagate = query.siteIDDatagate;
+                                nt.currentStatus = currentStatus.ToString();
+                                nt.teamAssigned = query.teamAssigned;
+                                if (nt.closedDateDG is DBNull)
+                                {
+                                    Convert.IsDBNull(nt.closedDateDG = Convert.ToDateTime(closedDateDG));
+                                }
+
+                                nt.lastUpdated = Convert.ToDateTime(lastUpdated);
+                                nt.SLAPlan = query.SLAPlan;
+                                nt.Overdue = query.Overdue;
+                                nt.tipoEvento = query.tipoEvento;
+                                db.Tickets.Add(nt);
+                                db.SaveChanges();
+                                Console.WriteLine("New Ticket History: Number: {0}, Creation Date: {1}, Last Updated: {2}, Current Status: {3}",
+                                                                     nt.ticketNumber, nt.createDate, nt.lastUpdated, nt.currentStatus);
+                            }
+                        }
+                        db.SaveChanges();
                     }
-                    
+                    Console.ReadLine();
                 }
-                Console.ReadLine();
             }
-        }       
+        }
     }
 }
