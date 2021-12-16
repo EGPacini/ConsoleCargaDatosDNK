@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Data.OleDb;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -14,11 +12,9 @@ using ConsoleCargaDatosDNK.Classes;
 using ConsoleCargaDatosDNK.Modelos;
 using CsvHelper;
 using CsvHelper.Configuration;
-using Microsoft.VisualBasic.FileIO;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
-using Excel = Microsoft.Office.Interop.Excel;
 
 namespace ConsoleCargaDatosDNK
 {
@@ -26,28 +22,32 @@ namespace ConsoleCargaDatosDNK
     {
         static void Main(string[] args)
         {
-            var arg = args.FirstOrDefault();
 
-            Ticketreader2();
+            foreach(var t in args)
+            {
+                switch (t)
+                {
+                    case "Comms":
+                        CommsHistory();
+                        break;
 
-            //switch (arg)
-            //{
-            //    case "Comms":
-            //        CommsHistory();
-            //        break;
+                    case "ST":
+                        ServicioTecnico();
+                        break;
 
-            //    case "ST":
-            //        ServicioTecnico();
-            //        break;
+                    case "Hidraulics":
+                        DatosHidraulics();
+                        break;
 
-            //    case "Hidraulics":
-            //        DatosHidraulics();
-            //        break;
+                    case "Instrumentacion":
+                        DatosIntrumentacion();
+                        break;
 
-            //    case "Instrumentacion":
-            //        DatosIntrumentacion();
-            //        break;
-            //}
+                    case "Tickets":
+                        TicketReader();
+                        break;
+                }
+            }
         }
 
         public static void CommsHistory()
@@ -252,8 +252,8 @@ namespace ConsoleCargaDatosDNK
             LocalHWMEntities localdb2 = new LocalHWMEntities();
             TechnicalServiceEntities dbst = new TechnicalServiceEntities();
 
-            DateTime oldate3 = DateTime.Now.AddDays(-2);
-
+            string oldate2 = "2021-11-10 16:00:00.000";
+            DateTime oldate3 = Convert.ToDateTime(oldate2);
             var query = (from s in localdb2.sites
                          join l in localdb2.loggers
                           on s.LoggerID equals l.ID
@@ -262,25 +262,25 @@ namespace ConsoleCargaDatosDNK
                          where a.ID == 5 || a.ID == 6 || a.ID == 10
                          select new { l.LoggerSMSNumber, s.ID, s.SiteID }).ToList();
 
-            var helper = (from bhd in db.BehaviorHidraulic
+            ContratoMantenimientoEntities dbaux3 = new ContratoMantenimientoEntities();
+            var helper = (from bhd in dbaux3.BehaviorHidraulic
                           where bhd.datetime >= oldate3
-                          select bhd).ToList();
+                          select bhd).FirstOrDefault();
 
-            var prevDate = helper.Max(x => x.datetime);
-            Console.WriteLine(helper.Count());
             int counter = 0;
-            Parallel.For(0, query.Count, new ParallelOptions { MaxDegreeOfParallelism = 20 }, i =>
+            Parallel.For(0, query.Count, new ParallelOptions { MaxDegreeOfParallelism = 30 },
+               i =>
                {
                    counter++;
                    int newId = query[i].ID;
                    string newsiteID = query[i].SiteID;
-                   Debug.Write(
+                   Console.Write(
                        "-------------------\n\n" +
                        "Ahora trabajando en el site numero " + counter + "\n" +
                        "Query ID: " + query[i].ID + "\n" +
                        "Query SiteID: " + newsiteID + "\n\n" +
                        "--------------------\n\n\n");
-                   if (helper.Count != 0)
+                   if (helper != null)
                    {
                        try
                        {
@@ -293,52 +293,107 @@ namespace ConsoleCargaDatosDNK
 
                            DateTime auxNewestSiteDate = Convert.ToDateTime(newestSiteDate);
 
-                           DateTime newDateSite = auxNewestSiteDate.AddMinutes(15);
+                           DateTime newDateSite = auxNewestSiteDate.AddMinutes(2);
 
-                           var olddate = DateTime.Now.AddDays(-1);
-                           var today = DateTime.Now;
-                           int[] start2 = { auxNewestSiteDate.Year, auxNewestSiteDate.Month, auxNewestSiteDate.Day, auxNewestSiteDate.Hour, auxNewestSiteDate.Minute };
-                           int[] end2 = { today.Year, today.Month, today.Day, today.Hour, today.Minute };
-                           var data = DataGetter.GetDataFromAPI(newId, "custom", null, start2, end2, DateTime.Now);
-                           Console.WriteLine("La ultima fecha encontrada del site {0} es {1} la fecha por la cual se buscara nuevos registros es: {2}", newsiteID, auxNewestSiteDate, newDateSite);
-                           if (data.Count() > 0)
+                           double diff = (DateTime.Today - newDateSite).TotalDays;
+
+                           Debug.WriteLine("La ultima fecha encontrada del site {0} es {1} la fecha por la cual se buscara nuevos registros es: {2}", newsiteID, auxNewestSiteDate, newDateSite);
+                           Debug.WriteLine(diff);
+                           if (diff > 365)
                            {
-                               Console.WriteLine("El site {0} tiene {1} registros", newsiteID, data.Count());
-                               foreach (var g in data)
+                               Debug.WriteLine("Se ejecutara con fecha default");
+
+                               DateTime defaultDate = DateTime.Now.AddDays(-365);
+                               var olddate = DateTime.Now.AddDays(-1);
+                               var today = DateTime.Now;
+                               int[] start2 = { defaultDate.Year, defaultDate.Month, defaultDate.Day, defaultDate.Hour, defaultDate.Minute };
+                               int[] end2 = { today.Year, today.Month, today.Day, today.Hour, today.Minute };
+                               var data = DataGetter.GetDataFromAPI(newId, "custom", null, start2, end2, DateTime.Now);
+
+                               Console.WriteLine("La ultima fecha encontrada del site {0} es {1} la fecha por la cual se buscara nuevos registros es: {2}", newsiteID, auxNewestSiteDate, newDateSite);
+                               if (data.Count() > 0)
                                {
-                                   foreach (var t in g.Item2)
+                                   Console.WriteLine("El site {0} tiene {1} registros", newsiteID, data.Count());
+                                   foreach (var g in data)
                                    {
-                                       try
+                                       foreach (var t in g.Item2)
                                        {
-                                           BehaviorHidraulic bhd = new BehaviorHidraulic
+                                           try
                                            {
-                                               channelnum = Convert.ToInt32(g.Item1) + 1,
-                                               siteIDDatagate = newsiteID,
-                                               channeltype = g.Item3,
-                                               datetime = t.DataTime,
-                                               value = t.value
-                                           };
-                                           ContratoMantenimientoEntities dbAux3 = new ContratoMantenimientoEntities();
-                                           dbAux3.BehaviorHidraulic.Add(bhd);
-                                           dbAux3.SaveChanges();
-                                       }
-                                       catch (Exception err)
-                                       {
-                                           Console.WriteLine("Se ha producido un error en el siteIddGate {0}", newsiteID);
-                                           Console.WriteLine(err);
+                                               BehaviorHidraulic bhd = new BehaviorHidraulic
+                                               {
+                                                   channelnum = Convert.ToInt32(g.Item1) + 1,
+                                                   siteIDDatagate = newsiteID,
+                                                   channeltype = g.Item3,
+                                                   datetime = t.DataTime,
+                                                   value = t.value
+                                               };
+                                               ContratoMantenimientoEntities dbAux3 = new ContratoMantenimientoEntities();
+                                               dbAux3.BehaviorHidraulic.Add(bhd);
+                                               dbAux3.SaveChanges();
+                                           }
+                                           catch (Exception err)
+                                           {
+                                               Console.WriteLine("Se ha producido un error en el siteIddGate {0}", newsiteID);
+                                               Console.WriteLine(err);
+                                           }
                                        }
                                    }
+                               }
+                               else
+                               {
+                                   Console.WriteLine("El site {0} no contiene nuevos registros ", newsiteID);
                                }
                            }
                            else
                            {
-                               Console.WriteLine("El site {0} no contiene nuevos registros ", newsiteID);
+                               Debug.WriteLine("Se ejecutara con ultima fecha del site");
+                               var olddate = DateTime.Now.AddDays(-1);
+                               var today = DateTime.Now;
+                               int[] start2 = { newDateSite.Year, newDateSite.Month, newDateSite.Day, newDateSite.Hour, newDateSite.Minute };
+                               int[] end2 = { today.Year, today.Month, today.Day, today.Hour, today.Minute };
+                               var data = DataGetter.GetDataFromAPI(newId, "custom", null, start2, end2, DateTime.Now);
+
+                               Console.WriteLine("La ultima fecha encontrada del site {0} es {1} la fecha por la cual se buscara nuevos registros es: {2}", newsiteID, auxNewestSiteDate, newDateSite);
+                               if (data.Count() > 0)
+                               {
+                                   Console.WriteLine("El site {0} tiene {1} registros", newsiteID, data.Count());
+                                   foreach (var g in data)
+                                   {
+                                       foreach (var t in g.Item2)
+                                       {
+                                           try
+                                           {
+                                               BehaviorHidraulic bhd = new BehaviorHidraulic
+                                               {
+                                                   channelnum = Convert.ToInt32(g.Item1) + 1,
+                                                   siteIDDatagate = newsiteID,
+                                                   channeltype = g.Item3,
+                                                   datetime = t.DataTime,
+                                                   value = t.value
+                                               };
+                                               ContratoMantenimientoEntities dbAux3 = new ContratoMantenimientoEntities();
+                                               dbAux3.BehaviorHidraulic.Add(bhd);
+                                               dbAux3.SaveChanges();
+                                           }
+                                           catch (Exception err)
+                                           {
+                                               Console.WriteLine("Se ha producido un error en el siteIddGate {0}", newsiteID);
+                                               Console.WriteLine(err);
+                                           }
+                                       }
+                                   }
+                               }
+                               else
+                               {
+                                   Console.WriteLine("El site {0} no contiene nuevos registros ", newsiteID);
+                               }
                            }
                        }
                        catch (Exception err)
                        {
-                           Console.WriteLine("Se ha producido un error en el site {0}", query[i].ID);
-                           Console.WriteLine(err);
+                           Debug.WriteLine("Se ha producido un error en el site {0}", query[i].ID);
+                           Debug.WriteLine(err);
                        }
                    }
                    else
@@ -346,20 +401,12 @@ namespace ConsoleCargaDatosDNK
                        try
                        {
                            ContratoMantenimientoEntities dbaux = new ContratoMantenimientoEntities();
-                           var siteHelper = (from bhd in dbaux.BehaviorHidraulic
-                                             where bhd.siteIDDatagate == newsiteID
-                                             select bhd).ToList();
-
-                           var newestSiteDate = siteHelper.Max(x => x.datetime);
-                           DateTime auxNewestSiteDate = Convert.ToDateTime(newestSiteDate);
-                           DateTime newDateSite = auxNewestSiteDate.AddMinutes(15);
+                           DateTime startingDate = DateTime.Now.AddDays(-365);
                            var olddate = DateTime.Now.AddDays(-1);
                            var today = DateTime.Now;
-                           int[] start2 = { auxNewestSiteDate.Year, auxNewestSiteDate.Month, auxNewestSiteDate.Day, auxNewestSiteDate.Hour, auxNewestSiteDate.Minute };
+                           int[] start2 = { startingDate.Year, startingDate.Month, startingDate.Day, startingDate.Hour, startingDate.Minute };
                            int[] end2 = { today.Year, today.Month, today.Day, today.Hour, today.Minute };
                            var data = DataGetter.GetDataFromAPI(newId, "custom", null, start2, end2, DateTime.Now);
-
-                           Console.WriteLine("La ultima fecha encontrada del site {0} es {1} la fecha por la cual se buscara nuevos registros es: {2}", newsiteID, auxNewestSiteDate, newDateSite);
 
                            foreach (var g in data)
                            {
@@ -385,7 +432,6 @@ namespace ConsoleCargaDatosDNK
                                        Console.WriteLine(err);
                                    }
                                }
-
                            }
                        }
                        catch (Exception err)
@@ -442,7 +488,6 @@ namespace ConsoleCargaDatosDNK
                 }
             });
         }
-
         public static void TicketDownloader()
         {
             IWebDriver wd = new FirefoxDriver(@"C:\Users\DNK Water\Desktop\operadriver_win64");
@@ -469,32 +514,26 @@ namespace ConsoleCargaDatosDNK
 
             wd.Close();
         }
-
         public static void TicketReader()
         {
             TicketDownloader();
+            DateTime Hoy = DateTime.Today;
+            String DownloadDate = Hoy.ToString("yyyy-MM-dd").Replace("-", string.Empty);
 
             ContratoMantenimientoEntities db = new ContratoMantenimientoEntities();
             LocalHWMEntities localdb2 = new LocalHWMEntities();
             TechnicalServiceEntities dbst = new TechnicalServiceEntities();
 
-            DateTime Hoy = DateTime.Today;
-            String fechahoy = Hoy.ToString("yyyy-MM-dd").Replace("-", string.Empty);
-            var file = "C:\\Users\\DNK Water\\Downloads\\Abiertos Tickets - " + fechahoy + ".csv";
-            var Opt = Type.Missing;
-
-            var config = new CsvConfiguration(CultureInfo.GetCultureInfo("es_MX"))
-            {
-                Delimiter = ";"
-            };
+            
+            var file = "C:\\Users\\DNK Water\\Downloads\\Abiertos Tickets - " + DownloadDate + ".csv";
+            var config = new CsvConfiguration(CultureInfo.GetCultureInfo("es_CL")) {  Delimiter = ";"  };
+            Thread.Sleep(5000);
 
             using (var reader = new StreamReader(file))
             {
                 using (var csvReader = new CsvReader(reader, config))
                 {
-
                     csvReader.Context.RegisterClassMap<TicketClassMap>();
-                    
                     var records = csvReader.GetRecords<Tickets>().ToList();
 
                     foreach (var i in records)
@@ -510,39 +549,31 @@ namespace ConsoleCargaDatosDNK
                         var Overdue = i.Overdue;
                         var tipoEvento = i.tipoEvento;
 
-                        Console.WriteLine("Reading Ticket: {0}, Creation Date: {1}, Last Updated: {2}, Current Status: {3}", ticketNumber, createDate, lastUpdated, currentStatus);
+                        Console.WriteLine("Reading Existing Ticket: {0}, Creation Date: {1}, Last Updated: {2}, Current Status: {3}", ticketNumber, createDate, lastUpdated, currentStatus);
 
-                        var query = (from sm in db.Tickets
-                                     where sm.ticketNumber.ToString() == ticketNumber.ToString()
-                                     select sm).FirstOrDefault();
+                        var query = (from sm in db.Tickets where sm.ticketNumber.ToString() == ticketNumber.ToString() select sm).FirstOrDefault();
                       
                         if (query == null)
                         {
                             Tickets t = new Tickets();
-
                             t.ticketNumber = Convert.ToInt32(ticketNumber);
                             t.createDate = Convert.ToDateTime(createDate);
                             t.siteIDDatagate = siteIDDatagate.ToString();
                             t.currentStatus = currentStatus.ToString();
                             t.teamAssigned = teamAssigned.ToString();
-                            if (t.closedDateDG is DBNull)
-                            {
-                                Convert.IsDBNull(t.closedDateDG = Convert.ToDateTime(closedDateDG));
-                            }
+                            if (t.closedDateDG is DBNull){ Convert.IsDBNull(t.closedDateDG = Convert.ToDateTime(closedDateDG)); }
                             t.lastUpdated = Convert.ToDateTime(lastUpdated);
                             t.SLAPlan = SLAPlan.ToString();
                             t.Overdue = Overdue.ToString();
                             t.tipoEvento = tipoEvento.ToString();
 
                             db.Tickets.Add(t);
-                            Console.WriteLine("New Ticket: {0}, Creation Date: {1}, Last Updated: {2}, Current Status: {3}", t.ticketNumber, t.createDate, t.lastUpdated, t.currentStatus);
+                            Console.WriteLine("New Ticket Added: Number: {0}, Creation Date: {1}, Last Updated: {2}, Current Status: {3}",
+                                                            t.ticketNumber, t.createDate, t.lastUpdated, t.currentStatus);
                         }
                         else
                         {
-                            var itemDate = Convert.ToDateTime(query.lastUpdated);
-                            itemDate = itemDate.AddSeconds(-itemDate.Second);
-
-                            if (itemDate.ToString() != lastUpdated.ToString() || currentStatus.ToString() != query.currentStatus.ToString())
+                            if (query.lastUpdated.ToString() != lastUpdated.ToString() || currentStatus.ToString() != query.currentStatus.ToString())
                             {
                                 Tickets nt = new Tickets();
                                 nt.ticketNumber = query.ticketNumber;
@@ -550,23 +581,20 @@ namespace ConsoleCargaDatosDNK
                                 nt.siteIDDatagate = query.siteIDDatagate;
                                 nt.currentStatus = currentStatus.ToString();
                                 nt.teamAssigned = query.teamAssigned;
-                                if (nt.closedDateDG is DBNull)
-                                {
-                                    Convert.IsDBNull(nt.closedDateDG = Convert.ToDateTime(closedDateDG));
-                                }
-
+                                if (nt.closedDateDG is DBNull) { Convert.IsDBNull(nt.closedDateDG = Convert.ToDateTime(closedDateDG)); }
                                 nt.lastUpdated = Convert.ToDateTime(lastUpdated);
                                 nt.SLAPlan = query.SLAPlan;
                                 nt.Overdue = query.Overdue;
                                 nt.tipoEvento = query.tipoEvento;
+
                                 db.Tickets.Add(nt);
                                 db.SaveChanges();
-                                Console.WriteLine("New Ticket History: Number: {0}, Creation Date: {1}, Last Updated: {2}, Current Status: {3}",
-                                                                     nt.ticketNumber, nt.createDate, nt.lastUpdated, nt.currentStatus);
+                                Console.WriteLine("New Ticket History Added: Number: {0}, Creation Date: {1}, Last Updated: {2}, Current Status: {3}",
+                                                                        nt.ticketNumber, nt.createDate, nt.lastUpdated, nt.currentStatus);
                             }
-                        }
-                        db.SaveChanges();
+                        }                      
                     }
+                    db.SaveChanges();
                     Console.ReadLine();
                 }
             }
