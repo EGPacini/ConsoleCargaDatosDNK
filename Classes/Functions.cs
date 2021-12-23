@@ -94,7 +94,7 @@ namespace ConsoleCargaDatosDNK.Classes
                             {
                                 DataPoints d = new DataPoints();
                                 DateTime dDate = new DateTime(1970, 1, 1, 0, 0, 0).AddMilliseconds(Convert.ToInt64(dc[0]));
-                                d.DataTime = dDate.AddMinutes(-15);
+                                d.DataTime = dDate;
                                 d.value = (float)dc[1];
 
                                 dataSet.Add(d);

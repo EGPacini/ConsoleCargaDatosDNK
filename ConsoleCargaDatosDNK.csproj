@@ -161,7 +161,7 @@
       <DependentUpon>LocalHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\BehaviorHidraulic.cs">
-      <DependentUpon>ContratoMantenimiento.tt</DependentUpon>
+      <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\BehaviorInstrumentation.cs">
       <DependentUpon>ContratoMantenimiento.tt</DependentUpon>
@@ -494,6 +494,21 @@
     </Compile>
     <Compile Include="Modelos\messages.cs">
       <DependentUpon>LocalHWM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Modelos\Model1.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Modelos\Model1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Modelos\Model1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
     <Compile Include="Modelos\networklookup.cs">
       <DependentUpon>LocalHWM.tt</DependentUpon>
@@ -901,6 +916,13 @@
     <None Include="Modelos\LocalHWM.edmx.diagram">
       <DependentUpon>LocalHWM.edmx</DependentUpon>
     </None>
+    <EntityDeploy Include="Modelos\Model1.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Modelos\Model1.edmx.diagram">
+      <DependentUpon>Model1.edmx</DependentUpon>
+    </None>
     <None Include="packages.config" />
     <EntityDeploy Include="Modelos\ServicioTecnico.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
@@ -930,6 +952,16 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>LocalHWM.edmx</DependentUpon>
       <LastGenOutput>LocalHWM.cs</LastGenOutput>
+    </Content>
+    <Content Include="Modelos\Model1.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Model1.edmx</DependentUpon>
+      <LastGenOutput>Model1.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Modelos\Model1.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Model1.edmx</DependentUpon>
+      <LastGenOutput>Model1.cs</LastGenOutput>
     </Content>
     <Content Include="Modelos\ServicioTecnico.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
