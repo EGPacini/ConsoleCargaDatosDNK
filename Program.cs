@@ -15,6 +15,7 @@ using CsvHelper.Configuration;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
+using MathNet.Numerics.Statistics;
 
 namespace ConsoleCargaDatosDNK
 {
@@ -453,73 +454,242 @@ namespace ConsoleCargaDatosDNK
             LocalHWMEntities localdb2 = new LocalHWMEntities();
             TechnicalServiceEntities dbst = new TechnicalServiceEntities();
 
-            DateTime Date = new DateTime(2021, 10, 10);
-            var start = "00:00:00";
-            var end = "23:59:59";
-            DateTime RangeStart = Date.Add(TimeSpan.Parse(start));
-            DateTime RangeEnd = Date.Add(TimeSpan.Parse(end));
+            var sitesquery = (from s in localdb2.sites
+                              join l in localdb2.loggers
+                              on s.LoggerID equals l.ID
+                              join a in localdb2.accounts
+                              on s.OwnerAccount equals a.ID
+                              where a.ID == 5 || a.ID == 6 || a.ID == 10
+                              select new { l.LoggerSMSNumber, s.SiteID, s.ID }).ToList();
 
-            Debug.WriteLine(RangeStart);
-            Debug.WriteLine(RangeEnd);
-
-            var RowRange = (from bh in db.BehaviorHidraulic 
-                            where bh.datetime > RangeStart
-                            && bh.datetime < RangeEnd
-                            select bh).ToList();
-            
-            foreach(var i in RowRange)
+            double Average(double a, double b)
             {
-                var Channel1 = (from bh in RowRange where bh.channelnum == 1 select new 
-                                {
-                                    Min = (from hid in RowRange where hid.siteIDDatagate == i.siteIDDatagate select hid.value).Min(),
-                                    Max = (from hid in RowRange where hid.siteIDDatagate == i.siteIDDatagate select hid.value).Max()
-                                });
+                return (a + b) / 2;
+            }
 
-                var Channel2 = (from bh in RowRange where bh.channelnum == 2 select new
-                                {
-                                    Min = (from hid in RowRange where hid.siteIDDatagate == i.siteIDDatagate select hid.value).Min(),
-                                    Max = (from hid in RowRange where hid.siteIDDatagate == i.siteIDDatagate select hid.value).Max()
-                                });
+            CultureInfo myCI = new CultureInfo("es-CL");
+            Calendar myCal = myCI.Calendar;
+            CalendarWeekRule myCWR = myCI.DateTimeFormat.CalendarWeekRule;
+            DayOfWeek myFirstDOW = myCI.DateTimeFormat.FirstDayOfWeek;
 
-                var Channel3 = (from bh in RowRange where bh.channelnum == 3 select new
-                                {
-                                    Min = (from hid in RowRange where hid.siteIDDatagate == i.siteIDDatagate select hid.value).Min(),
-                                    Max = (from hid in RowRange where hid.siteIDDatagate == i.siteIDDatagate select hid.value).Max()
-                                });
+            int c = 0;
 
+            foreach (var i in sitesquery)
+            {
+                c++;
+                var start = "00:00:00";
+                var end = "23:59:59";
 
-                var OutofRangeCH1 = (from bh in RowRange where bh.channelnum == 1 select new
-                                    {
-                                         Over = (from hid in RowRange where hid.siteIDDatagate == i.siteIDDatagate
-                                                 && hid.value > 100 select hid).ToList(),
+                DateTime Date = new DateTime(2021, 10, 10);
+                DateTime RangeStart = Date.Add(TimeSpan.Parse(start));
+                DateTime RangeEnd = Date.Add(TimeSpan.Parse(end));
 
-                                         Under = (from hid in RowRange where hid.siteIDDatagate == i.siteIDDatagate
-                                                 && hid.value > 100 select hid).ToList()
-                                    });
+                DateTime BiggerDateStart = new DateTime(2021, 10, 1);
+                DateTime BiggerStart = BiggerDateStart.Add(TimeSpan.Parse(start));
 
-                var OutofRangeCH2 = (from bh in RowRange where bh.channelnum == 2 select new
-                                    {
-                                         Over = (from hid in RowRange where hid.siteIDDatagate == i.siteIDDatagate
-                                                  && hid.value > 100 select hid).ToList(),
+                DateTime BiggerDateEnd = new DateTime(2021, 11, 30);
+                DateTime BiggerEnd = BiggerDateEnd.Add(TimeSpan.Parse(end));
 
-                                         Under = (from hid in RowRange where hid.siteIDDatagate == i.siteIDDatagate
-                                                  && hid.value > 100 select hid).ToList()
-                                    });
+                var SiteID = i.SiteID;
 
-                var OutofRangeCH3 = (from bh in RowRange where bh.channelnum == 3 select new
-                                    {
-                                         Over = (from hid in RowRange where hid.siteIDDatagate == i.siteIDDatagate
-                                                  && hid.value > 100 select hid).ToList(),
+                var RowRange = (from bh in db.BehaviorHidraulic
+                                where bh.siteIDDatagate == SiteID
+                                && bh.datetime > RangeStart
+                                && bh.datetime < RangeEnd
+                                select bh).ToList();
 
-                                         Under = (from hid in RowRange where hid.siteIDDatagate == i.siteIDDatagate
-                                                  && hid.value > 100 select hid).ToList()
-                                    });
+                var BiggerRange = (from bh in db.BehaviorHidraulic
+                                   where bh.siteIDDatagate == SiteID
+                                   && bh.datetime > BiggerStart
+                                   && bh.datetime < BiggerEnd
+                                   select bh).ToList();
 
+                var CH1 = RowRange.FindAll(x => x.channelnum == 1).ToList();
+                var CH2 = RowRange.FindAll(x => x.channelnum == 2).ToList();
+                var CH3 = RowRange.FindAll(x => x.channelnum == 3).ToList();
 
+                var valuesListCh1 = CH1.ConvertAll(rows => rows.value);
+                double median = valuesListCh1.Median();
 
+                var valuesListCh2 = RowRange.ConvertAll(rows => rows.value);
+                var valuesListCh3 = RowRange.ConvertAll(rows => rows.value);
 
+                var OutOfRangeCH1 = RowRange.FindAll(x => x.value > 100 && x.value < 0).ToList();
+                var OutOfRangeCH2 = RowRange.FindAll(x => x.value > 100 && x.value < 0).ToList();
+                var OutOfRangeCH3 = RowRange.FindAll(x => x.value > 100 && x.value < 0).ToList();
+
+                Debug.WriteLine("Site en evaluación: " + SiteID + " -- " + c);
+                Debug.WriteLine("");
+
+                if (CH1 == null)
+                {
+                    var MaxValueCH1 = 0;
+                    var MinValueCH1 = 0;
+
+                    var MatchesMinCH1 = (from k in RowRange where k.value == MinValueCH1 select k).ToList();
+                    var MatchesMaxCH1 = (from k in RowRange where k.value == MaxValueCH1 select k).ToList();
+                    var MeasuresCount = (from ct in RowRange where ct.channelnum == 1 select ct).Count();
+                    var MaxValMatchesInRangeCH1 = (from k in BiggerRange where k.channelnum == 1 && k.value == MaxValueCH1 select k).Count();
+                    var MinValMatchesInRangeCH1 = (from k in BiggerRange where k.channelnum == 1 && k.value == MinValueCH1 select k).Count();
+                    var FirstMinDateCH1 = (from ct in MatchesMinCH1 select ct.datetime).Min();
+                    var FirstMaxDateCH1 = (from ct in MatchesMaxCH1 select ct.datetime).Min();
+                    int ca = (myCal.GetWeekOfYear(Date.AddDays(-7), myCWR, myFirstDOW));
+
+                    Debug.WriteLine("CHANNEL 1");                   
+                    Debug.WriteLine("Semana del año: {0}", ca);
+                    Debug.WriteLine("Rango: {0}, {1}", RangeStart, RangeEnd);
+                    Debug.WriteLine("MIN: {0} ,  MAX: {1}", MinValueCH1, MaxValueCH1);
+                    Debug.WriteLine("Average: {0}", Average(Convert.ToDouble(MaxValueCH1), Convert.ToDouble(MinValueCH1)));
+                    Debug.WriteLine("La primera fecha con el valor MIN: {0}", FirstMinDateCH1);
+                    Debug.WriteLine("La primera fecha con el valor MAX: {0}", FirstMaxDateCH1);
+                    Debug.WriteLine("Cantidad de mediciones dentro del rango: {0}", MeasuresCount);
+                    Debug.WriteLine("Rango de 2 meses: {0}, {1}", BiggerStart, BiggerEnd);
+                    Debug.WriteLine("MIN Count: {0}, MAX Count: {1}", MinValMatchesInRangeCH1, MaxValMatchesInRangeCH1);
+                    Debug.WriteLine("-------------------------------------------------------------------");
+                }
+                else
+                {
+                    var MaxValueCH1 = CH1.Max(x => x.value);
+                    var MinValueCH1 = CH1.Min(x => x.value);
+
+                    var MatchesMinCH1 = (from k in RowRange where k.value == MinValueCH1 select k).ToList();
+                    var MatchesMaxCH1 = (from k in RowRange where k.value == MaxValueCH1 select k).ToList();
+                    var MeasuresCount = (from ct in RowRange where ct.channelnum == 1 select ct).Count();
+                    var MaxValMatchesInRangeCH1 = (from k in BiggerRange where k.channelnum == 1 && k.value == MaxValueCH1 select k).Count();
+                    var MinValMatchesInRangeCH1 = (from k in BiggerRange where k.channelnum == 1 && k.value == MinValueCH1 select k).Count();
+                    var FirstMinDateCH1 = (from ct in MatchesMinCH1 select ct.datetime).Min();
+                    var FirstMaxDateCH1 = (from ct in MatchesMaxCH1 select ct.datetime).Min();
+                    int ca = (myCal.GetWeekOfYear(Date.AddDays(-7), myCWR, myFirstDOW));
+
+                    Debug.WriteLine("CHANNEL 1");
+                    Debug.WriteLine("Semana del año: {0}", ca);
+                    Debug.WriteLine("Rango: {0}, {1}", RangeStart, RangeEnd);
+                    Debug.WriteLine("MIN: {0} ,  MAX: {1}", MinValueCH1, MaxValueCH1);
+                    Debug.WriteLine("Average: {0}", Average(Convert.ToDouble(MaxValueCH1), Convert.ToDouble(MinValueCH1)));
+                    Debug.WriteLine("La primera fecha con el valor MIN: {0}", FirstMinDateCH1);
+                    Debug.WriteLine("La primera fecha con el valor MAX: {0}", FirstMaxDateCH1);
+                    Debug.WriteLine("Cantidad de mediciones dentro del rango: {0}", MeasuresCount);
+                    Debug.WriteLine("Rango de 2 meses: {0}, {1}", BiggerStart, BiggerEnd);
+                    Debug.WriteLine("MIN Count: {0}, MAX Count: {1}", MinValMatchesInRangeCH1, MaxValMatchesInRangeCH1);
+                    Debug.WriteLine("-------------------------------------------------------------------");
+                }
+
+                if (CH2 == null)
+                {
+                    var MaxValueCH2 = 0;
+                    var MinValueCH2 = 0;
+
+                    var MatchesMinCH2 = (from k in RowRange where k.value == MinValueCH2 select k).ToList();
+                    var MatchesMaxCH2 = (from k in RowRange where k.value == MaxValueCH2 select k).ToList();
+                    var MeasuresCount = (from ct in RowRange where ct.channelnum == 2 select ct).Count();
+                    var MaxValMatchesInRangeCH2 = (from k in BiggerRange where k.channelnum == 2 && k.value == MaxValueCH2 select k).Count();
+                    var MinValMatchesInRangeCH2 = (from k in BiggerRange where k.channelnum == 2 && k.value == MinValueCH2 select k).Count();
+                    var FirstMinDateCH2 = (from ct in MatchesMinCH2 select ct.datetime).Min();
+                    var FirstMaxDateCH2 = (from ct in MatchesMaxCH2 select ct.datetime).Min();
+                    int ca = (myCal.GetWeekOfYear(Date.AddDays(-7), myCWR, myFirstDOW));
+
+                    Debug.WriteLine("CHANNEL 2");
+                    Debug.WriteLine("Semana del año: {0}", ca);
+                    Debug.WriteLine("Rango: {0}, {1}", RangeStart, RangeEnd);
+                    Debug.WriteLine("MIN: {0} ,  MAX: {1}", MinValueCH2, MaxValueCH2);
+                    Debug.WriteLine("Average: {0}", Average(Convert.ToDouble(MaxValueCH2), Convert.ToDouble(MinValueCH2)));
+                    Debug.WriteLine("La primera fecha con el valor MIN: {0}", FirstMinDateCH2);
+                    Debug.WriteLine("La primera fecha con el valor MAX: {0}", FirstMaxDateCH2);
+                    Debug.WriteLine("Cantidad de mediciones dentro del rango: {0}", MeasuresCount);
+                    Debug.WriteLine("Rango de 2 meses: {0}, {1}", BiggerStart, BiggerEnd);
+                    Debug.WriteLine("MIN Count: {0}, MAX Count: {1}", MinValMatchesInRangeCH2, MaxValMatchesInRangeCH2);
+                    Debug.WriteLine("-------------------------------------------------------------------");
+
+                }
+                else
+                {
+                    var MaxValueCH2 = CH2.Max(x => x.value);
+                    var MinValueCH2 = CH2.Min(x => x.value);
+
+                    var MatchesMinCH2 = (from k in RowRange where k.value == MinValueCH2 select k).ToList();
+                    var MatchesMaxCH2 = (from k in RowRange where k.value == MaxValueCH2 select k).ToList();
+                    var MeasuresCount = (from ct in RowRange where ct.channelnum == 2 select ct).Count();
+                    var MaxValMatchesInRangeCH2 = (from k in BiggerRange where k.channelnum == 2 && k.value == MaxValueCH2 select k).Count();
+                    var MinValMatchesInRangeCH2 = (from k in BiggerRange where k.channelnum == 2 && k.value == MinValueCH2 select k).Count();
+                    var FirstMinDateCH2 = (from ct in MatchesMinCH2 select ct.datetime).Min();
+                    var FirstMaxDateCH2 = (from ct in MatchesMaxCH2 select ct.datetime).Min();
+                    int ca = (myCal.GetWeekOfYear(Date.AddDays(-7), myCWR, myFirstDOW));
+
+                    Debug.WriteLine("CHANNEL 2");
+                    Debug.WriteLine("Semana del año: {0}", ca);
+                    Debug.WriteLine("Rango: {0}, {1}", RangeStart, RangeEnd);
+                    Debug.WriteLine("MIN: {0} ,  MAX: {1}", MinValueCH2, MaxValueCH2);
+                    Debug.WriteLine("Average: {0}", Average(Convert.ToDouble(MaxValueCH2), Convert.ToDouble(MinValueCH2)));
+                    Debug.WriteLine("La primera fecha con el valor MIN: {0}", FirstMinDateCH2);
+                    Debug.WriteLine("La primera fecha con el valor MAX: {0}", FirstMaxDateCH2);
+                    Debug.WriteLine("Cantidad de mediciones dentro del rango: {0}", MeasuresCount);
+                    Debug.WriteLine("Rango de 2 meses: {0}, {1}", BiggerStart, BiggerEnd);
+                    Debug.WriteLine("MIN Count: {0}, MAX Count: {1}", MinValMatchesInRangeCH2, MaxValMatchesInRangeCH2);
+                    Debug.WriteLine("-------------------------------------------------------------------");
+                }
+
+                if (CH3 == null)
+                {
+                    var MaxValueCH3 = 0;
+                    var MinValueCH3 = 0;
+
+                    var MatchesMinCH3 = (from k in RowRange where k.value == MinValueCH3 select k).ToList();
+                    var MatchesMaxCH3 = (from k in RowRange where k.value == MaxValueCH3 select k).ToList();
+                    var MeasuresCount = (from ct in RowRange where ct.channelnum == 3 select ct).Count();
+                    var MaxValMatchesInRangeCH3 = (from k in BiggerRange where k.channelnum == 3 && k.value == MaxValueCH3 select k).Count();
+                    var MinValMatchesInRangeCH3 = (from k in BiggerRange where k.channelnum == 3 && k.value == MinValueCH3 select k).Count();
+                    var FirstMinDateCH3 = (from ct in MatchesMinCH3 select ct.datetime).Min();
+                    var FirstMaxDateCH3 = (from ct in MatchesMaxCH3 select ct.datetime).Min();
+                    int ca = (myCal.GetWeekOfYear(Date.AddDays(-7), myCWR, myFirstDOW));
+
+                    Debug.WriteLine("CHANNEL 3");
+                    Debug.WriteLine("Rango: {0}, {1}", RangeStart, RangeEnd);
+                    Debug.WriteLine("Semana del año: {0}", ca);
+                    Debug.WriteLine("MIN: {0} ,  MAX: {1}", MinValueCH3, MaxValueCH3);
+                    Debug.WriteLine("Average: {0}", Average(Convert.ToDouble(MaxValueCH3), Convert.ToDouble(MinValueCH3)));
+                    Debug.WriteLine("La primera fecha con el valor MIN: {0}", FirstMinDateCH3);
+                    Debug.WriteLine("La primera fecha con el valor MAX: {0}", FirstMaxDateCH3);
+                    Debug.WriteLine("Cantidad de mediciones dentro del rango: {0}", MeasuresCount);
+
+                    Debug.WriteLine("Rango de 2 meses: {0}, {1}", BiggerStart, BiggerEnd);
+                    Debug.WriteLine("MIN Count: {0}, MAX Count: {1}", MinValMatchesInRangeCH3, MaxValMatchesInRangeCH3);
+                    Debug.WriteLine("-------------------------------------------------------------------");
+                    Debug.WriteLine("");
+                    Debug.WriteLine("");
+
+                }
+                else
+                {
+                    var MaxValueCH3 = CH1.Max(x => x.value);
+                    var MinValueCH3 = CH1.Min(x => x.value);
+
+                    var MatchesMinCH3 = (from k in RowRange where k.value == MinValueCH3 select k).ToList();
+                    var MatchesMaxCH3 = (from k in RowRange where k.value == MaxValueCH3 select k).ToList();
+                    var MeasuresCount = (from ct in RowRange where ct.channelnum == 3 select ct).Count();
+                    var MaxValMatchesInRangeCH3 = (from k in BiggerRange where k.channelnum == 3 && k.value == MaxValueCH3 select k).Count();
+                    var MinValMatchesInRangeCH3 = (from k in BiggerRange where k.channelnum == 3 && k.value == MinValueCH3 select k).Count();
+                    var FirstMinDateCH3 = (from ct in MatchesMinCH3 select ct.datetime).Min();
+                    var FirstMaxDateCH3 = (from ct in MatchesMaxCH3 select ct.datetime).Min();
+                    int ca = (myCal.GetWeekOfYear(Date.AddDays(-7), myCWR, myFirstDOW));
+
+                    Debug.WriteLine("CHANNEL 3");
+                    Debug.WriteLine("Rango: {0}, {1}", RangeStart, RangeEnd);
+                    Debug.WriteLine("Semana del año: {0}", ca);
+                    Debug.WriteLine("MIN: {0} ,  MAX: {1}", MinValueCH3, MaxValueCH3);
+                    Debug.WriteLine("Average: {0}", Average(Convert.ToDouble(MaxValueCH3), Convert.ToDouble(MinValueCH3)));
+                    Debug.WriteLine("La primera fecha con el valor MIN: {0}", FirstMinDateCH3);
+                    Debug.WriteLine("La primera fecha con el valor MAX: {0}", FirstMaxDateCH3);
+                    Debug.WriteLine("Cantidad de mediciones dentro del rango: {0}", MeasuresCount);
+
+                    Debug.WriteLine("Rango de 2 meses: {0}, {1}", BiggerStart, BiggerEnd);
+                    Debug.WriteLine("MIN Count: {0}, MAX Count: {1}", MinValMatchesInRangeCH3, MaxValMatchesInRangeCH3);
+                    Debug.WriteLine("-------------------------------------------------------------------");
+                    Debug.WriteLine("");
+                    Debug.WriteLine("");
+                }
             }
         }
+
         public static void ImportarDatosHidraulics()
         {
             ContratoMantenimientoEntities db = new ContratoMantenimientoEntities();
@@ -844,6 +1014,7 @@ namespace ConsoleCargaDatosDNK
                         Console.WriteLine("Reading Existing Ticket: {0}, Creation Date: {1}, Last Updated: {2}, Current Status: {3}", ticketNumber, createDate, lastUpdated, currentStatus);
                         var query = (from sm in db.Tickets 
                                      where sm.ticketNumber.ToString() == ticketNumber.ToString()
+                                     && sm.createDate.ToString() == createDate.ToString()
                                      select sm).FirstOrDefault();
                         reviewed++;
 
@@ -882,7 +1053,6 @@ namespace ConsoleCargaDatosDNK
                                 nt.tipoEvento = query.tipoEvento;
 
                                 db.Tickets.Add(nt);
-                                db.SaveChanges();
                                 Console.WriteLine("New Ticket History Added: Number: {0}, Creation Date: {1}, Last Updated: {2}, Current Status: {3}", nt.ticketNumber, nt.createDate, nt.lastUpdated, nt.currentStatus);
                                 history++;
                             }
