@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ContratoMantenimientoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ContratoMantenimientoModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="BehaviorHidraulic">
           <Key>
             <PropertyRef Name="id" />
@@ -36,6 +36,25 @@
           <Property Name="Fecha" Type="datetime" />
           <Property Name="NumeroComms" Type="int" />
           <Property Name="SMSNumber" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Indicator">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SiteID" Type="varchar" MaxLength="50" />
+          <Property Name="Month" Type="varchar" MaxLength="30" />
+          <Property Name="Week" Type="int" />
+          <Property Name="Channel" Type="varchar" MaxLength="5" />
+          <Property Name="Minimum" Type="float" />
+          <Property Name="Maximum" Type="float" />
+          <Property Name="Average" Type="float" />
+          <Property Name="Median" Type="float" />
+          <Property Name="FirstMinDate" Type="datetime" />
+          <Property Name="FirstMaxDate" Type="datetime" />
+          <Property Name="MeasuresCount" Type="int" />
+          <Property Name="MinCount" Type="int" />
+          <Property Name="MaxCount" Type="int" />
         </EntityType>
         <EntityType Name="InsumosST">
           <Key>
@@ -164,6 +183,7 @@
           <EntitySet Name="BehaviorHidraulic" EntityType="Self.BehaviorHidraulic" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BehaviorInstrumentation" EntityType="Self.BehaviorInstrumentation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HistorialComunicaciones" EntityType="Self.HistorialComunicaciones" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Indicator" EntityType="Self.Indicator" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InsumosST" EntityType="Self.InsumosST" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SitesMtto" EntityType="Self.SitesMtto" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
@@ -172,8 +192,7 @@
           <EntitySet Name="TechnicalServices" EntityType="Self.TechnicalServices" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tickets" EntityType="Self.Tickets" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ContratoMantenimientoModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -342,7 +361,27 @@
             <Parameter Name="new_diagramname" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_upgraddiagrams" />
+          <EntitySet Name="Indicator" EntityType="ContratoMantenimientoModel.Indicator" />
         </EntityContainer>
+        <EntityType Name="Indicator">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SiteID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Month" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Week" Type="Int32" />
+          <Property Name="Channel" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="Minimum" Type="Double" />
+          <Property Name="Maximum" Type="Double" />
+          <Property Name="Average" Type="Double" />
+          <Property Name="Median" Type="Double" />
+          <Property Name="FirstMinDate" Type="DateTime" Precision="3" />
+          <Property Name="FirstMaxDate" Type="DateTime" Precision="3" />
+          <Property Name="MeasuresCount" Type="Int32" />
+          <Property Name="MinCount" Type="Int32" />
+          <Property Name="MaxCount" Type="Int32" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -490,6 +529,26 @@
           <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="ContratoMantenimientoModel.Store.sp_helpdiagrams" />
           <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="ContratoMantenimientoModel.Store.sp_renamediagram" />
           <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="ContratoMantenimientoModel.Store.sp_upgraddiagrams" />
+          <EntitySetMapping Name="Indicator">
+            <EntityTypeMapping TypeName="ContratoMantenimientoModel.Indicator">
+              <MappingFragment StoreEntitySet="Indicator">
+                <ScalarProperty Name="MaxCount" ColumnName="MaxCount" />
+                <ScalarProperty Name="MinCount" ColumnName="MinCount" />
+                <ScalarProperty Name="MeasuresCount" ColumnName="MeasuresCount" />
+                <ScalarProperty Name="FirstMaxDate" ColumnName="FirstMaxDate" />
+                <ScalarProperty Name="FirstMinDate" ColumnName="FirstMinDate" />
+                <ScalarProperty Name="Median" ColumnName="Median" />
+                <ScalarProperty Name="Average" ColumnName="Average" />
+                <ScalarProperty Name="Maximum" ColumnName="Maximum" />
+                <ScalarProperty Name="Minimum" ColumnName="Minimum" />
+                <ScalarProperty Name="Channel" ColumnName="Channel" />
+                <ScalarProperty Name="Week" ColumnName="Week" />
+                <ScalarProperty Name="Month" ColumnName="Month" />
+                <ScalarProperty Name="SiteID" ColumnName="SiteID" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

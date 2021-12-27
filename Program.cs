@@ -16,6 +16,8 @@ using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 using MathNet.Numerics.Statistics;
+using System.Collections.Generic;
+using static ConsoleCargaDatosDNK.Modelos.Tickets;
 
 namespace ConsoleCargaDatosDNK
 {
@@ -474,15 +476,21 @@ namespace ConsoleCargaDatosDNK
 
             int c = 0;
 
+            var records = new List<Indicator>();
+
+            var sublist = sitesquery.Take(15);
+
             foreach (var i in sitesquery)
             {
                 c++;
                 var start = "00:00:00";
                 var end = "23:59:59";
 
-                DateTime Date = new DateTime(2021, 10, 10);
+                DateTime Date = new DateTime(2021, 10, 1);
                 DateTime RangeStart = Date.Add(TimeSpan.Parse(start));
-                DateTime RangeEnd = Date.Add(TimeSpan.Parse(end));
+
+                DateTime DateEnd = new DateTime(2021, 11, 30);
+                DateTime RangeEnd = DateEnd.Add(TimeSpan.Parse(end));
 
                 DateTime BiggerDateStart = new DateTime(2021, 10, 1);
                 DateTime BiggerStart = BiggerDateStart.Add(TimeSpan.Parse(start));
@@ -494,35 +502,51 @@ namespace ConsoleCargaDatosDNK
 
                 var RowRange = (from bh in db.BehaviorHidraulic
                                 where bh.siteIDDatagate == SiteID
-                                && bh.datetime > RangeStart
-                                && bh.datetime < RangeEnd
+                                && bh.datetime >= RangeStart
+                                && bh.datetime <= RangeEnd
                                 select bh).ToList();
 
                 var BiggerRange = (from bh in db.BehaviorHidraulic
                                    where bh.siteIDDatagate == SiteID
-                                   && bh.datetime > BiggerStart
-                                   && bh.datetime < BiggerEnd
+                                   && bh.datetime >= BiggerStart
+                                   && bh.datetime <= BiggerEnd
                                    select bh).ToList();
 
+                //Resultados de canales en rango
                 var CH1 = RowRange.FindAll(x => x.channelnum == 1).ToList();
                 var CH2 = RowRange.FindAll(x => x.channelnum == 2).ToList();
                 var CH3 = RowRange.FindAll(x => x.channelnum == 3).ToList();
 
-                var valuesListCh1 = CH1.ConvertAll(rows => rows.value);
-                double median = valuesListCh1.Median();
+                //Resultados Ordenados Ascending
+                var valuesListCh1 = CH1.ConvertAll(x => x.value).OrderBy(x => x.Value);
+                var valuesListCh2 = CH2.ConvertAll(x => x.value).OrderBy(x => x.Value);
+                var valuesListCh3 = CH3.ConvertAll(x => x.value).OrderBy(x => x.Value);
 
-                var valuesListCh2 = RowRange.ConvertAll(rows => rows.value);
-                var valuesListCh3 = RowRange.ConvertAll(rows => rows.value);
+                //Mediana de resultados en el rango de fecha
+                double MedianCH1 = valuesListCh1.Median();
+                var realMedianCH1 = string.Format("{0:F2}", MedianCH1);
 
-                var OutOfRangeCH1 = RowRange.FindAll(x => x.value > 100 && x.value < 0).ToList();
-                var OutOfRangeCH2 = RowRange.FindAll(x => x.value > 100 && x.value < 0).ToList();
-                var OutOfRangeCH3 = RowRange.FindAll(x => x.value > 100 && x.value < 0).ToList();
+                double MedianCH2 = valuesListCh2.Median();
+                var realMedianCH2 = string.Format("{0:F2}", MedianCH2);
+
+                double MedianCH3 = valuesListCh3.Median();
+                var realMedianCH3 = string.Format("{0:F2}", MedianCH3);
+
+                //Resultados que superan los rangos validos
+                var OverRangeCH1 = CH1.FindAll(x => x.value > 100).Count();
+                var UnderRangeCH1 = CH1.FindAll(x => x.value < 0).Count();
+
+                var OverRangeCH2 = CH2.FindAll(x => x.value > 100).Count();
+                var UnderRangeCH2 = CH2.FindAll(x => x.value < 0).Count();
+
+                var OverRangeCH3 = CH3.FindAll(x => x.value > 100).Count();
+                var UnderRangeCH3 = CH3.FindAll(x => x.value < 0).Count();
 
                 Debug.WriteLine("Site en evaluación: " + SiteID + " -- " + c);
                 Debug.WriteLine("");
 
                 if (CH1 == null)
-                {
+                {                 
                     var MaxValueCH1 = 0;
                     var MinValueCH1 = 0;
 
@@ -534,44 +558,104 @@ namespace ConsoleCargaDatosDNK
                     var FirstMinDateCH1 = (from ct in MatchesMinCH1 select ct.datetime).Min();
                     var FirstMaxDateCH1 = (from ct in MatchesMaxCH1 select ct.datetime).Min();
                     int ca = (myCal.GetWeekOfYear(Date.AddDays(-7), myCWR, myFirstDOW));
+                    var month = Convert.ToDateTime(FirstMinDateCH1).ToString("MMMM").ToUpper();
 
                     Debug.WriteLine("CHANNEL 1");                   
                     Debug.WriteLine("Semana del año: {0}", ca);
+                    Debug.WriteLine("Mes del Año: {0}", month);
                     Debug.WriteLine("Rango: {0}, {1}", RangeStart, RangeEnd);
                     Debug.WriteLine("MIN: {0} ,  MAX: {1}", MinValueCH1, MaxValueCH1);
                     Debug.WriteLine("Average: {0}", Average(Convert.ToDouble(MaxValueCH1), Convert.ToDouble(MinValueCH1)));
+                    Debug.WriteLine("Mediana: {0}", MedianCH1);
                     Debug.WriteLine("La primera fecha con el valor MIN: {0}", FirstMinDateCH1);
                     Debug.WriteLine("La primera fecha con el valor MAX: {0}", FirstMaxDateCH1);
                     Debug.WriteLine("Cantidad de mediciones dentro del rango: {0}", MeasuresCount);
                     Debug.WriteLine("Rango de 2 meses: {0}, {1}", BiggerStart, BiggerEnd);
                     Debug.WriteLine("MIN Count: {0}, MAX Count: {1}", MinValMatchesInRangeCH1, MaxValMatchesInRangeCH1);
+                    Debug.WriteLine("Cantidad de valores mayores a 100: {0}", OverRangeCH1);
+                    Debug.WriteLine("Cantidad de valores menores a 0: {0}", UnderRangeCH1);
                     Debug.WriteLine("-------------------------------------------------------------------");
+
+                    Indicator ind = new Indicator
+                    {
+                        SiteID = SiteID,
+                        Week = ca,
+                        Month = month,
+                        Channel = "1",
+                        Minimum = Convert.ToDouble(MinValueCH1),
+                        Maximum = Convert.ToDouble(MaxValueCH1),
+                        Average = Average(Convert.ToDouble(MaxValueCH1), Convert.ToDouble(MinValueCH1)),
+                        Median = MedianCH1,
+                        FirstMinDate = Convert.ToDateTime(FirstMinDateCH1),
+                        FirstMaxDate = Convert.ToDateTime(FirstMaxDateCH1),
+                        MeasuresCount = MeasuresCount,
+                        MinCount = MinValMatchesInRangeCH1,
+                        MaxCount = MaxValMatchesInRangeCH1
+                    };
+
+                    records.Add(ind);
+
                 }
                 else
                 {
                     var MaxValueCH1 = CH1.Max(x => x.value);
+                    string RoundedMaxValueCH1 = string.Format("{0:F2}", MaxValueCH1);
                     var MinValueCH1 = CH1.Min(x => x.value);
-
+                    string RoundedMinValueCH1 = string.Format("{0:F2}", MinValueCH1);
+                    var avg = Average(Convert.ToDouble(MaxValueCH1), Convert.ToDouble(MinValueCH1));
+                    var realAverage = string.Format("{0:F2}", avg);
                     var MatchesMinCH1 = (from k in RowRange where k.value == MinValueCH1 select k).ToList();
                     var MatchesMaxCH1 = (from k in RowRange where k.value == MaxValueCH1 select k).ToList();
                     var MeasuresCount = (from ct in RowRange where ct.channelnum == 1 select ct).Count();
                     var MaxValMatchesInRangeCH1 = (from k in BiggerRange where k.channelnum == 1 && k.value == MaxValueCH1 select k).Count();
                     var MinValMatchesInRangeCH1 = (from k in BiggerRange where k.channelnum == 1 && k.value == MinValueCH1 select k).Count();
                     var FirstMinDateCH1 = (from ct in MatchesMinCH1 select ct.datetime).Min();
+                    DateTime ctm = Convert.ToDateTime(FirstMinDateCH1);
+                    DateTime newdate = new DateTime(2021, 10, 1);
+                    int ca = 0;
+                    if (FirstMinDateCH1 != null)
+                    {                  
+                        newdate = new DateTime(ctm.Year, ctm.Month, ctm.Day);
+                        ca = (myCal.GetWeekOfYear(newdate.AddDays(-7), myCWR, myFirstDOW));
+                    }
+
                     var FirstMaxDateCH1 = (from ct in MatchesMaxCH1 select ct.datetime).Min();
-                    int ca = (myCal.GetWeekOfYear(Date.AddDays(-7), myCWR, myFirstDOW));
+                    var month = Convert.ToDateTime(FirstMinDateCH1).ToString("MMMM").ToUpper();
 
                     Debug.WriteLine("CHANNEL 1");
                     Debug.WriteLine("Semana del año: {0}", ca);
+                    Debug.WriteLine("Mes del Año: " + month);
                     Debug.WriteLine("Rango: {0}, {1}", RangeStart, RangeEnd);
-                    Debug.WriteLine("MIN: {0} ,  MAX: {1}", MinValueCH1, MaxValueCH1);
-                    Debug.WriteLine("Average: {0}", Average(Convert.ToDouble(MaxValueCH1), Convert.ToDouble(MinValueCH1)));
+                    Debug.WriteLine("MIN: {0} ,  MAX: {1}", RoundedMinValueCH1, RoundedMaxValueCH1);
+                    Debug.WriteLine("Average: " + realAverage);
+                    Debug.WriteLine("Mediana: " +  realMedianCH1);
                     Debug.WriteLine("La primera fecha con el valor MIN: {0}", FirstMinDateCH1);
                     Debug.WriteLine("La primera fecha con el valor MAX: {0}", FirstMaxDateCH1);
                     Debug.WriteLine("Cantidad de mediciones dentro del rango: {0}", MeasuresCount);
                     Debug.WriteLine("Rango de 2 meses: {0}, {1}", BiggerStart, BiggerEnd);
                     Debug.WriteLine("MIN Count: {0}, MAX Count: {1}", MinValMatchesInRangeCH1, MaxValMatchesInRangeCH1);
+                    Debug.WriteLine("Cantidad de valores mayores a 100: {0}", OverRangeCH1);
+                    Debug.WriteLine("Cantidad de valores menores a 0: {0}", UnderRangeCH1);
                     Debug.WriteLine("-------------------------------------------------------------------");
+
+                    Indicator ind = new Indicator
+                    {
+                        SiteID = SiteID,
+                        Week = ca,
+                        Month = month,
+                        Channel = "1",
+                        Minimum = Convert.ToDouble(MinValueCH1),
+                        Maximum = Convert.ToDouble(MaxValueCH1),
+                        Average = Average(Convert.ToDouble(MaxValueCH1), Convert.ToDouble(MinValueCH1)),
+                        Median = MedianCH1,
+                        FirstMinDate = Convert.ToDateTime(FirstMinDateCH1),
+                        FirstMaxDate = Convert.ToDateTime(FirstMaxDateCH1),
+                        MeasuresCount = MeasuresCount,
+                        MinCount = MinValMatchesInRangeCH1,
+                        MaxCount = MaxValMatchesInRangeCH1
+                    };
+
+                    records.Add(ind);
                 }
 
                 if (CH2 == null)
@@ -587,25 +671,51 @@ namespace ConsoleCargaDatosDNK
                     var FirstMinDateCH2 = (from ct in MatchesMinCH2 select ct.datetime).Min();
                     var FirstMaxDateCH2 = (from ct in MatchesMaxCH2 select ct.datetime).Min();
                     int ca = (myCal.GetWeekOfYear(Date.AddDays(-7), myCWR, myFirstDOW));
+                    var month = Convert.ToDateTime(FirstMinDateCH2).ToString("MMMM").ToUpper();
 
                     Debug.WriteLine("CHANNEL 2");
                     Debug.WriteLine("Semana del año: {0}", ca);
+                    Debug.WriteLine("Mes del Año: {0}", month);
                     Debug.WriteLine("Rango: {0}, {1}", RangeStart, RangeEnd);
                     Debug.WriteLine("MIN: {0} ,  MAX: {1}", MinValueCH2, MaxValueCH2);
                     Debug.WriteLine("Average: {0}", Average(Convert.ToDouble(MaxValueCH2), Convert.ToDouble(MinValueCH2)));
+                    Debug.WriteLine("Mediana: {0}", MedianCH2);
                     Debug.WriteLine("La primera fecha con el valor MIN: {0}", FirstMinDateCH2);
                     Debug.WriteLine("La primera fecha con el valor MAX: {0}", FirstMaxDateCH2);
                     Debug.WriteLine("Cantidad de mediciones dentro del rango: {0}", MeasuresCount);
                     Debug.WriteLine("Rango de 2 meses: {0}, {1}", BiggerStart, BiggerEnd);
                     Debug.WriteLine("MIN Count: {0}, MAX Count: {1}", MinValMatchesInRangeCH2, MaxValMatchesInRangeCH2);
+                    Debug.WriteLine("Cantidad de valores mayores a 100: {0}", OverRangeCH2);
+                    Debug.WriteLine("Cantidad de valores menores a 0: {0}", UnderRangeCH2);
                     Debug.WriteLine("-------------------------------------------------------------------");
 
+                    Indicator ind = new Indicator
+                    {
+                        SiteID = SiteID,
+                        Week = ca,
+                        Month = month,
+                        Channel = "2",
+                        Minimum = Convert.ToDouble(MinValueCH2),
+                        Maximum = Convert.ToDouble(MaxValueCH2),
+                        Average = Average(Convert.ToDouble(MaxValueCH2), Convert.ToDouble(MinValueCH2)),
+                        Median = MedianCH2,
+                        FirstMinDate = Convert.ToDateTime(FirstMinDateCH2),
+                        FirstMaxDate = Convert.ToDateTime(FirstMaxDateCH2),
+                        MeasuresCount = MeasuresCount,
+                        MinCount = MinValMatchesInRangeCH2,
+                        MaxCount = MaxValMatchesInRangeCH2
+                    };
+
+                    records.Add(ind);
                 }
                 else
                 {
                     var MaxValueCH2 = CH2.Max(x => x.value);
+                    string RoundedMaxValueCH2 = string.Format("{0:F2}", MaxValueCH2);
                     var MinValueCH2 = CH2.Min(x => x.value);
-
+                    string RoundedMinValueCH2 = string.Format("{0:F2}", MinValueCH2);
+                    var avg = Average(Convert.ToDouble(MaxValueCH2), Convert.ToDouble(MinValueCH2));
+                    var realAverage = string.Format("{0:F2}", avg);
                     var MatchesMinCH2 = (from k in RowRange where k.value == MinValueCH2 select k).ToList();
                     var MatchesMaxCH2 = (from k in RowRange where k.value == MaxValueCH2 select k).ToList();
                     var MeasuresCount = (from ct in RowRange where ct.channelnum == 2 select ct).Count();
@@ -613,19 +723,50 @@ namespace ConsoleCargaDatosDNK
                     var MinValMatchesInRangeCH2 = (from k in BiggerRange where k.channelnum == 2 && k.value == MinValueCH2 select k).Count();
                     var FirstMinDateCH2 = (from ct in MatchesMinCH2 select ct.datetime).Min();
                     var FirstMaxDateCH2 = (from ct in MatchesMaxCH2 select ct.datetime).Min();
-                    int ca = (myCal.GetWeekOfYear(Date.AddDays(-7), myCWR, myFirstDOW));
+                    DateTime ctm = Convert.ToDateTime(FirstMinDateCH2);
+                    DateTime newdate = new DateTime(2021, 10, 1);
+                    int ca = 0;
+                    if (FirstMinDateCH2 != null)
+                    {
+                        newdate = new DateTime(ctm.Year, ctm.Month, ctm.Day);
+                        ca = (myCal.GetWeekOfYear(newdate.AddDays(-7), myCWR, myFirstDOW));
+                    }
+                    var month = Convert.ToDateTime(FirstMinDateCH2).ToString("MMMM").ToUpper();
 
                     Debug.WriteLine("CHANNEL 2");
                     Debug.WriteLine("Semana del año: {0}", ca);
+                    Debug.WriteLine("Mes del Año: " + month);
                     Debug.WriteLine("Rango: {0}, {1}", RangeStart, RangeEnd);
-                    Debug.WriteLine("MIN: {0} ,  MAX: {1}", MinValueCH2, MaxValueCH2);
-                    Debug.WriteLine("Average: {0}", Average(Convert.ToDouble(MaxValueCH2), Convert.ToDouble(MinValueCH2)));
+                    Debug.WriteLine("MIN: {0} ,  MAX: {1}", RoundedMinValueCH2, RoundedMaxValueCH2);
+                    Debug.WriteLine("Average: " + realAverage);
+                    Debug.WriteLine("Mediana: " + realMedianCH2);
                     Debug.WriteLine("La primera fecha con el valor MIN: {0}", FirstMinDateCH2);
                     Debug.WriteLine("La primera fecha con el valor MAX: {0}", FirstMaxDateCH2);
                     Debug.WriteLine("Cantidad de mediciones dentro del rango: {0}", MeasuresCount);
                     Debug.WriteLine("Rango de 2 meses: {0}, {1}", BiggerStart, BiggerEnd);
                     Debug.WriteLine("MIN Count: {0}, MAX Count: {1}", MinValMatchesInRangeCH2, MaxValMatchesInRangeCH2);
+                    Debug.WriteLine("Cantidad de valores mayores a 100: {0}", OverRangeCH2);
+                    Debug.WriteLine("Cantidad de valores menores a 0: {0}", UnderRangeCH2);
                     Debug.WriteLine("-------------------------------------------------------------------");
+
+                    Indicator ind = new Indicator
+                    {
+                        SiteID = SiteID,
+                        Week = ca,
+                        Month = month,
+                        Channel = "2",
+                        Minimum = Convert.ToDouble(MinValueCH2),
+                        Maximum = Convert.ToDouble(MaxValueCH2),
+                        Average = Average(Convert.ToDouble(MaxValueCH2), Convert.ToDouble(MinValueCH2)),
+                        Median = MedianCH2,
+                        FirstMinDate = Convert.ToDateTime(FirstMinDateCH2),
+                        FirstMaxDate = Convert.ToDateTime(FirstMaxDateCH2),
+                        MeasuresCount = MeasuresCount,
+                        MinCount = MinValMatchesInRangeCH2,
+                        MaxCount = MaxValMatchesInRangeCH2
+                    };
+
+                    records.Add(ind);
                 }
 
                 if (CH3 == null)
@@ -641,28 +782,54 @@ namespace ConsoleCargaDatosDNK
                     var FirstMinDateCH3 = (from ct in MatchesMinCH3 select ct.datetime).Min();
                     var FirstMaxDateCH3 = (from ct in MatchesMaxCH3 select ct.datetime).Min();
                     int ca = (myCal.GetWeekOfYear(Date.AddDays(-7), myCWR, myFirstDOW));
+                    var month = Convert.ToDateTime(FirstMinDateCH3).ToString("MMMM").ToUpper();
 
                     Debug.WriteLine("CHANNEL 3");
                     Debug.WriteLine("Rango: {0}, {1}", RangeStart, RangeEnd);
                     Debug.WriteLine("Semana del año: {0}", ca);
+                    Debug.WriteLine("Mes del Año: {0}", month);
                     Debug.WriteLine("MIN: {0} ,  MAX: {1}", MinValueCH3, MaxValueCH3);
                     Debug.WriteLine("Average: {0}", Average(Convert.ToDouble(MaxValueCH3), Convert.ToDouble(MinValueCH3)));
+                    Debug.WriteLine("Mediana: {0}", MedianCH3);
                     Debug.WriteLine("La primera fecha con el valor MIN: {0}", FirstMinDateCH3);
                     Debug.WriteLine("La primera fecha con el valor MAX: {0}", FirstMaxDateCH3);
                     Debug.WriteLine("Cantidad de mediciones dentro del rango: {0}", MeasuresCount);
 
                     Debug.WriteLine("Rango de 2 meses: {0}, {1}", BiggerStart, BiggerEnd);
                     Debug.WriteLine("MIN Count: {0}, MAX Count: {1}", MinValMatchesInRangeCH3, MaxValMatchesInRangeCH3);
+                    Debug.WriteLine("Cantidad de valores mayores a 100: {0}", OverRangeCH3);
+                    Debug.WriteLine("Cantidad de valores menores a 0: {0}", UnderRangeCH3);
                     Debug.WriteLine("-------------------------------------------------------------------");
                     Debug.WriteLine("");
                     Debug.WriteLine("");
 
+                    Indicator ind = new Indicator
+                    {
+                        SiteID = SiteID,
+                        Week = ca,
+                        Month = month,
+                        Channel = "3",
+                        Minimum = Convert.ToDouble(MinValueCH3),
+                        Maximum = Convert.ToDouble(MaxValueCH3),
+                        Average = Average(Convert.ToDouble(MaxValueCH3), Convert.ToDouble(MinValueCH3)),
+                        Median = MedianCH3,
+                        FirstMinDate = Convert.ToDateTime(FirstMinDateCH3),
+                        FirstMaxDate = Convert.ToDateTime(FirstMaxDateCH3),
+                        MeasuresCount = MeasuresCount,
+                        MinCount = MinValMatchesInRangeCH3,
+                        MaxCount = MaxValMatchesInRangeCH3
+                    };
+
+                    records.Add(ind);
                 }
                 else
                 {
-                    var MaxValueCH3 = CH1.Max(x => x.value);
-                    var MinValueCH3 = CH1.Min(x => x.value);
-
+                    var MaxValueCH3 = CH3.Max(x => x.value);
+                    string RoundedMaxValueCH3 = string.Format("{0:F2}", MaxValueCH3);
+                    var MinValueCH3 = CH3.Min(x => x.value);
+                    string RoundedMinValueCH3 = string.Format("{0:F2}", MinValueCH3);
+                    var avg = Average(Convert.ToDouble(MaxValueCH3), Convert.ToDouble(MinValueCH3));
+                    var realAverage = string.Format("{0:F2}", avg);
                     var MatchesMinCH3 = (from k in RowRange where k.value == MinValueCH3 select k).ToList();
                     var MatchesMaxCH3 = (from k in RowRange where k.value == MaxValueCH3 select k).ToList();
                     var MeasuresCount = (from ct in RowRange where ct.channelnum == 3 select ct).Count();
@@ -670,24 +837,55 @@ namespace ConsoleCargaDatosDNK
                     var MinValMatchesInRangeCH3 = (from k in BiggerRange where k.channelnum == 3 && k.value == MinValueCH3 select k).Count();
                     var FirstMinDateCH3 = (from ct in MatchesMinCH3 select ct.datetime).Min();
                     var FirstMaxDateCH3 = (from ct in MatchesMaxCH3 select ct.datetime).Min();
-                    int ca = (myCal.GetWeekOfYear(Date.AddDays(-7), myCWR, myFirstDOW));
+                    DateTime ctm = Convert.ToDateTime(FirstMinDateCH3);
+                    DateTime newdate = new DateTime(2021, 10, 1);
+                    int ca = 0;
+                    if (FirstMinDateCH3 != null)
+                    {
+                        newdate = new DateTime(ctm.Year, ctm.Month, ctm.Day);
+                        ca = (myCal.GetWeekOfYear(newdate.AddDays(-7), myCWR, myFirstDOW));
+                    }
+                    var month = Convert.ToDateTime(FirstMinDateCH3).ToString("MMMM").ToUpper();
 
                     Debug.WriteLine("CHANNEL 3");
                     Debug.WriteLine("Rango: {0}, {1}", RangeStart, RangeEnd);
-                    Debug.WriteLine("Semana del año: {0}", ca);
-                    Debug.WriteLine("MIN: {0} ,  MAX: {1}", MinValueCH3, MaxValueCH3);
-                    Debug.WriteLine("Average: {0}", Average(Convert.ToDouble(MaxValueCH3), Convert.ToDouble(MinValueCH3)));
+                    Debug.WriteLine("Semana del año: " + ca);
+                    Debug.WriteLine("Mes del Año: " + month);
+                    Debug.WriteLine("MIN: {0} ,  MAX: {1}", RoundedMinValueCH3, RoundedMaxValueCH3);
+                    Debug.WriteLine("Average: " + realAverage);
+                    Debug.WriteLine("Mediana: " + realMedianCH3);
                     Debug.WriteLine("La primera fecha con el valor MIN: {0}", FirstMinDateCH3);
                     Debug.WriteLine("La primera fecha con el valor MAX: {0}", FirstMaxDateCH3);
                     Debug.WriteLine("Cantidad de mediciones dentro del rango: {0}", MeasuresCount);
 
                     Debug.WriteLine("Rango de 2 meses: {0}, {1}", BiggerStart, BiggerEnd);
                     Debug.WriteLine("MIN Count: {0}, MAX Count: {1}", MinValMatchesInRangeCH3, MaxValMatchesInRangeCH3);
+                    Debug.WriteLine("Cantidad de valores mayores a 100: {0}", OverRangeCH3);
+                    Debug.WriteLine("Cantidad de valores menores a 0: {0}", UnderRangeCH3);
                     Debug.WriteLine("-------------------------------------------------------------------");
                     Debug.WriteLine("");
                     Debug.WriteLine("");
-                }
-            }
+
+                    Indicator ind = new Indicator
+                    {
+                        SiteID = SiteID,
+                        Week = ca,
+                        Month = month,
+                        Channel = "3",
+                        Minimum = Convert.ToDouble(MinValueCH3),
+                        Maximum = Convert.ToDouble(MaxValueCH3),
+                        Average = Average(Convert.ToDouble(MaxValueCH3), Convert.ToDouble(MinValueCH3)),
+                        Median = MedianCH3,
+                        FirstMinDate = Convert.ToDateTime(FirstMinDateCH3),
+                        FirstMaxDate = Convert.ToDateTime(FirstMaxDateCH3),
+                        MeasuresCount = MeasuresCount,
+                        MinCount = MinValMatchesInRangeCH3,
+                        MaxCount = MaxValMatchesInRangeCH3
+                    };
+
+                    records.Add(ind);
+                }              
+            }           
         }
 
         public static void ImportarDatosHidraulics()

@@ -10,49 +10,38 @@
 namespace ConsoleCargaDatosDNK.Modelos
 {
     using CsvHelper.Configuration;
-    using CsvHelper.Configuration.Attributes;
     using System;
     using System.Collections.Generic;
     
     public partial class Tickets
     {
         public int id { get; set; }
-
         public Nullable<int> ticketNumber { get; set; }
- 
         public Nullable<System.DateTime> createDate { get; set; }
- 
         public string siteIDDatagate { get; set; }
-
         public string currentStatus { get; set; }
-
         public string teamAssigned { get; set; }
-
         public Nullable<System.DateTime> closedDateDG { get; set; }
-
         public Nullable<System.DateTime> lastUpdated { get; set; }
-
         public string SLAPlan { get; set; }
-
         public string Overdue { get; set; }
-
         public string tipoEvento { get; set; }
-    }
 
-    public class TicketClassMap : ClassMap<Tickets>
-    {
-        public TicketClassMap()
+        public class TicketClassMap : ClassMap<Tickets>
         {
-            Map(m => m.ticketNumber).Name("Ticket Number");
-            Map(m => m.createDate).Name("Date Created");
-            Map(m => m.siteIDDatagate).Name("Subject");
-            Map(m => m.currentStatus).Name("Current Status");
-            Map(m => m.teamAssigned).Name("Team Assigned");
-            Map(m => m.closedDateDG).Name("Closed Date");
-            Map(m => m.lastUpdated).Name("Last Updated");
-            Map(m => m.SLAPlan).Name("SLA Plan");
-            Map(m => m.Overdue).Name("Overdue");
-            Map(m => m.tipoEvento).Name("Tipo de Evento");
+            public TicketClassMap()
+            {
+                Map(t => t.ticketNumber).Name("Ticket Number");
+                Map(t => t.createDate).Name("Date Created");
+                Map(t => t.siteIDDatagate).Name("Subject");
+                Map(t => t.currentStatus).Name("Current Status");
+                Map(t => t.teamAssigned).Name("Team Assigned");
+                Map(t => t.closedDateDG).Name("Closed Date");
+                Map(t => t.lastUpdated).Name("Last Updated");
+                Map(t => t.SLAPlan).Name("SLA Plan");
+                Map(t => t.Overdue).Name("Overdue");
+                Map(t => t.tipoEvento).Name("Tipo de Evento");
+            }
         }
     }
 }

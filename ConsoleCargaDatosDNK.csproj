@@ -164,7 +164,7 @@
       <DependentUpon>LocalHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\BehaviorHidraulic.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>ContratoMantenimiento.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\BehaviorInstrumentation.cs">
       <DependentUpon>ContratoMantenimiento.tt</DependentUpon>
@@ -374,6 +374,9 @@
     </Compile>
     <Compile Include="Modelos\hubs.cs">
       <DependentUpon>LocalHWM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Modelos\Indicator.cs">
+      <DependentUpon>ContratoMantenimiento.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\InstallationReport.cs">
       <DependentUpon>LocalHWM.tt</DependentUpon>
