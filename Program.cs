@@ -591,8 +591,8 @@ namespace ConsoleCargaDatosDNK
                     Indicator ind = new Indicator
                     {
                         SiteID = SiteID,
-                        Week = ca,
-                        Month = month,
+                        Week = null,
+                        Month = "",
                         Channel = "1",
                         Minimum = Convert.ToDouble(MinValueCH1),
                         Maximum = Convert.ToDouble(MaxValueCH1),
@@ -709,8 +709,8 @@ namespace ConsoleCargaDatosDNK
                     Indicator ind = new Indicator
                     {
                         SiteID = SiteID,
-                        Week = ca,
-                        Month = month,
+                        Week = null,
+                        Month = "",
                         Channel = "2",
                         Minimum = Convert.ToDouble(MinValueCH2),
                         Maximum = Convert.ToDouble(MaxValueCH2),
@@ -828,8 +828,8 @@ namespace ConsoleCargaDatosDNK
                     Indicator ind = new Indicator
                     {
                         SiteID = SiteID,
-                        Week = ca,
-                        Month = month,
+                        Week = null,
+                        Month = "",
                         Channel = "3",
                         Minimum = Convert.ToDouble(MinValueCH3),
                         Maximum = Convert.ToDouble(MaxValueCH3),
