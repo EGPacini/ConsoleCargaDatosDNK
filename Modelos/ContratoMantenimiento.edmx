@@ -55,6 +55,8 @@
           <Property Name="MeasuresCount" Type="int" />
           <Property Name="MinCount" Type="int" />
           <Property Name="MaxCount" Type="int" />
+          <Property Name="OORMeasures" Type="int" />
+          <Property Name="Device" Type="varchar" MaxLength="15" />
         </EntityType>
         <EntityType Name="InsumosST">
           <Key>
@@ -381,6 +383,8 @@
           <Property Name="MeasuresCount" Type="Int32" />
           <Property Name="MinCount" Type="Int32" />
           <Property Name="MaxCount" Type="Int32" />
+          <Property Name="OORMeasures" Type="Int32" />
+          <Property Name="Device" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -532,6 +536,8 @@
           <EntitySetMapping Name="Indicator">
             <EntityTypeMapping TypeName="ContratoMantenimientoModel.Indicator">
               <MappingFragment StoreEntitySet="Indicator">
+                <ScalarProperty Name="Device" ColumnName="Device" />
+                <ScalarProperty Name="OORMeasures" ColumnName="OORMeasures" />
                 <ScalarProperty Name="MaxCount" ColumnName="MaxCount" />
                 <ScalarProperty Name="MinCount" ColumnName="MinCount" />
                 <ScalarProperty Name="MeasuresCount" ColumnName="MeasuresCount" />

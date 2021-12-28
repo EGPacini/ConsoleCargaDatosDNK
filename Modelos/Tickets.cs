@@ -12,7 +12,7 @@ namespace ConsoleCargaDatosDNK.Modelos
     using CsvHelper.Configuration;
     using System;
     using System.Collections.Generic;
-    
+
     public partial class Tickets
     {
         public int id { get; set; }

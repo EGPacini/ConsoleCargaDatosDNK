@@ -28,5 +28,7 @@ namespace ConsoleCargaDatosDNK.Modelos
         public Nullable<int> MeasuresCount { get; set; }
         public Nullable<int> MinCount { get; set; }
         public Nullable<int> MaxCount { get; set; }
+        public Nullable<int> OORMeasures { get; set; }
+        public string Device { get; set; }
     }
 }
