@@ -476,19 +476,23 @@ namespace ConsoleCargaDatosDNK
 
             int c = 0;
 
-            foreach (var i in sitesquery)
+            Parallel.For(0, sitesquery.Count, new ParallelOptions { MaxDegreeOfParallelism = 25 }, i =>
             {
-                var SiteID = i.SiteID;
-                var device = (from n in db.SitesMtto where n.siteIDDatagate == SiteID select n.MeasuresDevice).FirstOrDefault();
-                
+                var SiteID = sitesquery[i].SiteID;
+
+                ContratoMantenimientoEntities dbAux = new ContratoMantenimientoEntities();
+                var device = (from n in dbAux.SitesMtto
+                              where n.siteIDDatagate == SiteID
+                              select n.MeasuresDevice).FirstOrDefault();
+
                 c++;
                 var start = "00:00:00";
                 var end = "23:59:59";
 
-                DateTime Date = new DateTime(2021, 10, 1);
+                DateTime Date = new DateTime(2021, 1, 1);
                 DateTime RangeStart = Date.Add(TimeSpan.Parse(start));
 
-                DateTime DateEnd = new DateTime(2021, 11, 30);
+                DateTime DateEnd = new DateTime(2021, 12, 26);
                 DateTime RangeEnd = DateEnd.Add(TimeSpan.Parse(end));
 
                 DateTime BiggerDateStart = new DateTime(2021, 10, 1);
@@ -500,13 +504,13 @@ namespace ConsoleCargaDatosDNK
                 Console.WriteLine("Device: {0}, Site: {1}, Rango : {2} - {3}", device, SiteID, RangeStart, RangeEnd);
 
 
-                var RowRange = (from bh in db.BehaviorHidraulic
+                var RowRange = (from bh in dbAux.BehaviorHidraulic
                                 where bh.siteIDDatagate == SiteID
                                 && bh.datetime >= RangeStart
                                 && bh.datetime <= RangeEnd
                                 select bh).ToList();
 
-                var BiggerRange = (from bh in db.BehaviorHidraulic
+                var BiggerRange = (from bh in dbAux.BehaviorHidraulic
                                    where bh.siteIDDatagate == SiteID
                                    && bh.datetime >= BiggerStart
                                    && bh.datetime <= BiggerEnd
@@ -587,7 +591,7 @@ namespace ConsoleCargaDatosDNK
 
                     var FirstMaxDateCH1 = (from ct in MatchesMaxCH1 select ct.datetime).Min();
                     var month = "";
-                    if(FirstMinDateCH1 == null)
+                    if (FirstMinDateCH1 == null)
                     {
                         month = "SIN DATOS";
                     }
@@ -614,9 +618,9 @@ namespace ConsoleCargaDatosDNK
                         OORMeasures = OverRangeCH1 + UnderRangeCH1,
                         Device = device
                     };
-
-                    db.Indicator.Add(ind);
-                    db.SaveChanges();
+                    ContratoMantenimientoEntities dbAux2 = new ContratoMantenimientoEntities();
+                    dbAux2.Indicator.Add(ind);
+                    dbAux2.SaveChanges();
                 }
                 void channel2()
                 {
@@ -669,9 +673,9 @@ namespace ConsoleCargaDatosDNK
                         OORMeasures = OverRangeCH2 + UnderRangeCH2,
                         Device = device
                     };
-
-                    db.Indicator.Add(ind);
-                    db.SaveChanges();
+                    ContratoMantenimientoEntities dbAux2 = new ContratoMantenimientoEntities();
+                    dbAux2.Indicator.Add(ind);
+                    dbAux2.SaveChanges();
                 }
                 void channel3()
                 {
@@ -724,9 +728,9 @@ namespace ConsoleCargaDatosDNK
                         OORMeasures = OverRangeCH3 + UnderRangeCH3,
                         Device = device
                     };
-
-                    db.Indicator.Add(ind);
-                    db.SaveChanges();
+                    ContratoMantenimientoEntities dbAux2 = new ContratoMantenimientoEntities();
+                    dbAux2.Indicator.Add(ind);
+                    dbAux2.SaveChanges();
                 }
 
                 if (device == "1P")
@@ -1099,7 +1103,7 @@ namespace ConsoleCargaDatosDNK
                 //    Debug.WriteLine("");
                 //    Debug.WriteLine("");
                 //}              
-            }           
+            });           
         }
         public static void ImportarDatosHidraulics()
         {
