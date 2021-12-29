@@ -464,10 +464,6 @@ namespace ConsoleCargaDatosDNK
                               where a.ID == 5 || a.ID == 6 || a.ID == 10
                               select new { l.LoggerSMSNumber, s.SiteID, s.ID }).ToList();
 
-            double Average(double a, double b)
-            {
-                return (a + b) / 2;
-            }
 
             CultureInfo myCI = new CultureInfo("es-CL");
             Calendar myCal = myCI.Calendar;
@@ -481,6 +477,7 @@ namespace ConsoleCargaDatosDNK
                 var SiteID = sitesquery[i].SiteID;
 
                 ContratoMantenimientoEntities dbAux = new ContratoMantenimientoEntities();
+
                 var device = (from n in dbAux.SitesMtto
                               where n.siteIDDatagate == SiteID
                               select n.MeasuresDevice).FirstOrDefault();
@@ -492,12 +489,12 @@ namespace ConsoleCargaDatosDNK
  
                 double numberOfWeeks = ((DateEnd - Date).TotalDays) / 7;
 
-                Debug.WriteLine(Math.Round(numberOfWeeks));
-
                 for (int y = 1; y <= numberOfWeeks; y++)
                 {
                     DateEnd = Date.AddDays(7);
                     Console.WriteLine("Device: {0}, Site: {1}, Rango : {2} - {3}  Week° {4}", device, SiteID, Date, DateEnd, y);
+
+                    //Rango de recoleccion - Semana a semana
                     var RowRange = (from bh in dbAux.BehaviorHidraulic
                                     where bh.siteIDDatagate == SiteID
                                     && bh.datetime >= Date
@@ -509,11 +506,31 @@ namespace ConsoleCargaDatosDNK
                     var CH2 = RowRange.FindAll(x => x.channelnum == 2).ToList();
                     var CH3 = RowRange.FindAll(x => x.channelnum == 3).ToList();
 
-                    //Resultados Ordenados Ascending
+                    //Resultados Ordenados - / +
                     var valuesListCh1 = CH1.ConvertAll(x => x.value).OrderBy(x => x.Value);
                     var valuesListCh2 = CH2.ConvertAll(x => x.value).OrderBy(x => x.Value);
                     var valuesListCh3 = CH3.ConvertAll(x => x.value).OrderBy(x => x.Value);
 
+                    //Promedio de los resultados
+                    double AverageCH1 = 0;
+                    double AverageCH2 = 0;
+                    double AverageCH3 = 0;
+
+                    if(valuesListCh1.Any() == true)
+                    {
+                        AverageCH1 = Convert.ToDouble(valuesListCh1.Average());
+                    }
+
+                    if (valuesListCh2.Any() == true)
+                    {
+                        AverageCH2 = Convert.ToDouble(valuesListCh2.Average());
+                    }
+
+                    if (valuesListCh3.Any() == true)
+                    {
+                        AverageCH3 = Convert.ToDouble(valuesListCh3.Average());
+                    }
+                    
                     //Mediana de resultados 
                     double MedianCH1 = 0;
                     double MedianCH2 = 0;
@@ -558,16 +575,22 @@ namespace ConsoleCargaDatosDNK
                     {
                         var MaxValueCH1 = CH1.Max(x => x.value);
                         string RoundedMaxValueCH1 = string.Format("{0:F2}", MaxValueCH1);
+
                         var MinValueCH1 = CH1.Min(x => x.value);
                         string RoundedMinValueCH1 = string.Format("{0:F2}", MinValueCH1);
-                        var avg = Average(Convert.ToDouble(MaxValueCH1), Convert.ToDouble(MinValueCH1));
-                        var realAverage = string.Format("{0:F2}", avg);
+
                         var MatchesMinCH1 = (from k in RowRange where k.value == MinValueCH1 select k).ToList();
+
                         var MatchesMaxCH1 = (from k in RowRange where k.value == MaxValueCH1 select k).ToList();
+
                         var MeasuresCount = (from ct in RowRange where ct.channelnum == 1 select ct).Count();
+
                         var MaxValMatchesInRangeCH1 = (from k in RowRange where k.channelnum == 1 && k.value == MaxValueCH1 select k).Count();
+
                         var MinValMatchesInRangeCH1 = (from k in RowRange where k.channelnum == 1 && k.value == MinValueCH1 select k).Count();
+
                         var FirstMinDateCH1 = (from ct in MatchesMinCH1 select ct.datetime).Min();
+
                         DateTime ctm = Convert.ToDateTime(FirstMinDateCH1);
                         DateTime newdate = new DateTime(2021, 10, 1);
                         int ca = 0;
@@ -596,7 +619,7 @@ namespace ConsoleCargaDatosDNK
                             Channel = "1",
                             Minimum = Convert.ToDouble(MinValueCH1),
                             Maximum = Convert.ToDouble(MaxValueCH1),
-                            Average = Average(Convert.ToDouble(MaxValueCH1), Convert.ToDouble(MinValueCH1)),
+                            Average = AverageCH1,
                             Median = Convert.ToDouble(realMedianCH1),
                             FirstMinDate = FirstMinDateCH1,
                             FirstMaxDate = FirstMaxDateCH1,
@@ -616,8 +639,6 @@ namespace ConsoleCargaDatosDNK
                         string RoundedMaxValueCH2 = string.Format("{0:F2}", MaxValueCH2);
                         var MinValueCH2 = CH2.Min(x => x.value);
                         string RoundedMinValueCH2 = string.Format("{0:F2}", MinValueCH2);
-                        var avg = Average(Convert.ToDouble(MaxValueCH2), Convert.ToDouble(MinValueCH2));
-                        var realAverage = string.Format("{0:F2}", avg);
                         var MatchesMinCH2 = (from k in RowRange where k.value == MinValueCH2 select k).ToList();
                         var MatchesMaxCH2 = (from k in RowRange where k.value == MaxValueCH2 select k).ToList();
                         var MeasuresCount = (from ct in RowRange where ct.channelnum == 2 select ct).Count();
@@ -651,7 +672,7 @@ namespace ConsoleCargaDatosDNK
                             Channel = "2",
                             Minimum = Convert.ToDouble(MinValueCH2),
                             Maximum = Convert.ToDouble(MaxValueCH2),
-                            Average = Average(Convert.ToDouble(MaxValueCH2), Convert.ToDouble(MinValueCH2)),
+                            Average = AverageCH2,
                             Median = Convert.ToDouble(realMedianCH2),
                             FirstMinDate = FirstMinDateCH2,
                             FirstMaxDate = FirstMaxDateCH2,
@@ -671,8 +692,6 @@ namespace ConsoleCargaDatosDNK
                         string RoundedMaxValueCH3 = string.Format("{0:F2}", MaxValueCH3);
                         var MinValueCH3 = CH3.Min(x => x.value);
                         string RoundedMinValueCH3 = string.Format("{0:F2}", MinValueCH3);
-                        var avg = Average(Convert.ToDouble(MaxValueCH3), Convert.ToDouble(MinValueCH3));
-                        var realAverage = string.Format("{0:F2}", avg);
                         var MatchesMinCH3 = (from k in RowRange where k.value == MinValueCH3 select k).ToList();
                         var MatchesMaxCH3 = (from k in RowRange where k.value == MaxValueCH3 select k).ToList();
                         var MeasuresCount = (from ct in RowRange where ct.channelnum == 3 select ct).Count();
@@ -706,7 +725,7 @@ namespace ConsoleCargaDatosDNK
                             Channel = "3",
                             Minimum = Convert.ToDouble(MinValueCH3),
                             Maximum = Convert.ToDouble(MaxValueCH3),
-                            Average = Average(Convert.ToDouble(MaxValueCH3), Convert.ToDouble(MinValueCH3)),
+                            Average = AverageCH3,
                             Median = Convert.ToDouble(realMedianCH3),
                             FirstMinDate = FirstMinDateCH3,
                             FirstMaxDate = FirstMaxDateCH3,
@@ -997,7 +1016,7 @@ namespace ConsoleCargaDatosDNK
                             lastCallIn = item.callin
                         };
 
-                        Console.WriteLine("Insertando: Number: {0} Site: {1} Battery: {2} CSQ: {3} LastCall: {4}", item.number, SiteID, item.battery, item.csq, item.callin);
+                        Console.WriteLine("Insertando: LastCall: {0} Number: {1} Csq: {2} Battery: {3} Site: {4}", item.callin, item.number, item.csq, item.battery, SiteID);
                         auxdb2.BehaviorInstrumentation.Add(bhd);
                         auxdb2.SaveChanges();
                     }
