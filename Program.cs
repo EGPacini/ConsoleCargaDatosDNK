@@ -54,9 +54,9 @@ namespace ConsoleCargaDatosDNK
                     case "5":
                         ValuesEvaluation();
                         break;
-                }
-            
+                }         
         }
+
         public static void CommsHistory()
         {
             ContratoMantenimientoEntities db = new ContratoMantenimientoEntities();
@@ -288,7 +288,7 @@ namespace ConsoleCargaDatosDNK
                 c++;
 
                 DateTime Date = new DateTime(2021, 1, 4, 00,00,00);
-                DateTime DateEnd = new DateTime(2021, 12, 26, 23,59,00);
+                DateTime DateEnd = new DateTime(2021, 12, 28, 23,59,00);
  
                 double numberOfWeeks = ((DateEnd - Date).TotalDays) / 7;
 
