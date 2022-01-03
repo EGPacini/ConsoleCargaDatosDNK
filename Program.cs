@@ -18,6 +18,7 @@ using OpenQA.Selenium.Firefox;
 using MathNet.Numerics.Statistics;
 using System.Collections.Generic;
 using static ConsoleCargaDatosDNK.Modelos.Tickets;
+using System.Text;
 
 namespace ConsoleCargaDatosDNK
 {
@@ -30,7 +31,8 @@ namespace ConsoleCargaDatosDNK
             Console.WriteLine("2) Instrumentation");
             Console.WriteLine("3) Ticket Reader");
             Console.WriteLine("4) Communication History");
-            Console.WriteLine("5) Lowest Values");
+            Console.WriteLine("5) Data Evaluation");
+            Console.WriteLine("6) limpiador de pcp");
             Console.Write("\r\nSelect an option: ");
             
                 switch (Console.ReadLine())
@@ -54,6 +56,12 @@ namespace ConsoleCargaDatosDNK
                     case "5":
                         ValuesEvaluation();
                         break;
+                    case "6":
+                       Console.WriteLine("escribe un pcp con diagnostico...");
+                       string siteIDDatagate = Console.ReadLine();
+                       Console.WriteLine(PCPCleaner(siteIDDatagate));
+                       Console.ReadLine();
+                       break;
                 }         
         }
 
@@ -267,7 +275,6 @@ namespace ConsoleCargaDatosDNK
                               where a.ID == 5 || a.ID == 6 || a.ID == 10
                               select new { l.LoggerSMSNumber, s.SiteID, s.ID }).ToList();
 
-
             CultureInfo myCI = new CultureInfo("es-CL");
             Calendar myCal = myCI.Calendar;
             CalendarWeekRule myCWR = myCI.DateTimeFormat.CalendarWeekRule;
@@ -295,280 +302,323 @@ namespace ConsoleCargaDatosDNK
                 for (int y = 1; y <= numberOfWeeks; y++)
                 {
                     DateEnd = Date.AddDays(7);
-                    Console.WriteLine("Device: {0}, Site: {1}, Rango : {2} - {3}  Week° {4}", device, SiteID, Date, DateEnd, y);
+                    DateEnd = DateEnd.AddMinutes(-1);
 
-                    //Rango de recoleccion - Semana a semana
                     var RowRange = (from bh in dbAux.BehaviorHidraulic
                                     where bh.siteIDDatagate == SiteID
                                     && bh.datetime >= Date
-                                    && bh.datetime <= DateEnd
+                                    && bh.datetime < DateEnd
                                     select bh).ToList();
 
-                    //Resultados de canales en rango
-                    var CH1 = RowRange.FindAll(x => x.channelnum == 1).ToList();
-                    var CH2 = RowRange.FindAll(x => x.channelnum == 2).ToList();
-                    var CH3 = RowRange.FindAll(x => x.channelnum == 3).ToList();
-
-                    //Resultados Ordenados - / +
-                    var valuesListCh1 = CH1.ConvertAll(x => x.value).OrderBy(x => x.Value);
-                    var valuesListCh2 = CH2.ConvertAll(x => x.value).OrderBy(x => x.Value);
-                    var valuesListCh3 = CH3.ConvertAll(x => x.value).OrderBy(x => x.Value);
-
-                    //Promedio de los resultados
-                    double AverageCH1 = 0;
-                    double AverageCH2 = 0;
-                    double AverageCH3 = 0;
-
-                    if(valuesListCh1.Any() == true)
+                    if (Date.Month == DateEnd.Month)
                     {
-                        AverageCH1 = Convert.ToDouble(valuesListCh1.Average());
-                    }
 
-                    if (valuesListCh2.Any() == true)
-                    {
-                        AverageCH2 = Convert.ToDouble(valuesListCh2.Average());
-                    }
+                        Debug.WriteLine("Site en evaluación: " + SiteID + " -- " + c);
+                        Debug.WriteLine("");
 
-                    if (valuesListCh3.Any() == true)
-                    {
-                        AverageCH3 = Convert.ToDouble(valuesListCh3.Average());
-                    }
-                    
-                    //Mediana de resultados 
-                    double MedianCH1 = 0;
-                    double MedianCH2 = 0;
-                    double MedianCH3 = 0;
-                    double realMedianCH1 = 0;
-                    double realMedianCH2 = 0;
-                    double realMedianCH3 = 0;
-
-                    if (valuesListCh1.Any() == true)
-                    {
-                        MedianCH1 = valuesListCh1.Median();
-                        realMedianCH1 = Convert.ToDouble(string.Format("{0:F2}", MedianCH1));
-                    }
-
-                    if (valuesListCh2.Any() == true)
-                    {
-                        MedianCH2 = valuesListCh2.Median();
-                        realMedianCH2 = Convert.ToDouble(string.Format("{0:F2}", MedianCH2));
-                    }
-
-                    if (valuesListCh3.Any() == true)
-                    {
-                        MedianCH3 = valuesListCh3.Median();
-                        realMedianCH3 = Convert.ToDouble(string.Format("{0:F2}", MedianCH3));
-                    }
-
-
-                    //Resultados que superan los rangos validos
-                    var OverRangeCH1 = CH1.FindAll(x => x.value > 100).Count();
-                    var UnderRangeCH1 = CH1.FindAll(x => x.value < 0).Count();
-
-                    var OverRangeCH2 = CH2.FindAll(x => x.value > 100).Count();
-                    var UnderRangeCH2 = CH2.FindAll(x => x.value < 0).Count();
-
-                    var OverRangeCH3 = CH3.FindAll(x => x.value > 100).Count();
-                    var UnderRangeCH3 = CH3.FindAll(x => x.value < 0).Count();
-
-                    Debug.WriteLine("Site en evaluación: " + SiteID + " -- " + c);
-                    Debug.WriteLine("");
-
-                    void channel1()
-                    {
-                        var MaxValueCH1 = CH1.Max(x => x.value);
-                        string RoundedMaxValueCH1 = string.Format("{0:F2}", MaxValueCH1);
-
-                        var MinValueCH1 = CH1.Min(x => x.value);
-                        string RoundedMinValueCH1 = string.Format("{0:F2}", MinValueCH1);
-
-                        var MatchesMinCH1 = (from k in RowRange where k.value == MinValueCH1 select k).ToList();
-
-                        var MatchesMaxCH1 = (from k in RowRange where k.value == MaxValueCH1 select k).ToList();
-
-                        var MeasuresCount = (from ct in RowRange where ct.channelnum == 1 select ct).Count();
-
-                        var MaxValMatchesInRangeCH1 = (from k in RowRange where k.channelnum == 1 && k.value == MaxValueCH1 select k).Count();
-
-                        var MinValMatchesInRangeCH1 = (from k in RowRange where k.channelnum == 1 && k.value == MinValueCH1 select k).Count();
-
-                        var FirstMinDateCH1 = (from ct in MatchesMinCH1 select ct.datetime).Min();
-
-                        DateTime ctm = Convert.ToDateTime(FirstMinDateCH1);
-                        DateTime newdate = new DateTime(2021, 10, 1);
-                        int ca = 0;
-                        if (FirstMinDateCH1 != null)
+                        if (device == "1P")
                         {
-                            newdate = new DateTime(ctm.Year, ctm.Month, ctm.Day);
-                            ca = (myCal.GetWeekOfYear(newdate.AddDays(-7), myCWR, myFirstDOW));
+                            Channel1Aux(RowRange, SiteID, y, device);
+                        }
+                        else if (device == "2P")
+                        {
+                            Channel1Aux(RowRange, SiteID, y, device);
+                            Channel3Aux(RowRange, SiteID, y, device);
+                        }
+                        else if (device == "1P1Q")
+                        {
+                            Channel1Aux(RowRange, SiteID, y, device);
+                            Channel2Aux(RowRange, SiteID, y, device);
+                        }
+                        else if (device == "2P1Q")
+                        {
+                            Channel1Aux(RowRange, SiteID, y, device);
+                            Channel2Aux(RowRange, SiteID, y, device);
+                            Channel3Aux(RowRange, SiteID, y, device);
                         }
 
-                        var FirstMaxDateCH1 = (from ct in MatchesMaxCH1 select ct.datetime).Min();
-                        var month = "";
-                        if (FirstMinDateCH1 == null)
+                        Date = Date.AddDays(7);
+                        DateEnd = DateEnd.AddDays(7);
+                    }
+                    else
+                    {
+                        if(RowRange.Any() == true)
                         {
-                            month = "SIN DATOS";
-                        }
-                        else
-                        {
-                            month = Convert.ToDateTime(FirstMinDateCH1).ToString("MMMM").ToUpper();
-                        }
+                            List<BehaviorHidraulic> list1 = new List<BehaviorHidraulic>();
+                            List<BehaviorHidraulic> list2 = new List<BehaviorHidraulic>();
+                            var firstElement = RowRange.First();
 
-                        Indicator ind = new Indicator
-                        {
-                            SiteID = SiteID,
-                            Week = y,
-                            Month = month,
-                            Channel = "1",
-                            Minimum = Convert.ToDouble(MinValueCH1),
-                            Maximum = Convert.ToDouble(MaxValueCH1),
-                            Average = AverageCH1,
-                            Median = Convert.ToDouble(realMedianCH1),
-                            FirstMinDate = FirstMinDateCH1,
-                            FirstMaxDate = FirstMaxDateCH1,
-                            MeasuresCount = MeasuresCount,
-                            MinCount = MinValMatchesInRangeCH1,
-                            MaxCount = MaxValMatchesInRangeCH1,
-                            OORMeasures = OverRangeCH1 + UnderRangeCH1,
-                            Device = device
-                        };
-                        ContratoMantenimientoEntities dbAux2 = new ContratoMantenimientoEntities();
-                        dbAux2.Indicator.Add(ind);
-                        dbAux2.SaveChanges();
-                    }
-                    void channel2()
-                    {
-                        var MaxValueCH2 = CH2.Max(x => x.value);
-                        string RoundedMaxValueCH2 = string.Format("{0:F2}", MaxValueCH2);
-                        var MinValueCH2 = CH2.Min(x => x.value);
-                        string RoundedMinValueCH2 = string.Format("{0:F2}", MinValueCH2);
-                        var MatchesMinCH2 = (from k in RowRange where k.value == MinValueCH2 select k).ToList();
-                        var MatchesMaxCH2 = (from k in RowRange where k.value == MaxValueCH2 select k).ToList();
-                        var MeasuresCount = (from ct in RowRange where ct.channelnum == 2 select ct).Count();
-                        var MaxValMatchesInRangeCH2 = (from k in RowRange where k.channelnum == 2 && k.value == MaxValueCH2 select k).Count();
-                        var MinValMatchesInRangeCH2 = (from k in RowRange where k.channelnum == 2 && k.value == MinValueCH2 select k).Count();
-                        var FirstMinDateCH2 = (from ct in MatchesMinCH2 select ct.datetime).Min();
-                        var FirstMaxDateCH2 = (from ct in MatchesMaxCH2 select ct.datetime).Min();
-                        DateTime ctm = Convert.ToDateTime(FirstMinDateCH2);
-                        DateTime newdate = new DateTime(2021, 10, 1);
-                        int ca = 0;
-                        if (FirstMinDateCH2 != null)
-                        {
-                            newdate = new DateTime(ctm.Year, ctm.Month, ctm.Day);
-                            ca = (myCal.GetWeekOfYear(newdate.AddDays(-7), myCWR, myFirstDOW));
-                        }
-                        var month = "";
-                        if (FirstMinDateCH2 == null)
-                        {
-                            month = "SIN DATOS";
-                        }
-                        else
-                        {
-                            month = Convert.ToDateTime(FirstMinDateCH2).ToString("MMMM").ToUpper();
-                        }
+                            DateTime prevIpDate = Convert.ToDateTime(firstElement.datetime);
+                            DateTime defaultIpDate = Convert.ToDateTime(firstElement.datetime);
+                            int t = 0;
 
-                        Indicator ind = new Indicator
-                        {
-                            SiteID = SiteID,
-                            Week = y,
-                            Month = month,
-                            Channel = "2",
-                            Minimum = Convert.ToDouble(MinValueCH2),
-                            Maximum = Convert.ToDouble(MaxValueCH2),
-                            Average = AverageCH2,
-                            Median = Convert.ToDouble(realMedianCH2),
-                            FirstMinDate = FirstMinDateCH2,
-                            FirstMaxDate = FirstMaxDateCH2,
-                            MeasuresCount = MeasuresCount,
-                            MinCount = MinValMatchesInRangeCH2,
-                            MaxCount = MaxValMatchesInRangeCH2,
-                            OORMeasures = OverRangeCH2 + UnderRangeCH2,
-                            Device = device
-                        };
-                        ContratoMantenimientoEntities dbAux2 = new ContratoMantenimientoEntities();
-                        dbAux2.Indicator.Add(ind);
-                        dbAux2.SaveChanges();
-                    }
-                    void channel3()
-                    {
-                        var MaxValueCH3 = CH3.Max(x => x.value);
-                        string RoundedMaxValueCH3 = string.Format("{0:F2}", MaxValueCH3);
-                        var MinValueCH3 = CH3.Min(x => x.value);
-                        string RoundedMinValueCH3 = string.Format("{0:F2}", MinValueCH3);
-                        var MatchesMinCH3 = (from k in RowRange where k.value == MinValueCH3 select k).ToList();
-                        var MatchesMaxCH3 = (from k in RowRange where k.value == MaxValueCH3 select k).ToList();
-                        var MeasuresCount = (from ct in RowRange where ct.channelnum == 3 select ct).Count();
-                        var MaxValMatchesInRangeCH3 = (from k in RowRange where k.channelnum == 3 && k.value == MaxValueCH3 select k).Count();
-                        var MinValMatchesInRangeCH3 = (from k in RowRange where k.channelnum == 3 && k.value == MinValueCH3 select k).Count();
-                        var FirstMinDateCH3 = (from ct in MatchesMinCH3 select ct.datetime).Min();
-                        var FirstMaxDateCH3 = (from ct in MatchesMaxCH3 select ct.datetime).Min();
-                        DateTime ctm = Convert.ToDateTime(FirstMinDateCH3);
-                        DateTime newdate = new DateTime(2021, 10, 1);
-                        int ca = 0;
-                        if (FirstMinDateCH3 != null)
-                        {
-                            newdate = new DateTime(ctm.Year, ctm.Month, ctm.Day);
-                            ca = (myCal.GetWeekOfYear(newdate.AddDays(-7), myCWR, myFirstDOW));
-                        }
-                        var month = "";
-                        if (FirstMinDateCH3 == null)
-                        {
-                            month = "SIN DATOS";
-                        }
-                        else
-                        {
-                            month = Convert.ToDateTime(FirstMinDateCH3).ToString("MMMM").ToUpper();
-                        }
+                            foreach (var ip in RowRange)
+                            {
+                                DateTime thisIpDate = Convert.ToDateTime(ip.datetime);
 
-                        Indicator ind = new Indicator
-                        {
-                            SiteID = SiteID,
-                            Week = y,
-                            Month = month,
-                            Channel = "3",
-                            Minimum = Convert.ToDouble(MinValueCH3),
-                            Maximum = Convert.ToDouble(MaxValueCH3),
-                            Average = AverageCH3,
-                            Median = Convert.ToDouble(realMedianCH3),
-                            FirstMinDate = FirstMinDateCH3,
-                            FirstMaxDate = FirstMaxDateCH3,
-                            MeasuresCount = MeasuresCount,
-                            MinCount = MinValMatchesInRangeCH3,
-                            MaxCount = MaxValMatchesInRangeCH3,
-                            OORMeasures = OverRangeCH3 + UnderRangeCH3,
-                            Device = device
-                        };
-                        ContratoMantenimientoEntities dbAux2 = new ContratoMantenimientoEntities();
-                        dbAux2.Indicator.Add(ind);
-                        dbAux2.SaveChanges();
-                    }
+                                if (t == 0)
+                                {
+                                    list1.Add(ip);
+                                    prevIpDate = thisIpDate;
+                                }
+                                else
+                                {
+                                    var ThisFecha = Convert.ToDateTime(ip.datetime);
 
-                    if (device == "1P")
-                    {
-                        channel1();
-                    }
-                    else if (device == "2P")
-                    {
-                        channel1();
-                        channel3();
-                    }
-                    else if (device == "1P1Q")
-                    {
-                        channel1();
-                        channel2();
-                    }
-                    else if (device == "2P1Q")
-                    {
-                        channel1();
-                        channel2();
-                        channel3();
-                    }
+                                    if (thisIpDate.Month == prevIpDate.Month)
+                                    {
+                                        list1.Add(ip);
+                                        prevIpDate = thisIpDate;
+                                    }
+                                    else
+                                    {
+                                        list2.Add(ip);
+                                        prevIpDate = defaultIpDate;
+                                    }
+                                }
+                                t++;
+                            }
 
-                    Date = Date.AddDays(7);
-                    DateEnd = DateEnd.AddDays(7);
+                            if (device == "1P")
+                            {
+                                Channel1Aux(list1, SiteID, y, device);
+                                Channel1Aux(list2, SiteID, y, device);
+                            }
+                            else if (device == "2P")
+                            {
+                                Channel1Aux(list1, SiteID, y, device);
+                                Channel3Aux(list1, SiteID, y, device);
+                                Channel1Aux(list2, SiteID, y, device);
+                                Channel3Aux(list2, SiteID, y, device);
+                            }
+                            else if (device == "1P1Q")
+                            {
+                                Channel1Aux(list1, SiteID, y, device);
+                                Channel2Aux(list1, SiteID, y, device);
+                                Channel1Aux(list2, SiteID, y, device);
+                                Channel2Aux(list2, SiteID, y, device);
+                            }
+                            else if (device == "2P1Q")
+                            {
+                                Channel1Aux(list1, SiteID, y, device);
+                                Channel2Aux(list1, SiteID, y, device);
+                                Channel3Aux(list1, SiteID, y, device);
+                                Channel1Aux(list2, SiteID, y, device);
+                                Channel2Aux(list2, SiteID, y, device);
+                                Channel3Aux(list2, SiteID, y, device);
+                            }
+                            Date = Date.AddDays(7);
+                            DateEnd = DateEnd.AddDays(7);
+                        }
+                    }
                 }
-
             });           
+        }
+        public static void Channel1Aux(List<BehaviorHidraulic> hidraulicData, string SiteID, int y, string device)
+        {
+            var CH1 = hidraulicData.FindAll(x => x.channelnum == 1).ToList();
+            var valuesListCh1 = CH1.ConvertAll(x => x.value).OrderBy(x => x.Value);
+            double MedianCH1 = 0;
+            double realMedianCH1 = 0;
+            double AverageCH1 = 0;
+
+            var OverRangeCH1 = CH1.FindAll(x => x.value > 100).Count();
+            var UnderRangeCH1 = CH1.FindAll(x => x.value < 0).Count();
+
+            if (valuesListCh1.Any() == true)
+            {
+                AverageCH1 = Convert.ToDouble(valuesListCh1.Average());
+            }
+            if (valuesListCh1.Any() == true)
+            {
+                MedianCH1 = valuesListCh1.Median();
+                realMedianCH1 = Convert.ToDouble(string.Format("{0:F2}", MedianCH1));
+            }
+
+
+            var MaxValueCH1 = CH1.Max(x => x.value);
+            string RoundedMaxValueCH1 = string.Format("{0:F2}", MaxValueCH1);
+            var MinValueCH1 = CH1.Min(x => x.value);
+            string RoundedMinValueCH1 = string.Format("{0:F2}", MinValueCH1);
+            var MatchesMinCH1 = (from k in hidraulicData where k.value == MinValueCH1 select k).ToList();
+            var MatchesMaxCH1 = (from k in hidraulicData where k.value == MaxValueCH1 select k).ToList();
+            var MeasuresCount = (from ct in hidraulicData where ct.channelnum == 1 select ct).Count();
+            var MaxValMatchesInRangeCH1 = (from k in hidraulicData where k.channelnum == 1 && k.value == MaxValueCH1 select k).Count();
+            var MinValMatchesInRangeCH1 = (from k in hidraulicData where k.channelnum == 1 && k.value == MinValueCH1 select k).Count();
+            var FirstMinDateCH1 = (from ct in MatchesMinCH1 select ct.datetime).Min();
+
+
+            DateTime ctm = Convert.ToDateTime(FirstMinDateCH1);
+            DateTime newdate = new DateTime(2021, 10, 1);
+            var FirstMaxDateCH1 = (from ct in MatchesMaxCH1 select ct.datetime).Min();
+
+            var month = "";
+
+            if (FirstMinDateCH1 == null)
+            {
+                month = "SIN DATOS";
+            }
+            else
+            {
+                month = Convert.ToDateTime(FirstMinDateCH1).ToString("MMMM").ToUpper();
+            }
+
+            Indicator ind = new Indicator
+            {
+                SiteID = SiteID,
+                Week = y,
+                Month = month,
+                Channel = "1",
+                Minimum = Convert.ToDouble(MinValueCH1),
+                Maximum = Convert.ToDouble(MaxValueCH1),
+                Average = AverageCH1,
+                Median = Convert.ToDouble(realMedianCH1),
+                FirstMinDate = FirstMinDateCH1,
+                FirstMaxDate = FirstMaxDateCH1,
+                MeasuresCount = MeasuresCount,
+                MinCount = MinValMatchesInRangeCH1,
+                MaxCount = MaxValMatchesInRangeCH1,
+                OORMeasures = OverRangeCH1 + UnderRangeCH1,
+                Device = device
+            };
+            ContratoMantenimientoEntities dbAux2 = new ContratoMantenimientoEntities();
+            dbAux2.Indicator.Add(ind);
+            Console.WriteLine("Site: {0}, Month: {1}, Channel: {2}, Week: {3}, Device: {4}", ind.SiteID,ind.Month,ind.Channel,ind.Week,ind.Device);
+            dbAux2.SaveChanges();
+        }
+        public static void Channel2Aux(List<BehaviorHidraulic> hidraulicData, string SiteID, int y, string device)
+        {
+            var CH2 = hidraulicData.FindAll(x => x.channelnum == 2).ToList();
+            var valuesListCh2 = CH2.ConvertAll(x => x.value).OrderBy(x => x.Value);
+            double MedianCH2 = 0;
+            double realMedianCH2 = 0;
+            double AverageCH2 = 0;
+
+            var OverRangeCH2 = CH2.FindAll(x => x.value > 100).Count();
+            var UnderRangeCH2 = CH2.FindAll(x => x.value < 0).Count();
+
+            if (valuesListCh2.Any() == true)
+            {
+                AverageCH2 = Convert.ToDouble(valuesListCh2.Average());
+            }
+            if (valuesListCh2.Any() == true)
+            {
+                MedianCH2 = valuesListCh2.Median();
+                realMedianCH2 = Convert.ToDouble(string.Format("{0:F2}", MedianCH2));
+            }
+
+            var MaxValueCH2 = CH2.Max(x => x.value);
+            string RoundedMaxValueCH2 = string.Format("{0:F2}", MaxValueCH2);
+            var MinValueCH2 = CH2.Min(x => x.value);
+            string RoundedMinValueCH2 = string.Format("{0:F2}", MinValueCH2);
+            var MatchesMinCH2 = (from k in hidraulicData where k.value == MinValueCH2 select k).ToList();
+            var MatchesMaxCH2 = (from k in hidraulicData where k.value == MaxValueCH2 select k).ToList();
+            var MeasuresCount = (from ct in hidraulicData where ct.channelnum == 2 select ct).Count();
+            var MaxValMatchesInRangeCH2 = (from k in hidraulicData where k.channelnum == 2 && k.value == MaxValueCH2 select k).Count();
+            var MinValMatchesInRangeCH2 = (from k in hidraulicData where k.channelnum == 2 && k.value == MinValueCH2 select k).Count();
+            var FirstMinDateCH2 = (from ct in MatchesMinCH2 select ct.datetime).Min();
+            var FirstMaxDateCH2 = (from ct in MatchesMaxCH2 select ct.datetime).Min();
+            DateTime ctm = Convert.ToDateTime(FirstMinDateCH2);
+            DateTime newdate = new DateTime(2021, 10, 1);
+            var month = "";
+            if (FirstMinDateCH2 == null)
+            {
+                month = "SIN DATOS";
+            }
+            else
+            {
+                month = Convert.ToDateTime(FirstMinDateCH2).ToString("MMMM").ToUpper();
+            }
+
+            Indicator ind = new Indicator
+            {
+                SiteID = SiteID,
+                Week = y,
+                Month = month,
+                Channel = "2",
+                Minimum = Convert.ToDouble(MinValueCH2),
+                Maximum = Convert.ToDouble(MaxValueCH2),
+                Average = AverageCH2,
+                Median = Convert.ToDouble(realMedianCH2),
+                FirstMinDate = FirstMinDateCH2,
+                FirstMaxDate = FirstMaxDateCH2,
+                MeasuresCount = MeasuresCount,
+                MinCount = MinValMatchesInRangeCH2,
+                MaxCount = MaxValMatchesInRangeCH2,
+                OORMeasures = OverRangeCH2 + UnderRangeCH2,
+                Device = device
+            };
+            ContratoMantenimientoEntities dbAux2 = new ContratoMantenimientoEntities();
+            dbAux2.Indicator.Add(ind);
+            Console.WriteLine("Site: {0}, Month: {1}, Channel: {2}, Week: {3}, Device: {4}", ind.SiteID, ind.Month, ind.Channel, ind.Week, ind.Device);
+            dbAux2.SaveChanges();
+        }
+        public static void Channel3Aux(List<BehaviorHidraulic> hidraulicData, string SiteID, int y, string device)
+        {
+            var CH3 = hidraulicData.FindAll(x => x.channelnum == 3).ToList();
+            var valuesListCh3 = CH3.ConvertAll(x => x.value).OrderBy(x => x.Value);
+            double MedianCH3 = 0;
+            double realMedianCH3 = 0;
+            double AverageCH3 = 0;
+
+            var OverRangeCH3 = CH3.FindAll(x => x.value > 100).Count();
+            var UnderRangeCH3 = CH3.FindAll(x => x.value < 0).Count();
+
+            if (valuesListCh3.Any() == true)
+            {
+                AverageCH3 = Convert.ToDouble(valuesListCh3.Average());
+            }
+            if (valuesListCh3.Any() == true)
+            {
+                MedianCH3 = valuesListCh3.Median();
+                realMedianCH3 = Convert.ToDouble(string.Format("{0:F2}", MedianCH3));
+            }
+
+            var MaxValueCH3 = CH3.Max(x => x.value);
+            string RoundedMaxValueCH3 = string.Format("{0:F2}", MaxValueCH3);
+            var MinValueCH3 = CH3.Min(x => x.value);
+            string RoundedMinValueCH3 = string.Format("{0:F2}", MinValueCH3);
+            var MatchesMinCH3 = (from k in hidraulicData where k.value == MinValueCH3 select k).ToList();
+            var MatchesMaxCH3 = (from k in hidraulicData where k.value == MaxValueCH3 select k).ToList();
+            var MeasuresCount = (from ct in hidraulicData where ct.channelnum == 3 select ct).Count();
+            var MaxValMatchesInRangeCH3 = (from k in hidraulicData where k.channelnum == 3 && k.value == MaxValueCH3 select k).Count();
+            var MinValMatchesInRangeCH3 = (from k in hidraulicData where k.channelnum == 3 && k.value == MinValueCH3 select k).Count();
+            var FirstMinDateCH3 = (from ct in MatchesMinCH3 select ct.datetime).Min();
+            var FirstMaxDateCH3 = (from ct in MatchesMaxCH3 select ct.datetime).Min();
+            DateTime ctm = Convert.ToDateTime(FirstMinDateCH3);
+            DateTime newdate = new DateTime(2021, 10, 1);
+            var month = "";
+            if (FirstMinDateCH3 == null)
+            {
+                month = "SIN DATOS";
+            }
+            else
+            {
+                month = Convert.ToDateTime(FirstMinDateCH3).ToString("MMMM").ToUpper();
+            }
+
+            Indicator ind = new Indicator
+            {
+                SiteID = SiteID,
+                Week = y,
+                Month = month,
+                Channel = "3",
+                Minimum = Convert.ToDouble(MinValueCH3),
+                Maximum = Convert.ToDouble(MaxValueCH3),
+                Average = AverageCH3,
+                Median = Convert.ToDouble(realMedianCH3),
+                FirstMinDate = FirstMinDateCH3,
+                FirstMaxDate = FirstMaxDateCH3,
+                MeasuresCount = MeasuresCount,
+                MinCount = MinValMatchesInRangeCH3,
+                MaxCount = MaxValMatchesInRangeCH3,
+                OORMeasures = OverRangeCH3 + UnderRangeCH3,
+                Device = device
+            };
+            ContratoMantenimientoEntities dbAux2 = new ContratoMantenimientoEntities();
+            dbAux2.Indicator.Add(ind);
+            Console.WriteLine("Site: {0}, Month: {1}, Channel: {2}, Week: {3}, Device: {4}", ind.SiteID, ind.Month, ind.Channel, ind.Week, ind.Device);
+            dbAux2.SaveChanges();
         }
         public static void DatosIntrumentacion()
         {
@@ -670,7 +720,7 @@ namespace ConsoleCargaDatosDNK
                     {
                         var ticketNumber = i.ticketNumber;
                         var createDate = i.createDate;
-                        var siteIDDatagate = i.siteIDDatagate;
+                        var siteIDDatagate = PCPCleaner(i.siteIDDatagate);
                         var currentStatus = i.currentStatus;
                         var teamAssigned = i.teamAssigned;
                         var closedDateDG = i.closedDateDG;
@@ -679,9 +729,15 @@ namespace ConsoleCargaDatosDNK
                         var Overdue = i.Overdue;
                         var tipoEvento = i.tipoEvento;
 
+                        var newSiteID = AddressFinder(siteIDDatagate);
+
                         Console.WriteLine("Reading Existing Ticket: {0},  Last Updated: {1}, Current Status: {2}", ticketNumber, lastUpdated, currentStatus);
+
+                        var lastUpdatedquery = (from n in db.Tickets where n.ticketNumber.ToString() == ticketNumber.ToString() select n.lastUpdated).Max();
+
                         var query = (from sm in db.Tickets 
-                                     where sm.ticketNumber.ToString() == ticketNumber.ToString()
+                                     where sm.ticketNumber.ToString() == ticketNumber.ToString() 
+                                     && sm.lastUpdated.ToString() == lastUpdatedquery.ToString()
                                      select sm).FirstOrDefault();
                         reviewed++;
 
@@ -690,7 +746,7 @@ namespace ConsoleCargaDatosDNK
                             Tickets t = new Tickets();
                             t.ticketNumber = Convert.ToInt32(ticketNumber);
                             t.createDate = Convert.ToDateTime(createDate);
-                            t.siteIDDatagate = siteIDDatagate.ToString();
+                            t.siteIDDatagate = newSiteID;
                             t.currentStatus = currentStatus.ToString();
                             t.teamAssigned = teamAssigned.ToString();
                             if (t.closedDateDG is DBNull){ Convert.IsDBNull(t.closedDateDG = Convert.ToDateTime(closedDateDG)); }
@@ -705,7 +761,8 @@ namespace ConsoleCargaDatosDNK
                         }
                         else
                         {
-                            if (query.lastUpdated.ToString() != lastUpdated.ToString() || currentStatus.ToString() != query.currentStatus.ToString())
+                            if (query.lastUpdated.ToString() != lastUpdated.ToString() ||
+                                query.currentStatus.ToString() != currentStatus.ToString())
                             {
                                 Tickets nt = new Tickets();
                                 nt.ticketNumber = query.ticketNumber;
@@ -733,6 +790,7 @@ namespace ConsoleCargaDatosDNK
                     Console.WriteLine("Tickets added:        {0}    |", added);
                     Console.WriteLine("Ticket history added: {0}    |", history);
                     Console.WriteLine("----------------------------");
+                    Console.ReadLine();
                 }
             }
         }
@@ -950,6 +1008,72 @@ namespace ConsoleCargaDatosDNK
                        }
                    }
                });
+        }
+        public static string PCPCleaner(string siteIDDatagate)
+        {
+            string str = siteIDDatagate.ToLower();
+            StringBuilder newStr = new StringBuilder();
+             newStr.Append(str);
+            (newStr).Replace(" medida fuera de rango", String.Empty)
+                    .Replace(" medidas fuera de rango", String.Empty)
+                    .Replace("cau ", String.Empty)
+                    .Replace(" sin comunicación", String.Empty)
+                    .Replace("_", String.Empty)
+                    .Replace("lo blanco", String.Empty)
+                    .Replace("el sol-maillin", String.Empty)
+                    .Replace(" p1", String.Empty)
+                    .Replace(" p2", String.Empty)
+                    .Replace(" p3", String.Empty)
+                    .Replace("con", String.Empty)
+                    .Replace("aa y aab", String.Empty)
+                    .Replace("fuera de rango", String.Empty)
+                    .Replace("(pcp 820)", String.Empty)
+                    .Replace("pvrp ", String.Empty)
+                    .Replace("cambio a datalogger multilog 2", String.Empty)
+                    .Replace(" cambio a datalogger", String.Empty)
+                    .Replace("pegasus plus", String.Empty)
+                    .Replace("caudal", String.Empty)
+                    .Replace("sin medición de", String.Empty)
+                    .Replace("medida q", String.Empty)
+                    .Replace("instalación datalogger", String.Empty)
+                    .Replace(" con ", String.Empty)
+                    .Replace("presión", String.Empty)
+                    .Replace("con medición aab fuera rang", String.Empty)
+                    .Replace("aa y aab fuera de rango", String.Empty)
+                    .Replace(" con medida ", String.Empty)
+                    .Replace(".", String.Empty)
+                    .Replace("intermitencia", String.Empty)
+                    .Replace(" med ", String.Empty)
+                    .Replace(" medida aa", String.Empty)
+                    .Replace(" medida aab", String.Empty)
+                    .Replace(" presiones", String.Empty)
+                    //.Replace(" aa", String.Empty)
+                    .Replace(" aab", String.Empty)
+                    .Replace("camino", String.Empty)
+                    .Replace(" ajuste peso pulso", String.Empty)
+                    .Replace(" mediciónb fuera rang", String.Empty)
+                    .Replace(" medición fuera rang", String.Empty)
+                    .Replace(" ectar a logger", String.Empty)
+                    .Replace(" medida", String.Empty)
+                    .Replace(" b", String.Empty)
+                    .Replace("b ", String.Empty)
+                    .Replace("r ", String.Empty)
+                    .ToString()
+                    .ToUpper();
+
+            return newStr.ToString().ToUpper().Trim();       
+        }
+        public static string AddressFinder(string siteIDDatagate)
+        {
+            LocalHWMEntities localdb2 = new LocalHWMEntities();
+
+            var q = localdb2.sites.AsEnumerable();
+            var SiteIDQuery = q.Where(x => x.Address.Contains(siteIDDatagate)).FirstOrDefault();
+            if(SiteIDQuery != null)
+            {
+                return SiteIDQuery.SiteID.ToString();
+            }
+            return siteIDDatagate;
         }
     }
 }

@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="d80b3d3452d944e0ba534d0d2aa3badd" Name="Diagram1">
+      <Diagram DiagramId="d80b3d3452d944e0ba534d0d2aa3badd" Name="Diagram1" ZoomLevel="71">
         <EntityTypeShape EntityType="hwmdbModel.C__MigrationLog" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="hwmdbModel.AbortCodeLookup" Width="1.5" PointX="14.75" PointY="12.75" IsExpanded="true" />
         <EntityTypeShape EntityType="hwmdbModel.AccessTechnologyTypes" Width="1.5" PointX="15.75" PointY="0.75" IsExpanded="true" />
