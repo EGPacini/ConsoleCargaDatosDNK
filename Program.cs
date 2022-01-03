@@ -32,7 +32,6 @@ namespace ConsoleCargaDatosDNK
             Console.WriteLine("3) Ticket Reader");
             Console.WriteLine("4) Communication History");
             Console.WriteLine("5) Data Evaluation");
-            Console.WriteLine("6) limpiador de pcp");
             Console.Write("\r\nSelect an option: ");
             
                 switch (Console.ReadLine())
@@ -56,12 +55,10 @@ namespace ConsoleCargaDatosDNK
                     case "5":
                         ValuesEvaluation();
                         break;
+
                     case "6":
-                       Console.WriteLine("escribe un pcp con diagnostico...");
-                       string siteIDDatagate = Console.ReadLine();
-                       Console.WriteLine(PCPCleaner(siteIDDatagate));
-                       Console.ReadLine();
-                       break;
+                        AllComms();
+                        break;
                 }         
         }
 
@@ -126,6 +123,7 @@ namespace ConsoleCargaDatosDNK
                             var thisDayComms = allCommsQuery.Where(x => x.Value.Date == initialDate.Date).ToList();
 
                             int commsCounter = thisDayComms.Count();
+
                             if (commsCounter > 0)
                             {
                                 DateTime? prevCommDate = null;
@@ -159,7 +157,8 @@ namespace ConsoleCargaDatosDNK
                                     SiteID = SiteID,
                                     Fecha = initialDate,
                                     NumeroComms = auxCommCounter,
-                                    SMSNumber = number.LoggerSMSNumber
+                                    SMSNumber = number.LoggerSMSNumber,
+                                    TotalComms = commsCounter
                                 };
                                 auxdb.HistorialComunicaciones.Add(hc);
                                 auxdb.SaveChanges();
@@ -173,7 +172,8 @@ namespace ConsoleCargaDatosDNK
                                     SiteID = SiteID,
                                     Fecha = initialDate,
                                     NumeroComms = 0,
-                                    SMSNumber = number.LoggerSMSNumber
+                                    SMSNumber = number.LoggerSMSNumber,
+                                    TotalComms = commsCounter
                                 };
                                 auxdb.HistorialComunicaciones.Add(hc);
                                 auxdb.SaveChanges();
@@ -663,34 +663,7 @@ namespace ConsoleCargaDatosDNK
                     }
                 }
             });
-        }
-        public static void TicketDownloader()
-        {
-            IWebDriver wd = new FirefoxDriver(@"C:\Users\DNK Water\Desktop\operadriver_win64");
-            wd.Navigate().GoToUrl("https://www.dnk.support/scp/login.php");
-            Console.WriteLine("The page is being scraped...");
-            var username = wd.FindElement(By.Name("userid"));
-            Assert.That(username.Displayed, Is.True);
-            username.SendKeys("jbarrios");
-
-            wd.FindElement(By.Id("pass")).SendKeys("barrios");
-            wd.FindElement(By.Name("submit")).Submit();
-            Thread.Sleep(7000);
-
-            var export = wd.FindElement(By.XPath("//a[@id='queue-export']"));
-            export.Click();
-            Thread.Sleep(6000);
-
-            var nextExport = wd.FindElement(By.XPath("//*[@id='popup']//input[@value='Export']"));
-            
-            nextExport.Click();
-            Thread.Sleep(9000);
-
-            AutoItX.Send("{DOWN}");
-            AutoItX.Send("{ENTER}");
-            Console.WriteLine("Tickets successfully downloaded.");
-            wd.Close();
-        }
+        }      
         public static void TicketReader()
         {
             TicketDownloader();
@@ -1009,6 +982,36 @@ namespace ConsoleCargaDatosDNK
                    }
                });
         }
+
+
+        //metodos situacionales
+        public static void TicketDownloader()
+        {
+            IWebDriver wd = new FirefoxDriver(@"C:\Users\DNK Water\Desktop\operadriver_win64");
+            wd.Navigate().GoToUrl("https://www.dnk.support/scp/login.php");
+            Console.WriteLine("The page is being scraped...");
+            var username = wd.FindElement(By.Name("userid"));
+            Assert.That(username.Displayed, Is.True);
+            username.SendKeys("jbarrios");
+
+            wd.FindElement(By.Id("pass")).SendKeys("barrios");
+            wd.FindElement(By.Name("submit")).Submit();
+            Thread.Sleep(7000);
+
+            var export = wd.FindElement(By.XPath("//a[@id='queue-export']"));
+            export.Click();
+            Thread.Sleep(6000);
+
+            var nextExport = wd.FindElement(By.XPath("//*[@id='popup']//input[@value='Export']"));
+
+            nextExport.Click();
+            Thread.Sleep(9000);
+
+            AutoItX.Send("{DOWN}");
+            AutoItX.Send("{ENTER}");
+            Console.WriteLine("Tickets successfully downloaded.");
+            wd.Close();
+        }
         public static string PCPCleaner(string siteIDDatagate)
         {
             string str = siteIDDatagate.ToLower();
@@ -1074,6 +1077,51 @@ namespace ConsoleCargaDatosDNK
                 return SiteIDQuery.SiteID.ToString();
             }
             return siteIDDatagate;
+        }
+        public static void AllComms()
+        {
+            LocalHWMEntities localdb2 = new LocalHWMEntities();
+            HidraulicTestEntities testdb = new HidraulicTestEntities();
+
+            var commsquery = (from hc in testdb.HistorialComunicaciones
+                              select hc).ToList();
+
+            int c = 0;
+
+            Parallel.For(0, commsquery.Count, new ParallelOptions { MaxDegreeOfParallelism = 30 }, i =>
+            {
+                c++;
+                LocalHWMEntities auxdb2 = new LocalHWMEntities();
+                HidraulicTestEntities aux3 = new HidraulicTestEntities();
+
+                DateTime date = (DateTime)commsquery[i].Fecha;
+                var smsnum = commsquery[i].SMSNumber;
+                var id = commsquery[i].id;
+
+                TimeSpan start = new TimeSpan(0, 0, 0);
+                TimeSpan end = new TimeSpan(23, 59, 59);
+
+                var formatDateStart = date.Add(start);
+                var formatDateEnd = date.Add(end);
+
+                var msgs = (from m in auxdb2.messages
+                            where
+                            m.rxtime >= formatDateStart &&
+                            m.rxtime <= formatDateEnd &&
+                            m.smsnumber == smsnum
+                            select m).Count();
+
+                using (HidraulicTestEntities auxdb = new HidraulicTestEntities())
+                {
+                    var query = (from h in auxdb.HistorialComunicaciones
+                                 where h.id == id
+                                 select h).FirstOrDefault();
+
+                    query.TotalComms = msgs;
+                    Debug.WriteLine("id: {0} iteracion: {1}", id, c);
+                    auxdb.SaveChanges();
+                }
+            });
         }
     }
 }

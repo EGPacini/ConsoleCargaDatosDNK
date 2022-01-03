@@ -4,9 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="HidraulicTestModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'HidraulicTest.dbo.BehaviorHidraulic' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+    <Schema Namespace="HidraulicTestModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="BehaviorHidraulic">
           <Key>
             <PropertyRef Name="id" />
@@ -18,20 +16,57 @@ warning 6002: The table/view 'HidraulicTest.dbo.BehaviorHidraulic' does not have
           <Property Name="channelnum" Type="int" />
           <Property Name="channeltype" Type="varchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="HistorialComunicaciones">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SiteID" Type="nvarchar" MaxLength="60" />
+          <Property Name="Fecha" Type="datetime" />
+          <Property Name="NumeroComms" Type="int" />
+          <Property Name="SMSNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="TotalComms" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'HidraulicTest.dbo.SitesMtto' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="SitesMtto">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="siteIDDatagate" Type="nvarchar" MaxLength="255" />
+          <Property Name="idFieldBeat" Type="nvarchar" MaxLength="255" />
+          <Property Name="addressDatagate" Type="nvarchar" MaxLength="255" />
+          <Property Name="createDateDatagate" Type="datetime" />
+          <Property Name="typeDevice" Type="nvarchar" MaxLength="255" />
+          <Property Name="latitudeSite" Type="float" />
+          <Property Name="longitudeSite" Type="float" />
+          <Property Name="MeasuresDevice" Type="varchar" MaxLength="40" />
+          <Property Name="Address2" Type="nvarchar" MaxLength="60" />
+          <Property Name="instalation_date" Type="nvarchar" MaxLength="60" />
+          <Property Name="model" Type="nvarchar" MaxLength="50" />
+        </EntityType>
         <EntityContainer Name="HidraulicTestModelStoreContainer">
-          <EntitySet Name="BehaviorHidraulic" EntityType="Self.BehaviorHidraulic" store:Type="Tables" store:Schema="dbo">
+          <EntitySet Name="BehaviorHidraulic" EntityType="Self.BehaviorHidraulic" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="HistorialComunicaciones" EntityType="Self.HistorialComunicaciones" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SitesMtto" EntityType="Self.SitesMtto" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
-    [BehaviorHidraulic].[id] AS [id], 
-    [BehaviorHidraulic].[siteIDDatagate] AS [siteIDDatagate], 
-    [BehaviorHidraulic].[datetime] AS [datetime], 
-    [BehaviorHidraulic].[value] AS [value], 
-    [BehaviorHidraulic].[channelnum] AS [channelnum], 
-    [BehaviorHidraulic].[channeltype] AS [channeltype]
-    FROM [dbo].[BehaviorHidraulic] AS [BehaviorHidraulic]</DefiningQuery>
+    [SitesMtto].[id] AS [id], 
+    [SitesMtto].[siteIDDatagate] AS [siteIDDatagate], 
+    [SitesMtto].[idFieldBeat] AS [idFieldBeat], 
+    [SitesMtto].[addressDatagate] AS [addressDatagate], 
+    [SitesMtto].[createDateDatagate] AS [createDateDatagate], 
+    [SitesMtto].[typeDevice] AS [typeDevice], 
+    [SitesMtto].[latitudeSite] AS [latitudeSite], 
+    [SitesMtto].[longitudeSite] AS [longitudeSite], 
+    [SitesMtto].[MeasuresDevice] AS [MeasuresDevice], 
+    [SitesMtto].[Address2] AS [Address2], 
+    [SitesMtto].[instalation_date] AS [instalation_date], 
+    [SitesMtto].[model] AS [model]
+    FROM [dbo].[SitesMtto] AS [SitesMtto]</DefiningQuery>
           </EntitySet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="HidraulicTestModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -48,7 +83,37 @@ warning 6002: The table/view 'HidraulicTest.dbo.BehaviorHidraulic' does not have
         </EntityType>
         <EntityContainer Name="HidraulicTestEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="BehaviorHidraulic" EntityType="Self.BehaviorHidraulic" />
+          <EntitySet Name="SitesMtto" EntityType="HidraulicTestModel.SitesMtto" />
+          <EntitySet Name="HistorialComunicaciones" EntityType="HidraulicTestModel.HistorialComunicaciones" />
         </EntityContainer>
+        <EntityType Name="SitesMtto">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="siteIDDatagate" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="idFieldBeat" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="addressDatagate" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="createDateDatagate" Type="DateTime" Precision="3" />
+          <Property Name="typeDevice" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="latitudeSite" Type="Double" />
+          <Property Name="longitudeSite" Type="Double" />
+          <Property Name="MeasuresDevice" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="Address2" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="instalation_date" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="model" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="HistorialComunicaciones">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SiteID" Type="String" MaxLength="60" FixedLength="false" Unicode="true" />
+          <Property Name="Fecha" Type="DateTime" Precision="3" />
+          <Property Name="NumeroComms" Type="Int32" />
+          <Property Name="SMSNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TotalComms" Type="Int32" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -64,6 +129,36 @@ warning 6002: The table/view 'HidraulicTest.dbo.BehaviorHidraulic' does not have
                 <ScalarProperty Name="value" ColumnName="value" />
                 <ScalarProperty Name="channelnum" ColumnName="channelnum" />
                 <ScalarProperty Name="channeltype" ColumnName="channeltype" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SitesMtto">
+            <EntityTypeMapping TypeName="HidraulicTestModel.SitesMtto">
+              <MappingFragment StoreEntitySet="SitesMtto">
+                <ScalarProperty Name="model" ColumnName="model" />
+                <ScalarProperty Name="instalation_date" ColumnName="instalation_date" />
+                <ScalarProperty Name="Address2" ColumnName="Address2" />
+                <ScalarProperty Name="MeasuresDevice" ColumnName="MeasuresDevice" />
+                <ScalarProperty Name="longitudeSite" ColumnName="longitudeSite" />
+                <ScalarProperty Name="latitudeSite" ColumnName="latitudeSite" />
+                <ScalarProperty Name="typeDevice" ColumnName="typeDevice" />
+                <ScalarProperty Name="createDateDatagate" ColumnName="createDateDatagate" />
+                <ScalarProperty Name="addressDatagate" ColumnName="addressDatagate" />
+                <ScalarProperty Name="idFieldBeat" ColumnName="idFieldBeat" />
+                <ScalarProperty Name="siteIDDatagate" ColumnName="siteIDDatagate" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HistorialComunicaciones">
+            <EntityTypeMapping TypeName="HidraulicTestModel.HistorialComunicaciones">
+              <MappingFragment StoreEntitySet="HistorialComunicaciones">
+                <ScalarProperty Name="TotalComms" ColumnName="TotalComms" />
+                <ScalarProperty Name="SMSNumber" ColumnName="SMSNumber" />
+                <ScalarProperty Name="NumeroComms" ColumnName="NumeroComms" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="SiteID" ColumnName="SiteID" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -15,6 +15,7 @@
           <Property Name="value" Type="float" />
           <Property Name="channelnum" Type="int" />
           <Property Name="channeltype" Type="varchar" MaxLength="75" />
+          <Property Name="2WeekAVG" Type="float" />
         </EntityType>
         <EntityType Name="BehaviorInstrumentation">
           <Key>
@@ -36,6 +37,7 @@
           <Property Name="Fecha" Type="datetime" />
           <Property Name="NumeroComms" Type="int" />
           <Property Name="SMSNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="TotalComms" Type="int" />
         </EntityType>
         <EntityType Name="Indicator">
           <Key>
@@ -208,6 +210,7 @@
           <Property Name="value" Type="Double" />
           <Property Name="channelnum" Type="Int32" />
           <Property Name="channeltype" Type="String" MaxLength="75" FixedLength="false" Unicode="false" />
+          <Property Name="C2WeekAVG" Type="Double" />
         </EntityType>
         <EntityType Name="BehaviorInstrumentation">
           <Key>
@@ -229,6 +232,7 @@
           <Property Name="Fecha" Type="DateTime" Precision="3" />
           <Property Name="NumeroComms" Type="Int32" />
           <Property Name="SMSNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TotalComms" Type="Int32" />
         </EntityType>
         <EntityType Name="InsumosST">
           <Key>
@@ -395,6 +399,7 @@
           <EntitySetMapping Name="BehaviorHidraulic">
             <EntityTypeMapping TypeName="ContratoMantenimientoModel.BehaviorHidraulic">
               <MappingFragment StoreEntitySet="BehaviorHidraulic">
+                <ScalarProperty Name="C2WeekAVG" ColumnName="2WeekAVG" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="siteIDDatagate" ColumnName="siteIDDatagate" />
                 <ScalarProperty Name="datetime" ColumnName="datetime" />
@@ -419,6 +424,7 @@
           <EntitySetMapping Name="HistorialComunicaciones">
             <EntityTypeMapping TypeName="ContratoMantenimientoModel.HistorialComunicaciones">
               <MappingFragment StoreEntitySet="HistorialComunicaciones">
+                <ScalarProperty Name="TotalComms" ColumnName="TotalComms" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="SiteID" ColumnName="SiteID" />
                 <ScalarProperty Name="Fecha" ColumnName="Fecha" />
