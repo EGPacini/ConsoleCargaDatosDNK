@@ -55,10 +55,6 @@ namespace ConsoleCargaDatosDNK
                     case "5":
                         ValuesEvaluation();
                         break;
-
-                    case "6":
-                        AllComms();
-                        break;
                 }         
         }
 
@@ -81,7 +77,6 @@ namespace ConsoleCargaDatosDNK
             {
                 LocalHWMEntities auxdb2 = new LocalHWMEntities();
                 ContratoMantenimientoEntities auxdb3 = new ContratoMantenimientoEntities();
-
 
                 var sms = sitesquery[i].LoggerSMSNumber;
 
@@ -150,7 +145,7 @@ namespace ConsoleCargaDatosDNK
                                         prevCommDate = thisComm;
                                     }
                                 }
-                                Console.WriteLine("El numero {0} se ha comunicado {1} veces en el dia {2} \n", number.LoggerSMSNumber, auxCommCounter, initialDate.ToString("dd-MM-yyy"));
+                                Console.WriteLine("El numero {0} se ha comunicado {1} veces en el dia {2}, y en total: {3} \n", number.LoggerSMSNumber, auxCommCounter, initialDate.ToString("dd-MM-yyy"), commsCounter);
                                 ContratoMantenimientoEntities auxdb = new ContratoMantenimientoEntities();
                                 HistorialComunicaciones hc = new HistorialComunicaciones
                                 {
@@ -165,7 +160,7 @@ namespace ConsoleCargaDatosDNK
                             }
                             else
                             {
-                                Console.WriteLine("El numero {0} se ha comunicado 0 veces en el dia {1} \n", number.LoggerSMSNumber, initialDate.ToString("dd-MM-yyy"));
+                                Console.WriteLine("El numero {0} se ha comunicado 0 veces en el dia {1}, y en total: {2} \n", number.LoggerSMSNumber, initialDate.ToString("dd-MM-yyy"), commsCounter);
                                 ContratoMantenimientoEntities auxdb = new ContratoMantenimientoEntities();
                                 HistorialComunicaciones hc = new HistorialComunicaciones
                                 {
@@ -294,8 +289,8 @@ namespace ConsoleCargaDatosDNK
 
                 c++;
 
-                DateTime Date = new DateTime(2021, 1, 4, 00,00,00);
-                DateTime DateEnd = new DateTime(2021, 12, 28, 23,59,00);
+                DateTime Date = new DateTime(2021, 1, 3, 00,00,00);
+                DateTime DateEnd = new DateTime(2022, 1, 9, 23,59,00);
  
                 double numberOfWeeks = ((DateEnd - Date).TotalDays) / 7;
 
@@ -677,14 +672,16 @@ namespace ConsoleCargaDatosDNK
             var file = "C:\\Users\\DNK Water\\Downloads\\Abiertos Tickets - " + DownloadDate + ".csv";
             var config = new CsvConfiguration(CultureInfo.GetCultureInfo("es_CL")) { Delimiter = ";" };
             Console.WriteLine("Thread sleeping to ensure file is ready...");
-            Thread.Sleep(3000);
+           Thread.Sleep(3000);
             
             using (var reader = new StreamReader(file))
             {
                 using (var csvReader = new CsvReader(reader, config))
                 {
                     csvReader.Context.RegisterClassMap<TicketClassMap>();
+
                     var records = csvReader.GetRecords<Tickets>().ToList();
+
                     int added = 0;
                     int reviewed = 0;
                     int history = 0;
@@ -706,11 +703,13 @@ namespace ConsoleCargaDatosDNK
 
                         Console.WriteLine("Reading Existing Ticket: {0},  Last Updated: {1}, Current Status: {2}", ticketNumber, lastUpdated, currentStatus);
 
-                        var lastUpdatedquery = (from n in db.Tickets where n.ticketNumber.ToString() == ticketNumber.ToString() select n.lastUpdated).Max();
-
+                        var currentId = (from n in db.Tickets
+                                         where n.ticketNumber.ToString() == ticketNumber.ToString()
+                                         select n.id).Max();
+                   
                         var query = (from sm in db.Tickets 
                                      where sm.ticketNumber.ToString() == ticketNumber.ToString() 
-                                     && sm.lastUpdated.ToString() == lastUpdatedquery.ToString()
+                                     && sm.id == currentId
                                      select sm).FirstOrDefault();
                         reviewed++;
 
@@ -756,7 +755,7 @@ namespace ConsoleCargaDatosDNK
                         }                      
                     }
 
-                    db.SaveChanges();
+                   // db.SaveChanges();
 
                     Console.WriteLine("----------------------------");
                     Console.WriteLine("Tickets reviewed:     {0}  |", reviewed);
@@ -984,7 +983,7 @@ namespace ConsoleCargaDatosDNK
         }
 
 
-        //metodos situacionales
+        
         public static void TicketDownloader()
         {
             IWebDriver wd = new FirefoxDriver(@"C:\Users\DNK Water\Desktop\operadriver_win64");
