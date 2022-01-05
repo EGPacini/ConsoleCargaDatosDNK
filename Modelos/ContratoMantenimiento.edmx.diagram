@@ -10,11 +10,11 @@
         <EntityTypeShape EntityType="ContratoMantenimientoModel.HistorialComunicaciones" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="ContratoMantenimientoModel.InsumosST" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="ContratoMantenimientoModel.SitesMtto" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ContratoMantenimientoModel.sysdiagrams" Width="1.5" PointX="4.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ContratoMantenimientoModel.sysdiagrams" Width="1.5" PointX="9" PointY="5.75" IsExpanded="true" />
         <EntityTypeShape EntityType="ContratoMantenimientoModel.TareasPreventivas" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="ContratoMantenimientoModel.TaskSuppliesUsed" Width="1.5" PointX="6.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="ContratoMantenimientoModel.TechnicalServices" Width="1.5" PointX="0.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ContratoMantenimientoModel.Tickets" Width="1.5" PointX="6.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ContratoMantenimientoModel.Tickets" Width="1.5" PointX="4.75" PointY="4.375" IsExpanded="true" />
         <EntityTypeShape EntityType="ContratoMantenimientoModel.Indicator" Width="1.5" PointX="3.375" PointY="8.75" />
       </Diagram>
     </edmx:Diagrams>

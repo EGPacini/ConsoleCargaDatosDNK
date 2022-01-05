@@ -20,5 +20,11 @@ namespace ConsoleCargaDatosDNK.Modelos
         public Nullable<int> csq { get; set; }
         public Nullable<double> battery { get; set; }
         public Nullable<System.DateTime> lastCallIn { get; set; }
+        public Nullable<double> CsqAverage { get; set; }
+        public Nullable<double> BatteryAverage { get; set; }
+        public Nullable<double> MinBattery { get; set; }
+        public Nullable<double> MinCsq { get; set; }
+        public Nullable<double> MaxBattery { get; set; }
+        public Nullable<double> MaxCsq { get; set; }
     }
 }

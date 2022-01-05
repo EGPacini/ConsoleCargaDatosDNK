@@ -20,5 +20,6 @@ namespace ConsoleCargaDatosDNK.Modelos
         public Nullable<double> value { get; set; }
         public Nullable<int> channelnum { get; set; }
         public string channeltype { get; set; }
+        public Nullable<double> lastTwoWeeksAvg { get; set; }
     }
 }

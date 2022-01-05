@@ -151,6 +151,7 @@
           <Property Name="SLAPlan" Type="varchar" MaxLength="25" />
           <Property Name="Overdue" Type="varchar" MaxLength="5" />
           <Property Name="tipoEvento" Type="varchar" MaxLength="25" />
+          <Property Name="PCP" Type="varchar" MaxLength="255" />
         </EntityType>
         <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
         <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -325,6 +326,7 @@
           <Property Name="SLAPlan" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
           <Property Name="Overdue" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
           <Property Name="tipoEvento" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="PCP" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityContainer Name="ContratoMantenimientoEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="BehaviorHidraulic" EntityType="Self.BehaviorHidraulic" />
@@ -518,6 +520,7 @@
           <EntitySetMapping Name="Tickets">
             <EntityTypeMapping TypeName="ContratoMantenimientoModel.Tickets">
               <MappingFragment StoreEntitySet="Tickets">
+                <ScalarProperty Name="PCP" ColumnName="PCP" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="ticketNumber" ColumnName="ticketNumber" />
                 <ScalarProperty Name="createDate" ColumnName="createDate" />

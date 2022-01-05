@@ -8,6 +8,7 @@
         <EntityTypeShape EntityType="HidraulicTestModel.BehaviorHidraulic" Width="1.5" PointX="8.75" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="HidraulicTestModel.SitesMtto" Width="1.5" PointX="2.75" PointY="0.75" />
         <EntityTypeShape EntityType="HidraulicTestModel.HistorialComunicaciones" Width="1.5" PointX="5.375" PointY="0.75" />
+        <EntityTypeShape EntityType="HidraulicTestModel.BehaviorInstrumentation" Width="1.5" PointX="0.75" PointY="5.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

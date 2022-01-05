@@ -15,6 +15,24 @@
           <Property Name="value" Type="float" />
           <Property Name="channelnum" Type="int" />
           <Property Name="channeltype" Type="varchar" MaxLength="50" />
+          <Property Name="lastTwoWeeksAvg" Type="float" />
+        </EntityType>
+        <EntityType Name="BehaviorInstrumentation">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="siteIDDatagate" Type="nvarchar" MaxLength="255" />
+          <Property Name="datetime" Type="datetime" />
+          <Property Name="csq" Type="int" />
+          <Property Name="battery" Type="float" />
+          <Property Name="lastCallIn" Type="datetime" />
+          <Property Name="CsqAverage" Type="float" />
+          <Property Name="BatteryAverage" Type="float" />
+          <Property Name="MinBattery" Type="float" />
+          <Property Name="MinCsq" Type="float" />
+          <Property Name="MaxBattery" Type="float" />
+          <Property Name="MaxCsq" Type="float" />
         </EntityType>
         <EntityType Name="HistorialComunicaciones">
           <Key>
@@ -48,6 +66,7 @@ warning 6002: The table/view 'HidraulicTest.dbo.SitesMtto' does not have a prima
         </EntityType>
         <EntityContainer Name="HidraulicTestModelStoreContainer">
           <EntitySet Name="BehaviorHidraulic" EntityType="Self.BehaviorHidraulic" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BehaviorInstrumentation" EntityType="Self.BehaviorInstrumentation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HistorialComunicaciones" EntityType="Self.HistorialComunicaciones" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SitesMtto" EntityType="Self.SitesMtto" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -80,11 +99,13 @@ warning 6002: The table/view 'HidraulicTest.dbo.SitesMtto' does not have a prima
           <Property Name="value" Type="Double" />
           <Property Name="channelnum" Type="Int32" />
           <Property Name="channeltype" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="lastTwoWeeksAvg" Type="Double" />
         </EntityType>
         <EntityContainer Name="HidraulicTestEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="BehaviorHidraulic" EntityType="Self.BehaviorHidraulic" />
           <EntitySet Name="SitesMtto" EntityType="HidraulicTestModel.SitesMtto" />
           <EntitySet Name="HistorialComunicaciones" EntityType="HidraulicTestModel.HistorialComunicaciones" />
+          <EntitySet Name="BehaviorInstrumentation" EntityType="HidraulicTestModel.BehaviorInstrumentation" />
         </EntityContainer>
         <EntityType Name="SitesMtto">
           <Key>
@@ -114,6 +135,23 @@ warning 6002: The table/view 'HidraulicTest.dbo.SitesMtto' does not have a prima
           <Property Name="SMSNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="TotalComms" Type="Int32" />
         </EntityType>
+        <EntityType Name="BehaviorInstrumentation">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="siteIDDatagate" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="datetime" Type="DateTime" Precision="3" />
+          <Property Name="csq" Type="Int32" />
+          <Property Name="battery" Type="Double" />
+          <Property Name="lastCallIn" Type="DateTime" Precision="3" />
+          <Property Name="CsqAverage" Type="Double" />
+          <Property Name="BatteryAverage" Type="Double" />
+          <Property Name="MinBattery" Type="Double" />
+          <Property Name="MinCsq" Type="Double" />
+          <Property Name="MaxBattery" Type="Double" />
+          <Property Name="MaxCsq" Type="Double" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -123,6 +161,7 @@ warning 6002: The table/view 'HidraulicTest.dbo.SitesMtto' does not have a prima
           <EntitySetMapping Name="BehaviorHidraulic">
             <EntityTypeMapping TypeName="HidraulicTestModel.BehaviorHidraulic">
               <MappingFragment StoreEntitySet="BehaviorHidraulic">
+                <ScalarProperty Name="lastTwoWeeksAvg" ColumnName="lastTwoWeeksAvg" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="siteIDDatagate" ColumnName="siteIDDatagate" />
                 <ScalarProperty Name="datetime" ColumnName="datetime" />
@@ -158,6 +197,24 @@ warning 6002: The table/view 'HidraulicTest.dbo.SitesMtto' does not have a prima
                 <ScalarProperty Name="NumeroComms" ColumnName="NumeroComms" />
                 <ScalarProperty Name="Fecha" ColumnName="Fecha" />
                 <ScalarProperty Name="SiteID" ColumnName="SiteID" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BehaviorInstrumentation">
+            <EntityTypeMapping TypeName="HidraulicTestModel.BehaviorInstrumentation">
+              <MappingFragment StoreEntitySet="BehaviorInstrumentation">
+                <ScalarProperty Name="MaxCsq" ColumnName="MaxCsq" />
+                <ScalarProperty Name="MaxBattery" ColumnName="MaxBattery" />
+                <ScalarProperty Name="MinCsq" ColumnName="MinCsq" />
+                <ScalarProperty Name="MinBattery" ColumnName="MinBattery" />
+                <ScalarProperty Name="BatteryAverage" ColumnName="BatteryAverage" />
+                <ScalarProperty Name="CsqAverage" ColumnName="CsqAverage" />
+                <ScalarProperty Name="lastCallIn" ColumnName="lastCallIn" />
+                <ScalarProperty Name="battery" ColumnName="battery" />
+                <ScalarProperty Name="csq" ColumnName="csq" />
+                <ScalarProperty Name="datetime" ColumnName="datetime" />
+                <ScalarProperty Name="siteIDDatagate" ColumnName="siteIDDatagate" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

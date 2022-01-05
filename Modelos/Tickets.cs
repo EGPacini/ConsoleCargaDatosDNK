@@ -26,6 +26,7 @@ namespace ConsoleCargaDatosDNK.Modelos
         public string SLAPlan { get; set; }
         public string Overdue { get; set; }
         public string tipoEvento { get; set; }
+        public string PCP { get; set; }
 
         public class TicketClassMap : ClassMap<Tickets>
         {

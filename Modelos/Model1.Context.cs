@@ -28,5 +28,6 @@ namespace ConsoleCargaDatosDNK.Modelos
         public virtual DbSet<BehaviorHidraulic> BehaviorHidraulic { get; set; }
         public virtual DbSet<SitesMtto> SitesMtto { get; set; }
         public virtual DbSet<HistorialComunicaciones> HistorialComunicaciones { get; set; }
+        public virtual DbSet<BehaviorInstrumentation> BehaviorInstrumentation { get; set; }
     }
 }
