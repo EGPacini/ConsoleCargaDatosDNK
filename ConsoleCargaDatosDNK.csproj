@@ -104,64 +104,64 @@
   <ItemGroup>
     <Compile Include="Classes\Msg.cs" />
     <Compile Include="Modelos\AbortCodeLookup.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\Accessories.cs">
       <DependentUpon>ServicioTecnico.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\AccessTechnologyTypes.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\AccountLeakOptions.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\accounts.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\AccountTypeLookup.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\ActuationsPegasus.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\alarmconditions.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\alarmforwarding.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\alarms.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\alarmTypes.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\APIQuotas.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\ApplicationConfigLog.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\ApplicationLookup.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\ApplicationSettings.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\AppSettings.cs">
       <DependentUpon>ServicioTecnico.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\associations.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\ATSInfoTable.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\Audit.cs">
       <DependentUpon>ServicioTecnico.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\BandPassFilter.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\BehaviorHidraulic.cs">
       <DependentUpon>Model1.tt</DependentUpon>
@@ -173,22 +173,22 @@
       <DependentUpon>ServicioTecnico.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\CategoryofPermitCodeLookup.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\celltable.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\ChamberTypes.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\channels.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\ChannelTypeChartOptions.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\ChannelTypes.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Classes\DataPoints.cs" />
     <Compile Include="Classes\Functions.cs" />
@@ -211,160 +211,160 @@
       <DependentUpon>ContratoMantenimiento.edmx</DependentUpon>
     </Compile>
     <Compile Include="Modelos\correlationAccountMeta.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\correlationPath.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\CorrelationResults.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\correlationTestPaths.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\CountyCodes.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\Credentials.cs">
       <DependentUpon>ServicioTecnico.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\C__MigrationLog.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\C__MigrationLogCurrent.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\dataexport.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\datapoints.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\DatFileLocations.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\DatFiles.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\Device.cs">
       <DependentUpon>ServicioTecnico.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\DeviceSummary.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\exportindex.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\FavouriteSignalList.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\FavouriteSignalListData.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\firmwareupdates.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\fleetreportoptions.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\flowpegasus.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\fnGetAccountIDAndDescendents_Result.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\fnGetAccountIDsforDescendents_Result.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\fnGetAccountImmediateDescendantsByID_Result.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\gascalorificvalues.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\gaszone.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\GDImportDataFileLog.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\GDImportDataFiles.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\GenerateLeakListReportByAccountId_Result.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\GetMostRecentEasyIDandSerialNumberIfNoDevice_Result.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\GetRealTimeCommunication_Result.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\GNetalerts.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\GNetalertTypes.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\GNetaudit.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\GNetchannelTypes.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\GNetcustomers.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\GNethubs.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\GNetlocations.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\GNetmessages.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\GNetmonthlyReport.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\GNetsites.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\GNettransmitterChannels.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\GNettransmitterData.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\GNettransmitterFlushEvents.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\GNettransmitterFlushSettings.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\GNettransmitterLocations.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\GNettransmitters.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\GNettransmitterTemperatureSettings.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\GNettransmitterTypes.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\GNetuserRoles.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\GNetusers.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\GNetuserSites.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\histograms.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\HistorialComunicaciones.cs">
       <DependentUpon>Model1.tt</DependentUpon>
@@ -373,40 +373,40 @@
       <DependentUpon>ServicioTecnico.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\hubs.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\Indicator.cs">
       <DependentUpon>ContratoMantenimiento.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\InstallationReport.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\installsite.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\InsumosST.cs">
       <DependentUpon>ContratoMantenimiento.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\intlist_to_tbl_Result.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\InvestigationAuth.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\leakconfirmation.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\leakconfirmationassociation.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\LeakDetectionOptions.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\leakstatuslookup.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\lnstable.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\LocalHWM.Context.cs">
       <AutoGen>True</AutoGen>
@@ -424,82 +424,82 @@
       <DependentUpon>LocalHWM.edmx</DependentUpon>
     </Compile>
     <Compile Include="Modelos\LoggerAccessTechnology.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\LoggerCommandHistory.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\loggerconfigurationdata.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\LoggerFilterConfiguration.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\LoggerLevelAndSpread.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\loggermeterreadings.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\loggerRecordingAudit.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\loggerrecordings.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\loggers.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\loggersecuretypes.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\LoggerTypeIdentification.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\lookuptables.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\Maintenance.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\MaintenanceInstallation.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\MaintenanceInstallationReportStatus.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\MaintenanceInstallationType.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\MaintenanceJob.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\MaintenanceJobSitePhoto.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\MaintenanceJobStatus.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\MaintenanceJobStatusComment.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\MaintenanceJobType.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\MaintenanceReports.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\MaintenanceReportsServerStatus.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\Measurements.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\messageindex.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\messages.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\Model1.Context.cs">
       <AutoGen>True</AutoGen>
@@ -517,106 +517,106 @@
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
     <Compile Include="Modelos\networklookup.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\NGFileExportLog.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\NGFileExportSchedule.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\NGFileRejectResponse.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\NGFileSequence.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\NGJobOutcome.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\NGJobType.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\NGOutcomeReason.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\NGRequest.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\NGSitePhoto.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\NGSiteVisit.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\NGSiteVisitComment.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\NGSiteVisitStockItems.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\NGStatus.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\NGStockItems.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\NGTransactionStatus.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\Notifications.cs">
       <DependentUpon>ServicioTecnico.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\openchannelconversion.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\openchannelheader.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\PipeDiameterRanges.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\PipeMappingFromGIS.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\PipeMaterialTypes.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\PipeNetwork.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\PipeSize.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\pmzbigtimedata.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\pmzmessagelog.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\pmzoffstimedata.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\pmzpressflowdata.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\pmzpresstimedata.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\pmzsettings.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\Predictive.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\PredictiveAlarmSetting.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\Predictive_AlarmCount.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\Predictive_Audit.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\Profile.cs">
       <DependentUpon>ServicioTecnico.tt</DependentUpon>
@@ -624,19 +624,34 @@
     <Compile Include="Modelos\ProfileType.cs">
       <DependentUpon>ServicioTecnico.tt</DependentUpon>
     </Compile>
+    <Compile Include="Modelos\ServerHWM.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ServerHWM.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Modelos\ServerHWM.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Modelos\ServerHWM.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ServerHWM.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Modelos\RaisedAsLookup.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\recentsites.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\recordingspoints.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\RepairedAsLookup.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\RepairGuide.cs">
       <DependentUpon>ServicioTecnico.tt</DependentUpon>
@@ -645,13 +660,13 @@
       <DependentUpon>ServicioTecnico.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\roles.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\RTLTransmitters.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\ScheduledReportLookup.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\ServicioTecnico.Context.cs">
       <AutoGen>True</AutoGen>
@@ -669,139 +684,139 @@
       <DependentUpon>ServicioTecnico.edmx</DependentUpon>
     </Compile>
     <Compile Include="Modelos\ShapeFileIconConfiguration.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\ShapeFiles.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\SiteCoordinates.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\SiteLeakStatusHistory.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\SiteLeakThresholdHistory.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\SiteLoggerUserActions.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\sitephotos.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\sites.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\SitesMtto.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\SMSFailures.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\smsjobtable.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\smsrequesttable.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\softwarelookup.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\SoundVelocityLookup.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\spGetAccountLeakOptionsforAutoCorrelation_Result.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\spGetAccountLeakOptionsforCaching_Result.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\spGetAccountSitesByTextSearch_Result.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\spGetAccountSites_Result.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\spGetAllAssociatedSites_Result.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\spGetAllSitesUpdatedSince_Result.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\spGetAutoCorrelationResultsRange_Result.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\spGetAutoCorrelationSites_Result.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\spGetFilteredLeakMapAssets2_Result.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\spGetFilteredLeakMapAssetsCustom2_Result.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\spGetFilteredLeakMapAssetsCustomDateRange_Result.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\spGetFilteredLeakMapAssetsCustom_Result.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\spGetFilteredLeakMapAssets_Result.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\spGetLNSData_Result.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\spGetLoggerList_Result.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\spGetMessagesandLoggerDetailsforAccount_Result.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\spGetMostRecentEasyIDandSerialNumberIfNoDevice_Result.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\spGetPagedLeakMapAssets_Result.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\spGetSiteDetails_Result.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\spGetSurveyMeasurementsBySurveyID_Result.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\spGetSurveyMeasurements_Result.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\SplitString_Result.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\spPowerAutomate_SitesDevicesChannelNames_Result.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\spPowerBI_APIQuotas_Result.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\spPowerBI_DatabaseFileSizes_Result.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\spPowerBI_DatabaseTableSizes_Result.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\spPowerBI_DeviceCountsByType_Result.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\spPowerBI_MessagesPerMinute_Result.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\spPowerBI_SuperAdminUsersALL_Result.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\spPowerBI_SuperAdminUsers_Result.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\spPowerBI_UserLoginAudit_Result.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\Squad.cs">
       <DependentUpon>ServicioTecnico.tt</DependentUpon>
@@ -810,16 +825,16 @@
       <DependentUpon>ServicioTecnico.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\statuspegasus.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\steptestcredits.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\steptesthistory.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\StringToArray_Result.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\SupplieMobile.cs">
       <DependentUpon>ServicioTecnico.tt</DependentUpon>
@@ -828,13 +843,13 @@
       <DependentUpon>ServicioTecnico.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\Survey.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\sysdiagrams.cs">
       <DependentUpon>ContratoMantenimiento.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\SystemNotification.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\TareasPreventivas.cs">
       <DependentUpon>ContratoMantenimiento.tt</DependentUpon>
@@ -846,64 +861,64 @@
       <DependentUpon>ContratoMantenimiento.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\tempchannels.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\tempsiteList.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\Tickets.cs">
       <DependentUpon>ContratoMantenimiento.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\timepegasus.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\TMAOptions.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\torancounts.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\unitslookup.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\UsedSupplies.cs">
       <DependentUpon>ServicioTecnico.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\UserChannelChartTypes.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\UserNotificationAcknowledgement.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\userpasswords.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\users.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\UserUnitLookup.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\user_device.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\witsendpoints.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\witssitedetails.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\WorkDone.cs">
       <DependentUpon>ServicioTecnico.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\WorkOrderLeakConfAssociation.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\WorkValuation.cs">
       <DependentUpon>ServicioTecnico.tt</DependentUpon>
     </Compile>
     <Compile Include="Modelos\WWAlarmSettingsTable.cs">
-      <DependentUpon>LocalHWM.tt</DependentUpon>
+      <DependentUpon>ServerHWM.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -928,6 +943,13 @@
     </EntityDeploy>
     <None Include="Modelos\Model1.edmx.diagram">
       <DependentUpon>Model1.edmx</DependentUpon>
+    </None>
+    <EntityDeploy Include="Modelos\ServerHWM.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ServerHWM.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Modelos\ServerHWM.edmx.diagram">
+      <DependentUpon>ServerHWM.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
     <EntityDeploy Include="Modelos\ServicioTecnico.edmx">
@@ -968,6 +990,16 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Model1.edmx</DependentUpon>
       <LastGenOutput>Model1.cs</LastGenOutput>
+    </Content>
+    <Content Include="Modelos\ServerHWM.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ServerHWM.edmx</DependentUpon>
+      <LastGenOutput>ServerHWM.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Modelos\ServerHWM.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ServerHWM.edmx</DependentUpon>
+      <LastGenOutput>ServerHWM.cs</LastGenOutput>
     </Content>
     <Content Include="Modelos\ServicioTecnico.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

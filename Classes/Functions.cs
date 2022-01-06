@@ -125,7 +125,7 @@ namespace ConsoleCargaDatosDNK.Classes
 
     public class InstrumentationGetter : WebClient
     {
-        public static List<Msg> GetDataFromAPI(string SMSNumber, DateTime beginDate /* , DateTime endDate  */)
+        public static List<Msg> GetDataFromAPI(string SMSNumber, DateTime beginDate, DateTime endDate)
         {
             List<Msg> thisData = new List<Msg>();
             var API = ConfigurationManager.AppSettings["HWMAPI"];
@@ -133,17 +133,19 @@ namespace ConsoleCargaDatosDNK.Classes
             if (API == null || API == "") { API = "http://192.168.188.220/api/"; }
 
             string data = string.Empty;
+
             var newDate = beginDate.ToString();
             var RangeStart = newDate.Replace("-", "/");
-            //var newenddate = endDate.toString();
-            //var RangeEnd = newenddate.Replace("-", "/");
+
+            var newenddate = endDate.ToString();
+            var RangeEnd = newenddate.Replace("-", "/");
 
             var url = API + "messagingapi.ashx?action=getmessages"
                        + "&number=" + SMSNumber
                        + "&username=datagate"
                        + "&password=Hwm2019Dnk"
-                       + "&beginDate=" + RangeStart;
-                     //+ "&endDate=RangeEnd;
+                       + "&beginDate=" + RangeStart
+                       + "&endDate=" + RangeEnd;
             try
             {
                 using (var wc = new DataGetter())

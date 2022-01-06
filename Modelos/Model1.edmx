@@ -44,6 +44,7 @@
           <Property Name="NumeroComms" Type="int" />
           <Property Name="SMSNumber" Type="nvarchar" MaxLength="50" />
           <Property Name="TotalComms" Type="int" />
+          <Property Name="RegistrationTime" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'HidraulicTest.dbo.SitesMtto' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
@@ -134,6 +135,7 @@ warning 6002: The table/view 'HidraulicTest.dbo.SitesMtto' does not have a prima
           <Property Name="NumeroComms" Type="Int32" />
           <Property Name="SMSNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="TotalComms" Type="Int32" />
+          <Property Name="RegistrationTime" Type="Int32" />
         </EntityType>
         <EntityType Name="BehaviorInstrumentation">
           <Key>
@@ -192,6 +194,7 @@ warning 6002: The table/view 'HidraulicTest.dbo.SitesMtto' does not have a prima
           <EntitySetMapping Name="HistorialComunicaciones">
             <EntityTypeMapping TypeName="HidraulicTestModel.HistorialComunicaciones">
               <MappingFragment StoreEntitySet="HistorialComunicaciones">
+                <ScalarProperty Name="RegistrationTime" ColumnName="RegistrationTime" />
                 <ScalarProperty Name="TotalComms" ColumnName="TotalComms" />
                 <ScalarProperty Name="SMSNumber" ColumnName="SMSNumber" />
                 <ScalarProperty Name="NumeroComms" ColumnName="NumeroComms" />

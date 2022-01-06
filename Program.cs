@@ -90,10 +90,7 @@ namespace ConsoleCargaDatosDNK
 
                 var historynumber = (from lr in auxdb2.loggerrecordings
                                      where lr.Site_ID == sitesqueryID
-                                     select new
-                                     {
-                                         lr.LoggerID
-                                     }).Distinct().ToList();
+                                     select new { lr.LoggerID }).Distinct().ToList();
 
                 foreach (var l in historynumber)
                 {
@@ -629,92 +626,98 @@ namespace ConsoleCargaDatosDNK
         public static void DatosIntrumentacion()
         {
             HidraulicTestEntities db = new HidraulicTestEntities();
-            LocalHWMEntities localdb2 = new LocalHWMEntities();
+            hwmdbEntities db2 = new hwmdbEntities();
 
-            var query = (from s in localdb2.sites
-                         join l in localdb2.loggers on s.LoggerID equals l.ID
-                         join a in localdb2.accounts on s.OwnerAccount equals a.ID
+            var query = (from s in db2.sites
+                         join l in db2.loggers on s.LoggerID equals l.ID
+                         join a in db2.accounts on s.OwnerAccount equals a.ID
                          where a.ID == 5 || a.ID == 6 || a.ID == 10
                          select new { l.LoggerSMSNumber, s.SiteID }).ToList();
 
-            Parallel.For(0, query.Count, new ParallelOptions { MaxDegreeOfParallelism = 1 }, i =>
+            Parallel.For(0, query.Count, new ParallelOptions { MaxDegreeOfParallelism = 25 }, i =>
             {
+                HidraulicTestEntities aux = new HidraulicTestEntities();
+
                 var SiteNumber = query[i].LoggerSMSNumber;
                 var SiteID = query[i].SiteID;
-                DateTime inicio = new DateTime(2020, 1, 1);
-                int cont = 0;
-                var latestData = InstrumentationGetter.GetDataFromAPI(SiteNumber, inicio);
 
-                var q = from item in latestData group item by item.callin.ToString("MM/dd/yyyy HH:mm") into ItemGroup
-                        select new
-                        {
-                            id = ItemGroup.First().id,
-                            sms = ItemGroup.First().number,
-                            callin = ItemGroup.OrderBy(x => x.callin).First().callin,
-                            Site = SiteID,
-                            battery = ItemGroup.First().battery,
-                            csq = ItemGroup.First().csq
-                        };            
-             
-                HidraulicTestEntities auxdb2 = new HidraulicTestEntities();
-                List<BehaviorInstrumentation> InsertBatch = new List<BehaviorInstrumentation>();
-                if (latestData.Count > 0)
+                var lastInsert = (from b in aux.BehaviorInstrumentation where b.siteIDDatagate == SiteID select b.lastCallIn).Max();
+
+                if(lastInsert != null)
                 {
-                    foreach (var t in q)
-                    {
-                        cont++;
-                        List<Msg> GroupedByMinute = latestData.FindAll(x => x.callin.ToString("dd/MM/yyyy HH:mm") == t.callin.ToString("dd/MM/yyyy HH:mm")).ToList();
+                    var ytd = DateTime.Today.AddDays(-1);                   
+                    var shortytd = ytd.ToShortDateString();
+                    DateTime format = DateTime.ParseExact(shortytd, "dd/MM/yy", CultureInfo.InvariantCulture);
 
-                        List<double> batteryLogs = new List<double>();
-                        List<double> csqLogs = new List<double>();
-                        
-                        foreach (var row in GroupedByMinute)
-                        {
-                            batteryLogs.Add(row.battery);
-                            csqLogs.Add(row.csq);
-                        }
+                    TimeSpan midnight = new TimeSpan(23, 59, 59);
+                    var Yesterday = Convert.ToDateTime(format).Add(midnight);
 
-                        var batteryAvg = batteryLogs.Average();
-                        var csqAvg = csqLogs.Average();
+                    var latestData = InstrumentationGetter.GetDataFromAPI(SiteNumber, (DateTime) lastInsert, Yesterday);
 
-                        var minBattery = batteryLogs.Min();
-                        var minCsq = csqLogs.Min();
-
-                        var maxBattery = batteryLogs.Max();
-                        var maxCsq = csqLogs.Max();
-
-                        string shortBatteryAvg = batteryAvg.ToString("N2");
-                        string shortCsqAvg = csqAvg.ToString("N2");
-
-                        BehaviorInstrumentation bhd = new BehaviorInstrumentation
-                        {
-                            id = Convert.ToInt32(t.id),
-                            siteIDDatagate = SiteID,
-                            battery = t.battery,
-                            csq = t.csq,
-                            lastCallIn = t.callin,
-                            CsqAverage = Convert.ToDouble(shortCsqAvg),
-                            BatteryAverage = Convert.ToDouble(shortBatteryAvg),
-                            MinBattery = minBattery,
-                            MinCsq = minCsq,
-                            MaxBattery = maxBattery,
-                            MaxCsq = maxCsq
-                        };
-                        //Console.WriteLine("Insertando: LastCall: {0} Csq: {1} Battery: {2} Site: {3}", t.callin, t.csq, t.battery, SiteID);
-                        InsertBatch.Add(bhd);
-                        if(cont == 500)
-                        {
-                            foreach(var msg in InsertBatch)
+                    var q = from item in latestData
+                            group item by item.callin.ToString("MM/dd/yyyy HH:mm") into ItemGroup
+                            select new
                             {
-                                Console.WriteLine("Insertando: Site: {0}, Fecha: {1}, Bateria: {2}, Csq: {3}, CSQ Avg: {4}, Battery Avg: {5}, Min Battery: {6}, Max Battery: {7}, Min Csq: {8}. Max Csq: {9}",
-                                                                SiteID, msg.lastCallIn, msg.battery, msg.csq, msg.CsqAverage, msg.BatteryAverage, msg.MinBattery, msg.MaxBattery, msg.MinCsq, msg.MaxCsq);
+                                id = ItemGroup.First().id,
+                                sms = ItemGroup.First().number,
+                                callin = ItemGroup.OrderBy(x => x.callin).First().callin,
+                                Site = SiteID,
+                                battery = ItemGroup.First().battery,
+                                csq = ItemGroup.First().csq
+                            };
+
+                    HidraulicTestEntities auxdb2 = new HidraulicTestEntities();
+
+                    if (latestData.Count > 0)
+                    {
+                        foreach (var t in q)
+                        {
+                            List<Msg> GroupedByMinute = latestData.FindAll(x => x.callin.ToString("dd/MM/yyyy HH:mm") == t.callin.ToString("dd/MM/yyyy HH:mm")).ToList();
+
+                            List<double> batteryLogs = new List<double>();
+                            List<double> csqLogs = new List<double>();
+
+                            foreach (var row in GroupedByMinute)
+                            {
+                                batteryLogs.Add(row.battery);
+                                csqLogs.Add(row.csq);
                             }
+
+                            var batteryAvg = batteryLogs.Average();
+                            var csqAvg = csqLogs.Average();
+
+                            var minBattery = batteryLogs.Min();
+                            var minCsq = csqLogs.Min();
+
+                            var maxBattery = batteryLogs.Max();
+                            var maxCsq = csqLogs.Max();
+
+                            string shortBatteryAvg = batteryAvg.ToString("N2");
+                            string shortCsqAvg = csqAvg.ToString("N2");
+
+                            BehaviorInstrumentation bhd = new BehaviorInstrumentation
+                            {
+                                id = Convert.ToInt32(t.id),
+                                siteIDDatagate = SiteID,
+                                battery = t.battery,
+                                csq = t.csq,
+                                lastCallIn = t.callin,
+                                CsqAverage = Convert.ToDouble(shortCsqAvg),
+                                BatteryAverage = Convert.ToDouble(shortBatteryAvg),
+                                MinBattery = minBattery,
+                                MinCsq = minCsq,
+                                MaxBattery = maxBattery,
+                                MaxCsq = maxCsq
+                            };
+
+                            Console.WriteLine("Insertando: Site: {0}, Fecha: {1}, Bateria: {2}, Csq: {3}, CSQ Avg: {4}, Battery Avg: {5}, Min Battery: {6}, Max Battery: {7}, Min Csq: {8}. Max Csq: {9}",
+                                                                    SiteID, bhd.lastCallIn, bhd.battery, bhd.csq, bhd.CsqAverage, bhd.BatteryAverage, bhd.MinBattery, bhd.MaxBattery, bhd.MinCsq, bhd.MaxCsq);
+                            auxdb2.BehaviorInstrumentation.Add(bhd);
+                            auxdb2.SaveChanges();
                         }
-                        
-                        //auxdb2.BehaviorInstrumentation.Add(bhd);
+
                     }
-                    // auxdb2.SaveChanges();
-                }
+                }             
             });
         }
         
@@ -1161,19 +1164,19 @@ namespace ConsoleCargaDatosDNK
         public static void TestComms()
         {
             HidraulicTestEntities db = new HidraulicTestEntities();
-            LocalHWMEntities localdb2 = new LocalHWMEntities();
+            hwmdbEntities db2 = new hwmdbEntities();
 
-            var sitesquery = (from s in localdb2.sites
-                              join l in localdb2.loggers
+            var sitesquery = (from s in db2.sites
+                              join l in db2.loggers
                               on s.LoggerID equals l.ID
-                              join a in localdb2.accounts
+                              join a in db2.accounts
                               on s.OwnerAccount equals a.ID
                               where a.ID == 5 || a.ID == 6 || a.ID == 10
                               select new { l.LoggerSMSNumber, s.SiteID, s.ID }).ToList();
 
-            Parallel.For(0, sitesquery.Count, new ParallelOptions { MaxDegreeOfParallelism = 30 }, i =>
+            Parallel.For(0, sitesquery.Count, new ParallelOptions { MaxDegreeOfParallelism = 1 }, i =>
             {
-                LocalHWMEntities HWMAUX = new LocalHWMEntities();
+                hwmdbEntities HWMAUX = new hwmdbEntities();
 
                 var sms = sitesquery[i].LoggerSMSNumber;             
 
@@ -1187,103 +1190,125 @@ namespace ConsoleCargaDatosDNK
                                      {
                                          lr.LoggerID
                                      }).Distinct().ToList();
-
+            
                 foreach (var l in historynumber)
                 {
-                    var number = (from lo in HWMAUX.loggers
-                                  where lo.ID == l.LoggerID
-                                  select lo).FirstOrDefault();
+                    hwmdbEntities aux3 = new hwmdbEntities();
 
-                    var PerNumberRange = (from m in HWMAUX.messages
-                                          where m.smsnumber == number.LoggerSMSNumber
-                                          select new
-                                          {
-                                              Start = (from mg in HWMAUX.messages where m.smsnumber == number.LoggerSMSNumber select m.rxtime).Min(),
-                                              End = (from mg in HWMAUX.messages where m.smsnumber == number.LoggerSMSNumber select m.rxtime).Max()
-                                          }).FirstOrDefault();
+                    var RegistrationTime = (from ymca in db2.loggers where ymca.ID == l.LoggerID select ymca.NetRegistrationTime).FirstOrDefault();
 
-                    DateTime startDate = Convert.ToDateTime(PerNumberRange.Start);
-                    DateTime endDate = Convert.ToDateTime(PerNumberRange.End);
-                    TimeSpan go = new TimeSpan(0, 0, 0);
-                    TimeSpan stop = new TimeSpan(0, 0, 0);
+                    var number = (from lo in aux3.loggers where lo.ID == l.LoggerID select lo).FirstOrDefault();
 
-                    DateTime rangeStart = startDate.Add(go);
-                    DateTime rangeEnd = startDate.Add(stop);
+                    var ThisNumberStart = (from m in aux3.messages where m.smsnumber == number.LoggerSMSNumber select m.rxtime).Min();
 
-                    Console.WriteLine("El numero de telefono actual para site {0}, : {1}, con un rango desde {2} a {3}", SiteID, number.LoggerSMSNumber, startDate, endDate);
+                    var ThisNumberEnd = (from m in aux3.messages where m.smsnumber == number.LoggerSMSNumber select m.rxtime).Max();
 
-                    var allCommsQuery = (from mess in HWMAUX.messages
-                                         where mess.smsnumber == number.LoggerSMSNumber
-                                         && mess.rxtime > rangeStart
-                                         && mess.rxtime < rangeEnd
-                                         select mess.rxtime
-                                        ).Distinct().ToList();
-
-                    if (allCommsQuery.Count() > 0)
+                    if(ThisNumberStart != null)
                     {
+                        DateTime startDate = (DateTime)ThisNumberStart.GetValueOrDefault();
+                        DateTime endDate = (DateTime)ThisNumberEnd.GetValueOrDefault();
+
+                        TimeSpan start = new TimeSpan(0, 0, 0);
+                        TimeSpan end = new TimeSpan(23, 59, 59);
+
+                        var startholder = startDate.ToShortDateString();
+                        var endholder = startDate.ToShortDateString();
+
+                        var rangeStart = Convert.ToDateTime(startholder).Add(start);
+                        var rangeEnd = Convert.ToDateTime(endholder).Add(end);
+
+                        Console.WriteLine("\n\nSite {0}, SMS: {1}, con un rango desde {2} a {3}", SiteID, number.LoggerSMSNumber, startDate, endDate);
+
                         while (startDate <= endDate)
                         {
-                            var ActualDate = Convert.ToDateTime(startDate.ToString("dd-MM-yyyy"));
-                            Console.WriteLine("Fecha actual: {0}", ActualDate);
-                            var thisDayComms = allCommsQuery.Where(x => x.Value.Date == startDate.Date).ToList();
-                            int commsCounter = thisDayComms.Count();
+                            hwmdbEntities hwmAux2 = new hwmdbEntities();
+        
+                            var DistinctComms = (from mess in hwmAux2.messages
+                                                 where mess.smsnumber == number.LoggerSMSNumber
+                                                 && mess.rxtime >= rangeStart
+                                                 && mess.rxtime <= rangeEnd
+                                                 select mess.rxtime).Distinct().ToList();
 
-                            if (commsCounter > 0)
+                            if(DistinctComms.Count != 0)
                             {
-                                DateTime? prevCommDate = null;
-                                int auxCommCounter = 0;
-                                foreach (var thisComm in thisDayComms)
-                                {
-                                    if (prevCommDate == null)
-                                    {
-                                        prevCommDate = thisComm;
-                                        auxCommCounter++;
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine(prevCommDate);
-                                        Console.WriteLine(thisComm);
-                                        double TimeDiff = (thisComm - prevCommDate).Value.TotalMinutes;
+                                var AllComms = (from mess in hwmAux2.messages
+                                                where mess.smsnumber == number.LoggerSMSNumber
+                                                && mess.rxtime >= rangeStart
+                                                && mess.rxtime <= rangeEnd
+                                                select mess.rxtime).ToList();
 
-                                        if (TimeDiff > 60)
+                                var ActualDate = Convert.ToDateTime(startDate.ToShortDateString());
+                                Console.WriteLine("---------------------------------");
+                                Console.WriteLine("\nFecha actual: {0}", ActualDate);
+                                var thisDayComms = DistinctComms.Where(x => x.Value.Date == startDate.Date).ToList();
+
+                                if (thisDayComms.Count() > 0)
+                                {
+                                    DateTime? prevCommDate = null;
+                                    int auxCommCounter = 0;
+                                    foreach (var thisComm in thisDayComms)
+                                    {
+                                        if (prevCommDate == null)
                                         {
-                                            Console.WriteLine("Diff de " + TimeDiff);
+                                            prevCommDate = thisComm;
                                             auxCommCounter++;
                                         }
-                                        prevCommDate = thisComm;
+                                        else
+                                        {
+                                            double TimeDiff = (thisComm - prevCommDate).Value.TotalMinutes;
+
+                                            if (TimeDiff > 60)
+                                            {
+                                                auxCommCounter++;
+                                            }
+                                            prevCommDate = thisComm;
+                                        }
                                     }
+                                    Console.WriteLine("\nEl numero {0} se ha comunicado {1}  y en total: {2} \n", number.LoggerSMSNumber, auxCommCounter, AllComms.Count);
+
+                                    HidraulicTestEntities MTTOAUX = new HidraulicTestEntities();
+                                    HistorialComunicaciones hc = new HistorialComunicaciones
+                                    {
+                                        SiteID = SiteID,
+                                        Fecha = Convert.ToDateTime(ActualDate),
+                                        NumeroComms = auxCommCounter,
+                                        SMSNumber = number.LoggerSMSNumber,
+                                        TotalComms = AllComms.Count()
+                                    };
+                                    MTTOAUX.HistorialComunicaciones.Add(hc);
+                                    MTTOAUX.SaveChanges();
+                                    startDate = startDate.AddDays(1);
+                                    rangeStart = rangeStart.AddDays(1);
+                                    rangeEnd = rangeEnd.AddDays(1);
                                 }
-                                Console.WriteLine("El numero {0} se ha comunicado {1} veces en el dia {2}, y en total: {3} \n", number.LoggerSMSNumber, auxCommCounter, startDate.ToString("dd-MM-yyy"), commsCounter);
-                                HidraulicTestEntities MTTOAUX = new HidraulicTestEntities();
-                                HistorialComunicaciones hc = new HistorialComunicaciones
+                                else
                                 {
-                                    SiteID = SiteID,
-                                    Fecha = ActualDate,
-                                    NumeroComms = auxCommCounter,
-                                    SMSNumber = number.LoggerSMSNumber,
-                                    TotalComms = commsCounter
-                                };
-                                MTTOAUX.HistorialComunicaciones.Add(hc);
-                                MTTOAUX.SaveChanges();
+                                    Console.WriteLine("\nEl numero {0} se ha comunicado 0 veces\n", number.LoggerSMSNumber);
+                                    HidraulicTestEntities MTTOAUX = new HidraulicTestEntities();
+                                    HistorialComunicaciones hc = new HistorialComunicaciones
+                                    {
+                                        SiteID = SiteID,
+                                        Fecha = Convert.ToDateTime(ActualDate),
+                                        NumeroComms = 0,
+                                        SMSNumber = number.LoggerSMSNumber,
+                                        TotalComms = AllComms.Count()
+                                    };
+                                    MTTOAUX.HistorialComunicaciones.Add(hc);
+                                    MTTOAUX.SaveChanges();
+                                    startDate = startDate.AddDays(1);
+                                    rangeStart = rangeStart.AddDays(1);
+                                    rangeEnd = rangeEnd.AddDays(1);
+                                }
                             }
                             else
                             {
-                                Console.WriteLine("El numero {0} se ha comunicado 0 veces en el dia {1}, y en total: {2} \n", number.LoggerSMSNumber, startDate.ToString("dd-MM-yyy"), commsCounter);
-                                HidraulicTestEntities MTTOAUX = new HidraulicTestEntities();
-                                HistorialComunicaciones hc = new HistorialComunicaciones
-                                {
-                                    SiteID = SiteID,
-                                    Fecha = ActualDate,
-                                    NumeroComms = 0,
-                                    SMSNumber = number.LoggerSMSNumber,
-                                    TotalComms = commsCounter
-                                };
-                                MTTOAUX.HistorialComunicaciones.Add(hc);
-                                MTTOAUX.SaveChanges();
-                            }
-                            startDate = startDate.AddDays(1);
+                                startDate = startDate.AddDays(1);
+                                Console.WriteLine("Sin Comunicaciónes, avanzando... {1}", startDate);                              
+                                rangeStart = rangeStart.AddDays(1);
+                                rangeEnd = rangeEnd.AddDays(1);
+                            }                  
                         }
-                    }
+                    }              
                 }
             });
         }

@@ -20,5 +20,6 @@ namespace ConsoleCargaDatosDNK.Modelos
         public Nullable<int> NumeroComms { get; set; }
         public string SMSNumber { get; set; }
         public Nullable<int> TotalComms { get; set; }
+        public Nullable<int> RegistrationTime { get; set; }
     }
 }
